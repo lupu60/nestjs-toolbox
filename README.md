@@ -34,6 +34,28 @@
 npm i @lupu60/nestjs-toolbox -save
 ```
 
+### List of packages
+  * [BunyanLoggerService](#Bunyan Logger Service)
+
+
+### Bunyan Logger Service
+
+```js
+import { NestFactory } from '@nestjs/core';
+import { BunyanLoggerService } from "@lupu60/nestjs-toolbox";
+import { AppModule } from './app.module';
+
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, {
+    logger:  new BunyanLoggerService( 'ProjectName', { outputMode: 'short' })
+  });
+  await app.listen(3000);
+}
+bootstrap();
+```
+
+
 ## Support on Beerpay
 
 Hey dude! Help me out for a couple of :beers:!
