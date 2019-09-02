@@ -31,7 +31,7 @@
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && npm i",
     "clean": "trash build test",
-    "prepare-release": "run-s reset test test:cov version",
+    "prepare-release": "run-s reset test test:cov version"
   },
   "scripts-info": {
     "info": "Display information about the package scripts",
