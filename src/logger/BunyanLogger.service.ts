@@ -2,24 +2,28 @@ import { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
 import * as bunyanFormat from 'bunyan-format';
 import chalk from 'chalk';
+import { LoggerFormatterOptions } from './LoggerFormatterOptions.interface';
 
 export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
 
   /**
-   *    Creates an instance of BunyanLoggerService.
-   * @param {*} formatterOptions { outputMode: 'short' }
-   * @param {string} [projectName]
+   * Creates an instance of BunyanLoggerService.
+   * @param {string} projectName
+   * @param {LoggerFormatterOptions} formatterOptions { outputMode: 'short' }
+   * @param {any []} streams any supported Bunyan stream
    * @memberof BunyanLoggerService
    */
-  constructor(formatterOptions: any, projectName?: string) {
+  constructor(projectName: string, formatterOptions: LoggerFormatterOptions, customStreams?: any []) {
     const formatOut = bunyanFormat(formatterOptions);
+    const streams:Bunyan.Stream [] = [
+      { level: 'info', type: 'stream', stream: formatOut },
+      ...customStreams||[]
+    ]
     this.bunyanLogger = Bunyan.createLogger({
       level: Bunyan.INFO,
       name: projectName,
-      streams: [
-        { level: 'info', type: 'stream', stream: formatOut },
-      ]
+      streams:[...streams],
     });
   }
 
