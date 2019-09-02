@@ -6,7 +6,6 @@ export class WinstonLoggerService implements LoggerService {
 
   constructor(projectName: string, transports?: any[]) {
     const colorizer = winston.format.colorize();
-
     this.winstonLogger = winston.createLogger({
       level: 'info',
       format: winston.format.combine(

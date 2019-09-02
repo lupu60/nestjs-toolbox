@@ -1,6 +1,7 @@
 {
     "name": "@lupu60/nestjs-toolbox-bunyan-logger",
     "description": "n/a",
+    "version": "0.0.13",
     "license": "MIT",
     "main": "lib/index.js",
     "typings": "lib/index.d.ts",
@@ -12,6 +13,6 @@
     ],
     "scripts": {
       "prebuild": "npx rimraf ./lib",
-      "build": "npx tsc -p tsconfig.build.json"
+      "build": "../../node_modules/.bin/tsc -p tsconfig.json "
     }
   }

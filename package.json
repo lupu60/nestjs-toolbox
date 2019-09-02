@@ -17,6 +17,9 @@
     "toolbox",
     "logger"
   ],
+  "workspaces": [
+    "packages/*"
+  ],
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "scripts": {
