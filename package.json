@@ -15,10 +15,9 @@
   "keywords": [
     "nestjs",
     "toolbox",
-    "logger"
-  ],
-  "workspaces": [
-    "packages/*"
+    "logger",
+    "bunyan",
+    "winston"
   ],
   "main": "build/index.js",
   "typings": "build/index.d.ts",
@@ -61,8 +60,7 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.2",
-    "winston": "^3.2.1",
-    "lerna": "^3.16.4"
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@bitjson/npm-scripts-info": "^1.0.0",
@@ -100,7 +98,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "packages",
+    "rootDir": "src",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

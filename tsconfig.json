@@ -23,7 +23,7 @@
     "pretty": true /* Stylize errors and messages using color and context. */,
 
     "lib": ["es2017"],
-    "typeRoots": ["node_modules/@types", "./packages/**/**/types"]
+    "typeRoots": ["node_modules/@types", "./src/types"]
   },
   "exclude": ["node_modules", "dist"]
 }
