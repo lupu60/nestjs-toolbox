@@ -12,7 +12,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param {string} [projectName]
    * @memberof BunyanLoggerService
    */
-  constructor(formatterOptions: any, projectName?: string, streams?: any []) {
+  constructor(formatterOptions: any, projectName?: string, streams?: any[]) {
     const formatOut = bunyanFormat(formatterOptions);
     this.bunyanLogger = Bunyan.createLogger({
       level: Bunyan.INFO,
@@ -27,6 +27,7 @@ export class BunyanLoggerService implements LoggerService {
   public log(message: any, context?: string | undefined) {
     this.bunyanLogger.info({ context }, message);
   }
+
   public error(
     message: any,
     trace?: string | undefined,
@@ -34,6 +35,7 @@ export class BunyanLoggerService implements LoggerService {
   ) {
     this.bunyanLogger.error({ context, trace }, chalk.red.bold(message));
   }
+
   public warn(message: any, context?: string | undefined) {
     this.bunyanLogger.warn({ context }, message);
   }

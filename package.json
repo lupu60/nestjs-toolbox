@@ -2,49 +2,45 @@
   "name": "@lupu60/nestjs-toolbox",
   "version": "0.0.1",
   "description": "nestjs toolbox",
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
+  "author": "bogdanlupu <lupu60@gmail.com>",
+  "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
   },
+  "bugs": {
+    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "nestjs",
+    "toolbox"
+  ],
+  "main": "build/main/index.js",
+  "typings": "build/main/index.d.ts",
+  "module": "build/module/index.js",
   "scripts": {
     "describe": "npm-scripts-info",
-    "build": "run-s clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
+    "build": "run-s clean && tsc -p tsconfig.build.json",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:tslint": "tslint --fix --project .",
-    "test": "run-s build test:*",
-    "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
-    "test:unit": "nyc --silent ava",
-    "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
-    "cov": "run-s build test:unit cov:html && open-cli coverage/index.html",
-    "cov:html": "nyc report --reporter=html",
-    "cov:send": "nyc report --reporter=lcov && codecov",
-    "cov:check": "nyc report && nyc check-coverage --lines 100 --functions 100 --branches 100",
-    "doc": "run-s doc:html && open-cli build/docs/index.html",
-    "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
-    "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
-    "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && npm i",
     "clean": "trash build test",
-    "prepare-release": "run-s reset test cov:check doc:html version doc:publish"
+    "prepare-release": "run-s reset test test:cov version"
   },
   "scripts-info": {
     "info": "Display information about the package scripts",
     "build": "Clean and rebuild the project",
     "fix": "Try to automatically fix any linting problems",
     "test": "Lint and unit test the project",
-    "watch": "Watch and rebuild the project on save, then rerun relevant tests",
-    "cov": "Rebuild, run tests, then create and open the coverage report",
-    "doc": "Generate HTML API documentation and open it in a browser",
-    "doc:json": "Generate API documentation in typedoc JSON format",
+    "test:watch": "Watch and rebuild the project on save, then rerun relevant tests",
+    "test:cov": "Rebuild, run tests, then create and open the coverage report",
     "version": "Bump package.json version, update CHANGELOG.md, tag release",
     "reset": "Delete all untracked files and reset the repo to the last commit",
     "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
@@ -54,55 +50,57 @@
   },
   "dependencies": {
     "@nestjs/common": "^6.6.3",
+    "@nestjs/core": "^6.0.0",
+    "@nestjs/platform-express": "^6.0.0",
+    "reflect-metadata": "^0.1.12",
+    "rimraf": "^2.6.2",
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
     "chalk": "^2.4.2",
-    "rxjs": "^6.5.2",
-    "sha.js": "^2.4.11"
+    "rxjs": "^6.5.2"
   },
   "devDependencies": {
     "@bitjson/npm-scripts-info": "^1.0.0",
+    "@nestjs/testing": "^6.6.3",
     "@types/bunyan": "^1.8.6",
-    "ava": "2.2.0",
+    "@types/express": "4.16.1",
+    "@types/jest": "^24.0.18",
+    "@types/node": "11.13.4",
+    "@types/supertest": "2.0.7",
     "codecov": "^3.5.0",
     "cz-conventional-changelog": "^2.1.0",
-    "gh-pages": "^2.0.1",
+    "jest": "^24.9.0",
     "npm-run-all": "^4.1.5",
-    "nyc": "^14.1.1",
     "prettier": "^1.18.2",
     "standard-version": "^6.0.1",
+    "supertest": "4.0.2",
     "trash-cli": "^3.0.0",
+    "ts-jest": "24.0.2",
+    "ts-node": "8.1.0",
+    "tsc-watch": "2.2.1",
+    "tsconfig-paths": "3.8.0",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^6.0.1",
     "typescript": "^3.5.3"
-  },
-  "ava": {
-    "failFast": true,
-    "files": [
-      "build/main/**/*.spec.js"
-    ],
-    "sources": [
-      "build/main/**/*.js"
-    ]
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
   },
-  "prettier": {
-    "singleQuote": true
-  },
-  "nyc": {
-    "extends": "@istanbuljs/nyc-config-typescript",
-    "exclude": [
-      "**/*.spec.js"
-    ]
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
-  "author": "bogdanlupu <lupu60@gmail.com>"
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
 }

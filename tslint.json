@@ -1,34 +1,18 @@
 {
-  "extends": ["tslint:latest", "tslint-config-prettier", "tslint-immutable"],
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-config-prettier", "tslint-immutable"],
+  "jsRules": {
+    "no-unused-expression": true
+  },
   "rules": {
-    "interface-name": [true, "never-prefix"],
-    // TODO: allow devDependencies only in **/*.spec.ts files:
-    // waiting on https://github.com/palantir/tslint/pull/3708
-    "no-implicit-dependencies": [true, "dev"],
-
-    /* tslint-immutable rules */
-    // Recommended built-in rules
-    "no-var-keyword": true,
-    "no-parameter-reassignment": true,
-    "typedef": [false, "call-signature"],
-
-    // Immutability rules
-    "readonly-keyword": true,
-    "readonly-array": false,
-    "no-let": true,
-    "no-object-mutation": true,
-    "no-delete": true,
-    "no-method-signature": true,
-
-    // Functional style rules
-    "no-this": false,
-    "no-class": false,
-    "no-mixed-interface": true,
-    // "no-expression-statement": [
-    //   true,
-    //   { "ignore-prefix": ["console.", "process.exit"] }
-    // ],
-    "no-if-statement": true
-    /* end tslint-immutable rules */
-  }
+    "quotemark": [true, "single"],
+    "member-access": [false],
+    "ordered-imports": [false],
+    "max-line-length": [true, 150],
+    "member-ordering": [false],
+    "interface-name": [false],
+    "arrow-parens": false,
+    "object-literal-sort-keys": false
+  },
+  "rulesDirectory": []
 }
