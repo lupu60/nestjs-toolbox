@@ -1,6 +1,6 @@
 {
   "name": "@lupu60/nestjs-toolbox",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
@@ -58,7 +58,8 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "lerna": "^3.16.4"
   },
   "devDependencies": {
     "@bitjson/npm-scripts-info": "^1.0.0",
@@ -96,7 +97,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "packages",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
