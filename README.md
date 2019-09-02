@@ -12,15 +12,6 @@
   <a href="#">
     <img src="https://img.shields.io/npm/l/@lupu60/nestjs-toolbox"  />
   </a>
-  <a href="#">
-    <img src="https://img.shields.io/github/languages/count/lupu60/nestjs-toolbox"/>
-  </a>
-  <a href="#">
-    <img src="https://img.shields.io/github/search/lupu60/nestjs-toolbox/nestjs"/>
-  </a>
-  <a href="#">
-    <img src="https://img.shields.io/github/languages/top/lupu60/nestjs-toolbox"/>
-  </a>
    <a href="https://david-dm.org/lupu60/nestjs-toolbox">
     <img src="https://david-dm.org/lupu60/nestjs-toolbox.svg"  />
   </a>
