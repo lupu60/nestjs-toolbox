@@ -35,26 +35,64 @@ npm i @lupu60/nestjs-toolbox -save
 ```
 
 ### List of packages
-  * [BunyanLoggerService](#Bunyan Logger Service)
-
+  * [BunyanLoggerService](#bunyan-logger-service)
+  * [WinstonLoggerService](#winston-logger-service)
 
 ### Bunyan Logger Service
+
+NestJS LoggerService that uses Bunyan.
+
+### Example
+
+You can pass any custom stream supported by Bunyan
 
 ```js
 import { NestFactory } from '@nestjs/core';
 import { BunyanLoggerService } from "@lupu60/nestjs-toolbox";
 import { AppModule } from './app.module';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger:  new BunyanLoggerService( 'ProjectName', { outputMode: 'short' })
+  });
+  const app = await NestFactory.create(AppModule, {
+    logger:  new BunyanLoggerService( 'ProjectName', { outputMode: 'long' },[{
+        path: '/var/log/foo.log',
+    }])
   });
   await app.listen(3000);
 }
 bootstrap();
 ```
 
+### Winston Logger Service
+
+NestJS LoggerService that uses Winston.
+
+### Example
+
+You can pass any custom transports supported by Winston
+
+```js
+import { NestFactory } from '@nestjs/core';
+import { WinstonLoggerService } from "@lupu60/nestjs-toolbox";
+import { AppModule } from './app.module';
+import * as winston from 'winston';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, {
+    logger:  new WinstonLoggerService( 'ProjectName')
+  });
+  const app = await NestFactory.create(AppModule, {
+    logger:  new WinstonLoggerService( 'ProjectName', [new winston.transports.File({
+      filename: 'combined.log',
+      level: 'info'
+    })])
+  });
+  await app.listen(3000);
+}
+bootstrap();
+```
 
 ## Support on Beerpay
 
