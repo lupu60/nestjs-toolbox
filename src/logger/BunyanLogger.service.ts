@@ -10,7 +10,7 @@ export class BunyanLoggerService implements LoggerService {
   /**
    * Creates an instance of BunyanLoggerService.
    * @param {string} projectName
-   * @param {LoggerFormatterOptions} formatterOptions { outputMode: 'short' }
+   * @param {LoggerFormatterOptions} formatterOptions
    * @param {any []} streams any supported Bunyan stream
    * @memberof BunyanLoggerService
    */
