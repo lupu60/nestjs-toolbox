@@ -1,2 +1,2 @@
-export { BunyanLoggerService } from './bunyan-logger/src/BunyanLogger.service';
-export { WinstonLoggerService } from './winston-logger/src/WinstonLogger.service';
+export * from './bunyan-logger/src/index';
+export * from './winston-logger/src/index';

@@ -1,0 +1,17 @@
+{
+    "name": "@lupu60/nestjs-toolbox-winston-logger",
+    "description": "n/a",
+    "license": "MIT",
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "publishConfig": {
+      "access": "public"
+    },
+    "files": [
+      "lib"
+    ],
+    "scripts": {
+      "prebuild": "npx rimraf ./lib",
+      "build": "npx tsc -p tsconfig.build.json"
+    }
+  }
