@@ -5,7 +5,10 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/lupu60/nestjs-toolbox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+  },
   "license": "MIT",
   "keywords": [],
   "scripts": {
@@ -96,5 +99,10 @@
     "exclude": [
       "**/*.spec.js"
     ]
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
+  "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
+  "author": "bogdanlupu <lupu60@gmail.com>"
 }
