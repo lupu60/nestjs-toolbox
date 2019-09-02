@@ -12,14 +12,13 @@ export class BunyanLoggerService implements LoggerService {
    * @param {string} [projectName]
    * @memberof BunyanLoggerService
    */
-  constructor(formatterOptions: any, projectName?: string, streams?: any[]) {
+  constructor(formatterOptions: any, projectName?: string) {
     const formatOut = bunyanFormat(formatterOptions);
     this.bunyanLogger = Bunyan.createLogger({
       level: Bunyan.INFO,
       name: projectName,
       streams: [
         { level: 'info', type: 'stream', stream: formatOut },
-        ...streams
       ]
     });
   }

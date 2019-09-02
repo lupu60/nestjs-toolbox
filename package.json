@@ -16,9 +16,8 @@
     "nestjs",
     "toolbox"
   ],
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
   "scripts": {
     "describe": "npm-scripts-info",
     "build": "run-s clean && tsc -p tsconfig.build.json",
@@ -32,7 +31,8 @@
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && npm i",
     "clean": "trash build test",
-    "prepare-release": "run-s reset test test:cov version"
+    "prepare-release": "run-s reset test test:cov version",
+    "publish": " npm publish --access public"
   },
   "scripts-info": {
     "info": "Display information about the package scripts",
