@@ -4,20 +4,40 @@ import * as winston from 'winston';
 export class WinstonLoggerService implements LoggerService {
   private readonly winstonLogger: any;
 
-  constructor(projectName: string, transports?: any[]) {
-    const colorizer = winston.format.colorize();
+  /**
+   * Creates an instance of WinstonLoggerService.
+   * @param {string} projectName
+   * @param {*} [customFormatter]
+   * @param {any[]} [transports]
+   * @memberof WinstonLoggerService
+   */
+  constructor(projectName: string, customFormatter?: any, transports?: any[]) {
+    const formatter = customFormatter
+      ? customFormatter
+      : this.getDefaultFormat();
+
     this.winstonLogger = winston.createLogger({
       level: 'info',
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.simple(),
-        winston.format.printf(msg =>
-          colorizer.colorize(msg.level, `${msg.service} - ${msg.timestamp} - ${msg.level}: ${msg.message} ${msg.context||''} ${msg.trace||''}`)
-        )
+        formatter,
       ),
       defaultMeta: { service: projectName },
       transports: [new winston.transports.Console(), ...(transports || [])],
     });
+  }
+
+  private getDefaultFormat() {
+    const colorizer = winston.format.colorize();
+    return winston.format.printf(
+      ({ level, message, timestamp, context, trace }) => {
+        return colorizer.colorize(
+          level,
+          `${timestamp} ${context || ''}: ${message} ${trace || ''}`,
+        );
+      },
+    );
   }
 
   public log(message: any, context?: string | undefined) {
