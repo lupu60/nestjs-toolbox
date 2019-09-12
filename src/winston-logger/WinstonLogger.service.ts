@@ -7,11 +7,15 @@ export class WinstonLoggerService implements LoggerService {
   /**
    * Creates an instance of WinstonLoggerService.
    * @param {string} projectName
-   * @param {*} [customFormatter]
    * @param {any[]} [transports]
+   * @param {string} [timeFormatStr]
+   * @param {*} [customFormatter]
    * @memberof WinstonLoggerService
    */
-  constructor(projectName: string, customFormatter?: any, transports?: any[]) {
+  constructor(projectName: string,transports?: any[], timeFormatStr?: string, customFormatter?: any) {
+    const timestamp = timeFormatStr
+      ? winston.format.timestamp({ format: timeFormatStr })
+      : winston.format.timestamp();
     const formatter = customFormatter
       ? customFormatter
       : this.getDefaultFormat();
@@ -19,7 +23,7 @@ export class WinstonLoggerService implements LoggerService {
     this.winstonLogger = winston.createLogger({
       level: 'info',
       format: winston.format.combine(
-        winston.format.timestamp(),
+        timestamp,
         winston.format.simple(),
         formatter,
       ),
