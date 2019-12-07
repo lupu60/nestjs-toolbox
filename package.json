@@ -81,7 +81,7 @@
     "ts-jest": "24.1.0",
     "ts-node": "8.5.4",
     "tsc-watch": "2.2.1",
-    "tsconfig-paths": "3.8.0",
+    "tsconfig-paths": "3.9.0",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^6.0.1",
