@@ -11,6 +11,9 @@
   "bugs": {
     "url": "https://github.com/lupu60/nestjs-toolbox/issues"
   },
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  },
   "license": "MIT",
   "keywords": [
     "nestjs",
