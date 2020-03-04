@@ -2,28 +2,48 @@ import { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
 import * as bunyanFormat from 'bunyan-format';
 import chalk from 'chalk';
-import { LoggerFormatterOptions } from './LoggerFormatterOptions.interface';
+import * as _ from 'lodash';
 
 export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
 
   /**
    * Creates an instance of BunyanLoggerService.
-   * @param {string} projectName
-   * @param {LoggerFormatterOptions} formatterOptions
-   * @param {any []} streams any supported Bunyan stream
+   * @param {({
+   *     projectName: string;
+   *     formatterOptions: {
+   *       outputMode: string; // short|long|simple|json|bunyan
+   *       color?: boolean;
+   *       levelInString?: boolean;
+   *       colorFromLevel?: any;
+   *     };
+   *     customStreams?: any[];
+   *   })} options
    * @memberof BunyanLoggerService
    */
-  constructor(projectName: string, formatterOptions: LoggerFormatterOptions, customStreams?: any []) {
+  constructor(options: {
+    projectName: string;
+    formatterOptions: {
+      outputMode: string;
+      color?: boolean;
+      levelInString?: boolean;
+      colorFromLevel?: any;
+    };
+    customStreams?: any[];
+  }) {
+    const { projectName, formatterOptions, customStreams } = options;
+    if (_.isNil(projectName) || _.isEmpty(projectName)) {
+      throw new Error(`projectName is required`);
+    }
     const formatOut = bunyanFormat(formatterOptions);
-    const streams:Bunyan.Stream [] = [
+    const streams: Bunyan.Stream[] = [
       { level: 'info', type: 'stream', stream: formatOut },
-      ...customStreams||[]
-    ]
+      ...(customStreams || []),
+    ];
     this.bunyanLogger = Bunyan.createLogger({
       level: Bunyan.INFO,
       name: projectName,
-      streams:[...streams],
+      streams: [...streams],
     });
   }
 
@@ -34,7 +54,7 @@ export class BunyanLoggerService implements LoggerService {
   public error(
     message: any,
     trace?: string | undefined,
-    context?: string | undefined
+    context?: string | undefined,
   ) {
     this.bunyanLogger.error({ context, trace }, chalk.red.bold(message));
   }

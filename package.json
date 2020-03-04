@@ -32,7 +32,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "version": "npm run build && standard-version",
-    "reset": "git clean -dfx && git reset --hard && npm i",
+    "reset:hard": "git clean -dfx && git reset --hard && npm i",
     "clean": "trash build test",
     "prepare-release": "run-s reset test test:cov version"
   },
@@ -48,15 +48,17 @@
     "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
   },
   "engines": {
-    "node": ">=8.9"
+    "node": "12",
+    "npm": "6"
   },
   "dependencies": {
-    "@nestjs/common": "^6.6.3",
-    "@nestjs/core": "^6.0.0",
-    "@nestjs/platform-express": "^6.0.0",
+    "@nestjs/common": "6.11.11",
+    "@nestjs/core": "6.11.11",
+    "@nestjs/platform-express": "6.11.11",
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
     "chalk": "^2.4.2",
+    "lodash": "4.17.15",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.2",
@@ -83,6 +85,7 @@
     "tsc-watch": "4.2.2",
     "tsconfig-paths": "3.9.0",
     "tslint": "^5.18.0",
+    "tslint-clean-code": "0.2.10",
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^6.0.1",
     "typescript": "^3.5.3"

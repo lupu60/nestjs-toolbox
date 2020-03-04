@@ -1,18 +1,20 @@
 import { LoggerService } from '@nestjs/common';
 import * as winston from 'winston';
+import * as _ from 'lodash';
 
 export class WinstonLoggerService implements LoggerService {
   private readonly winstonLogger: any;
 
   /**
    * Creates an instance of WinstonLoggerService.
-   * @param {string} projectName
-   * @param {any[]} [transports]
-   * @param {string} [timeFormatStr]
-   * @param {*} [customFormatter]
+   * @param {{ projectName: string, transports?: any[], timeFormatStr?: string, customFormatter?: any }} options
    * @memberof WinstonLoggerService
    */
-  constructor(projectName: string,transports?: any[], timeFormatStr?: string, customFormatter?: any) {
+  constructor(options: { projectName: string, transports?: any[], timeFormatStr?: string, customFormatter?: any }) {
+    const { projectName, transports, timeFormatStr, customFormatter } = options;
+    if (_.isNil(projectName) || _.isEmpty(projectName)) {
+      throw new Error(`projectName is required`);
+    }
     const timestamp = timeFormatStr
       ? winston.format.timestamp({ format: timeFormatStr })
       : winston.format.timestamp();
@@ -51,6 +53,7 @@ export class WinstonLoggerService implements LoggerService {
       context,
     });
   }
+
   public error(message: any, trace?: string, context?: string) {
     this.winstonLogger.log({
       level: 'error',
@@ -59,6 +62,7 @@ export class WinstonLoggerService implements LoggerService {
       context,
     });
   }
+
   public warn(message: any, context?: string) {
     this.winstonLogger.log({
       level: 'warn',
