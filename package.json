@@ -54,7 +54,7 @@
   "dependencies": {
     "@nestjs/common": "6.11.11",
     "@nestjs/core": "6.11.11",
-    "@nestjs/platform-express": "6.11.11",
+    "@nestjs/platform-express": "7.0.0",
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
     "chalk": "^2.4.2",
