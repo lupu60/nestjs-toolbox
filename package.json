@@ -57,7 +57,7 @@
     "@nestjs/platform-express": "6.11.11",
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
-    "chalk": "^2.4.2",
+    "chalk": "^4.0.0",
     "lodash": "4.17.15",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^3.0.0",
