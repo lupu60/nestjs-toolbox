@@ -1,6 +1,5 @@
 {
   "name": "@lupu60/nestjs-toolbox",
-  "version": "0.0.20",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
@@ -22,10 +21,6 @@
     "bunyan",
     "winston"
   ],
-  "scripts": {
-    "version": "lerna run build && standard-version",
-    "fix:prettier": "prettier \"packages/**/*.ts\" --write"
-  },
   "engines": {
     "node": "12",
     "npm": "6"
