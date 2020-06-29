@@ -1,6 +1,6 @@
 {
   "name": "@nest-toolbox/winston-logger",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme",
@@ -31,13 +31,13 @@
     "@nestjs/common": "^7.2.0",
     "@nestjs/core": "^7.2.0",
     "@nestjs/platform-express": "^7.2.0",
-    "chalk": "^4.1.0",
     "@types/express": "4.17.6",
     "@types/node": "14.0.14",
+    "chalk": "^4.1.0",
     "lodash-es": "^4.17.15",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^6.5.5",
     "rimraf": "~3.0.2",
+    "rxjs": "^6.5.5",
     "ts-node": "8.10.2",
     "typescript": "3.9.5",
     "winston": "^3.2.1"
