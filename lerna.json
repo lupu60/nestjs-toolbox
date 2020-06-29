@@ -1,6 +1,12 @@
 {
+  "command": {
+    "publish": {
+      "ignoreChanges": ["ignored-file"]
+    }
+  },
   "packages": [
     "packages/*"
   ],
+  "npmClient": "npm",
   "version": "1.0.4-alpha.0"
 }
