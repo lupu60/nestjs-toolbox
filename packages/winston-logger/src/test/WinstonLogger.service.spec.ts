@@ -1,14 +1,8 @@
-import { BunyanLoggerService } from './BunyanLogger.service';
-
-describe('BunyanLoggerService', () => {
-  let logger: BunyanLoggerService;
+import { WinstonLoggerService } from '../WinstonLogger.service';
+describe('WinstonLoggerService', () => {
+  let logger: WinstonLoggerService;
   beforeEach(() => {
-    logger = new BunyanLoggerService({
-      projectName: 'ProjectName',
-      formatterOptions: {
-        outputMode: 'long',
-      },
-    });
+    logger = new WinstonLoggerService({ projectName: 'ProjectName'});
   });
 
   it('should be defined', () => {
@@ -18,20 +12,19 @@ describe('BunyanLoggerService', () => {
   it('should log', () => {
     logger.log('Hello');
   });
+
   it('should war', () => {
     logger.warn('Hello Warning');
   });
+
   it('should err', () => {
-    logger.error('Hello Error');
+    logger.error('Hello Error', 'trace');
   });
 
   it('should throw project name is required', () => {
     expect(() => {
-      const loggerWithErr = new BunyanLoggerService({
+      const loggerWithErr = new WinstonLoggerService({
         projectName: '',
-        formatterOptions: {
-          outputMode: 'long',
-        },
       });
       expect(loggerWithErr).toBeUndefined();
     }).toThrowError('projectName is required');

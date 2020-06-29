@@ -1,9 +1,8 @@
 import { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
 import * as bunyanFormat from 'bunyan-format';
-import chalk from 'chalk';
-import * as _ from 'lodash';
-
+import * as chalk from 'chalk';
+import {isEmpty, isNil} from 'lodash-es'
 export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
 
@@ -32,7 +31,7 @@ export class BunyanLoggerService implements LoggerService {
     customStreams?: any[];
   }) {
     const { projectName, formatterOptions, customStreams } = options;
-    if (_.isNil(projectName) || _.isEmpty(projectName)) {
+    if (isNil(projectName) || isEmpty(projectName)) {
       throw new Error(`projectName is required`);
     }
     const formatOut = bunyanFormat(formatterOptions);

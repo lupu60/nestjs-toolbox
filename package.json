@@ -12,7 +12,7 @@
     "url": "https://github.com/lupu60/nestjs-toolbox/issues"
   },
   "publishConfig": {
-    "registry":"https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
   "keywords": [
@@ -22,66 +22,21 @@
     "bunyan",
     "winston"
   ],
-  "main": "build/index.js",
-  "typings": "build/index.d.ts",
   "scripts": {
-    "describe": "npm-scripts-info",
-    "build": "run-s clean && tsc -p tsconfig.build.json",
-    "fix": "run-s fix:*",
-    "fix:prettier": "prettier \"src/**/*.ts\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "version": "npm run build && standard-version",
-    "reset:hard": "git clean -dfx && git reset --hard && npm i",
-    "clean": "trash build test",
-    "prepare-release": "run-s reset test test:cov version"
-  },
-  "scripts-info": {
-    "info": "Display information about the package scripts",
-    "build": "Clean and rebuild the project",
-    "fix": "Try to automatically fix any linting problems",
-    "test": "Lint and unit test the project",
-    "test:watch": "Watch and rebuild the project on save, then rerun relevant tests",
-    "test:cov": "Rebuild, run tests, then create and open the coverage report",
-    "version": "Bump package.json version, update CHANGELOG.md, tag release",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
+    "version": "lerna run build && standard-version"
   },
   "engines": {
     "node": "12",
     "npm": "6"
   },
-  "dependencies": {
-    "@nestjs/common": "6.11.11",
-    "@nestjs/core": "6.11.11",
-    "@nestjs/platform-express": "6.11.11",
-    "bunyan": "^1.8.12",
-    "bunyan-format": "^0.2.1",
-    "chalk": "^2.4.2",
-    "lodash": "4.17.15",
-    "reflect-metadata": "^0.1.12",
-    "rimraf": "^3.0.0",
-    "rxjs": "^6.5.2",
-    "winston": "^3.2.1"
-  },
   "devDependencies": {
-    "@bitjson/npm-scripts-info": "^1.0.0",
-    "@nestjs/testing": "^6.6.3",
-    "@types/bunyan": "^1.8.6",
-    "@types/express": "4.16.1",
-    "@types/jest": "^25.1.3",
-    "@types/node": "12.12.14",
-    "@types/supertest": "2.0.8",
+    "rimraf": "^3.0.0",
     "codecov": "^3.5.0",
     "cz-conventional-changelog": "^2.1.0",
-    "jest": "^24.9.0",
+    "lerna": "3.20.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
     "standard-version": "^7.0.0",
-    "supertest": "4.0.2",
     "trash-cli": "^3.0.0",
     "ts-jest": "24.3.0",
     "ts-node": "8.5.4",
@@ -97,19 +52,5 @@
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".spec.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }
