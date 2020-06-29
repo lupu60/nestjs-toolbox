@@ -1,9 +1,4 @@
 {
-  "command": {
-    "publish": {
-      "ignoreChanges": ["ignored-file"]
-    }
-  },
   "packages": [
     "packages/*"
   ],
