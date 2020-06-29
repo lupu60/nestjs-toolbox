@@ -15,23 +15,12 @@
    <a href="https://david-dm.org/lupu60/nestjs-toolbox">
     <img src="https://david-dm.org/lupu60/nestjs-toolbox.svg"  />
   </a>
-  <br />
-  <a href="https://nodei.co/npm/@lupu60/nestjs-toolbox/"><img src="https://nodei.co/npm/@lupu60/nestjs-toolbox.png?compact=true"></a>
 </div>
-
-### Install
-
-```
-npm i @lupu60/nestjs-toolbox -save
-```
 
 ### List of packages
 
-- [BunyanLoggerService](#bunyan-logger-service)
-- [WinstonLoggerService](#winston-logger-service)
-
-
-
+- [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme)
+- [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
 
 ## Support on Beerpay
 
