@@ -1,11 +1,62 @@
-# `bunyan-logger`
+### Bunyan Logger Service
 
-> TODO: description
+NestJS LoggerService that uses Bunyan.
 
-## Usage
+### Example
 
+You can pass any custom stream supported by Bunyan
+
+```js
+import { NestFactory } from '@nestjs/core';
+import { BunyanLoggerService } from "@lupu60/nestjs-toolbox";
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(
+    ApplicationModule,
+    {
+      logger: new BunyanLoggerService({
+        projectName: 'project',
+        formatterOptions: {
+          outputMode: 'long',
+        },
+      }),
+    },
+  );
+
+  const app = await NestFactory.create<NestExpressApplication>(
+    ApplicationModule,
+    {
+      logger: new BunyanLoggerService({
+        projectName: 'project',
+        formatterOptions: {
+          outputMode: 'long',
+        },
+        customStreams: [
+          {
+            path: 'foo.log',
+          },
+        ],
+      }),
+    },
+  );
+
+  await app.listen(3000);
+}
+bootstrap();
 ```
-const bunyanLogger = require('bunyan-logger');
 
-// TODO: DEMONSTRATE API
+### BunyanLoggerService constructor options
+
+```js
+options: {
+    projectName: string;
+    formatterOptions: {
+      outputMode: string;
+      color?: boolean;
+      levelInString?: boolean;
+      colorFromLevel?: any;
+    };
+    customStreams?: any[];
+}
 ```

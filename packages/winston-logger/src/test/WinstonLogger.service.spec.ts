@@ -2,7 +2,7 @@ import { WinstonLoggerService } from '../WinstonLogger.service';
 describe('WinstonLoggerService', () => {
   let logger: WinstonLoggerService;
   beforeEach(() => {
-    logger = new WinstonLoggerService({ projectName: 'ProjectName'});
+    logger = new WinstonLoggerService({ projectName: 'ProjectName' });
   });
 
   it('should be defined', () => {

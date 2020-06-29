@@ -1,11 +1,55 @@
-# `winston-logger`
 
-> TODO: description
+### Winston Logger Service
 
-## Usage
+NestJS LoggerService that uses Winston.
 
+### Example
+
+You can pass any custom transports supported by Winston
+
+```js
+import { NestFactory } from '@nestjs/core';
+import { WinstonLoggerService } from '@lupu60/nestjs-toolbox';
+import { AppModule } from './app.module';
+import * as winston from 'winston';
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(
+    ApplicationModule,
+    {
+      logger: new WinstonLoggerService({
+        projectName: 'project',
+      }),
+    },
+  );
+
+  const app = await NestFactory.create<NestExpressApplication>(
+    ApplicationModule,
+    {
+      logger: new WinstonLoggerService({
+        projectName: 'project',
+        transports: [
+          new winston.transports.File({
+            filename: 'combined.log',
+            level: 'info',
+          }),
+        ],
+      }),
+    },
+  );
+
+  await app.listen(3000);
+}
+bootstrap();
 ```
-const winstonLogger = require('winston-logger');
 
-// TODO: DEMONSTRATE API
+### WinstonLoggerService constructor options
+
+```js
+options: {
+  projectName: string,
+  transports?: any[],
+  timeFormatStr?: string,
+  customFormatter?: any
+}
 ```

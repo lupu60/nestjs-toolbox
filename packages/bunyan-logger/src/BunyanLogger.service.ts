@@ -2,7 +2,7 @@ import { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
 import * as bunyanFormat from 'bunyan-format';
 import * as chalk from 'chalk';
-import {isEmpty, isNil} from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es';
 export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
 
