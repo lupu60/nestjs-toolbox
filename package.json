@@ -34,5 +34,8 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^6.0.1",
     "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@lerna/publish": "3.22.1"
   }
 }
