@@ -1,5 +1,5 @@
 {
-  "name": "@lupu60/nestjs-toolbox",
+  "name": "nestjs-toolbox",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "publicConfig": {
@@ -37,9 +37,7 @@
     "tslint-clean-code": "0.2.10",
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^6.0.1",
-    "typescript": "^3.5.3"
-  },
-  "dependencies": {
+    "typescript": "^3.5.3",
     "@lerna/publish": "3.22.1"
   }
 }
