@@ -16,6 +16,12 @@
   "publicConfig": {
     "access": "public"
   },
+  "keywords": [
+    "nestjs",
+    "toolbox",
+    "logger",
+    "bunyan"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lupu60/nestjs-toolbox.git"

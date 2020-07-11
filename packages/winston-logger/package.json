@@ -13,6 +13,12 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
+  "keywords": [
+    "nestjs",
+    "toolbox",
+    "logger",
+    "winston"
+  ],
   "files": [
     "dist"
   ],
