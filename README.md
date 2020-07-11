@@ -15,6 +15,9 @@
    <a href="https://david-dm.org/lupu60/nestjs-toolbox">
     <img src="https://david-dm.org/lupu60/nestjs-toolbox.svg"  />
   </a>
+     <a href="https://lerna.js.org/">
+    <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.sv"  />
+  </a>
 </div>
 
 ### List of packages
