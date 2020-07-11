@@ -10,6 +10,10 @@
   "files": [
     "dist"
   ],
+  "publicConfig": {
+    "access": "public"
+  },
+  "private": "false",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
