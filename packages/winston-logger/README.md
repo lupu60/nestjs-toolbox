@@ -5,7 +5,7 @@ NestJS LoggerService that uses Winston.
 
 ### Installation
 ```
- npm i @lupu60/nest-toolbox-winston-logger
+npm i @nest-toolbox/winston-logger
 ```
 
 ### Example
@@ -14,7 +14,7 @@ You can pass any custom transports supported by Winston
 
 ```js
 import { NestFactory } from '@nestjs/core';
-import { WinstonLoggerService } from ' @lupu60/nest-toolbox-winston-logger';
+import { WinstonLoggerService } from '@nest-toolbox/winston-logger';
 import { AppModule } from './app.module';
 import * as winston from 'winston';
 

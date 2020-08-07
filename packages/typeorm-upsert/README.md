@@ -1,11 +1,17 @@
 # `typeorm-upsert`
 
-> TODO: description
+## Installation
+```
+npm i @nest-toolbox/typeorm-upsert
+```
 
 ## Usage
 
 ```
-const typeormUpsert = require('typeorm-upsert');
+const dataTypeRepository // typeorm repository
+const bigArrayWithData = [] // this array contains existing data and new data
 
-// TODO: DEMONSTRATE API
+const updated = await TypeOrmUpsert(dataTypeRepository, bigArrayWithData, 'unq key', {
+    doNotUpsert: ['name'],
+});
 ```
