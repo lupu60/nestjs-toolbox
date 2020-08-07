@@ -1,5 +1,5 @@
 {
-  "name": "@lupu60/nest-toolbox-winston-logger",
+  "name": "@nest-toolbox/winston-logger",
   "description": "nestjs toolbox",
   "version": "1.1.0",
   "author": "bogdanlupu <lupu60@gmail.com>",
