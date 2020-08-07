@@ -1,7 +1,7 @@
 {
-  "name": "typeorm-upsert",
+  "name": "@lupu60/nest-toolbox-typeorm-upsert",
   "version": "1.0.1",
-  "description": "> TODO: description",
+  "description": "upsert function for typeorm",
   "keywords": [
     "typeorm",
     "postgres"
@@ -9,20 +9,26 @@
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
   "license": "MIT",
-  "main": "lib/typeorm-upsert.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "main": "dist/index",
+  "types": "dist/index",
   "files": [
-    "lib"
+    "dist"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "publicConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build"
   },
   "bugs": {
     "url": "https://github.com/lupu60/nestjs-toolbox/issues"
