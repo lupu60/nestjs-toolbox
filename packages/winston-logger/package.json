@@ -1,6 +1,6 @@
 {
   "name": "@lupu60/nest-toolbox-winston-logger",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme",
