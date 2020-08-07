@@ -32,5 +32,14 @@
   },
   "bugs": {
     "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
+  "gitHead": "7c732c413863f748d474c619018e509f984b5a38",
+  "dependencies": {
+    "lodash": "4.17.19",
+    "rimraf": "3.0.2",
+    "typeorm": "0.2.25"
+  },
+  "devDependencies": {
+    "typescript": "3.9.7"
   }
 }
