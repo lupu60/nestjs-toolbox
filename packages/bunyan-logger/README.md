@@ -2,6 +2,11 @@
 
 NestJS LoggerService that uses Bunyan.
 
+### Installation
+```
+npm i @lupu60/nest-toolbox-bunyan-logger
+```
+
 ### Example
 
 You can pass any custom stream supported by Bunyan

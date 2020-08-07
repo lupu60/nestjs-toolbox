@@ -46,7 +46,7 @@
     "@types/express": "4.17.6",
     "@types/node": "14.0.14",
     "chalk": "^4.1.0",
-    "lodash-es": "^4.17.15",
+    "lodash": "4.17.19",
     "reflect-metadata": "^0.1.13",
     "rimraf": "~3.0.2",
     "rxjs": "^6.5.5",

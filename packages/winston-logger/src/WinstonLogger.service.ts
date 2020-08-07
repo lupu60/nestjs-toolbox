@@ -1,6 +1,6 @@
 import { LoggerService } from '@nestjs/common';
 import * as winston from 'winston';
-import { isEmpty, isNil } from 'lodash-es';
+import { isEmpty, isNil } from 'lodash';
 
 export class WinstonLoggerService implements LoggerService {
   private readonly winstonLogger: any;
