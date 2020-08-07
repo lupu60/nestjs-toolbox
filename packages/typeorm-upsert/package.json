@@ -1,39 +1,40 @@
 {
   "name": "@lupu60/nest-toolbox-typeorm-upsert",
-  "version": "1.1.0",
   "description": "upsert function for typeorm",
+  "version": "1.1.0",
+  "author": "bogdanlupu <lupu60@gmail.com>",
+  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
+  "license": "MIT",
   "keywords": [
     "typeorm",
     "postgres"
   ],
-  "author": "bogdanlupu <lupu60@gmail.com>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
-  "license": "MIT",
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "publicConfig": {
     "access": "public"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-  },
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "npm run clean && npm run compile",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build"
   },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "gitHead": "7c732c413863f748d474c619018e509f984b5a38",
+
+  "gitHead": "bccd36f626890db6297a1d18df26c69239a763b0",
   "dependencies": {
     "lodash": "4.17.19",
     "rimraf": "3.0.2",

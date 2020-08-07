@@ -4,7 +4,7 @@ NestJS LoggerService that uses Bunyan.
 
 ### Installation
 ```
-npm i @lupu60/nest-toolbox-bunyan-logger
+  npm i @lupu60/nest-toolbox-bunyan-logger
 ```
 
 ### Example
@@ -13,7 +13,7 @@ You can pass any custom stream supported by Bunyan
 
 ```js
 import { NestFactory } from '@nestjs/core';
-import { BunyanLoggerService } from "@lupu60/nestjs-toolbox";
+import { BunyanLoggerService } from "@lupu60/nest-toolbox-bunyan-logger";
 import { AppModule } from './app.module';
 
 async function bootstrap() {

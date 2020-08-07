@@ -1,21 +1,10 @@
 {
   "name": "@lupu60/nest-toolbox-bunyan-logger",
-  "version": "1.1.0",
   "description": "nestjs toolbox",
+  "version": "1.1.0",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme",
   "license": "MIT",
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
-    "access": "public"
-  },
   "keywords": [
     "nestjs",
     "toolbox",
@@ -26,6 +15,20 @@
     "type": "git",
     "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
   },
+  "bugs": {
+    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "publicConfig": {
+    "access": "public"
+  },
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": "12",
     "npm": "6"
@@ -35,9 +38,6 @@
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build"
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
   },
   "dependencies": {
     "@nestjs/common": "^7.2.0",
@@ -55,5 +55,6 @@
     "rxjs": "^6.5.5",
     "ts-node": "8.10.2",
     "typescript": "3.9.5"
-  }
+  },
+  "gitHead": "bccd36f626890db6297a1d18df26c69239a763b0"
 }
