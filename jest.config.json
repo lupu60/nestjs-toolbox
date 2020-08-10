@@ -4,7 +4,7 @@
   "coverageReporters": ["lcov", "json"],
   "collectCoverageFrom": ["**/src/**"],
   "colors":true,
-  "reporters": ["default","jest-github-reporter", "jest-junit"],
+  "reporters": ["default", "jest-junit"],
   "testResultsProcessor": "jest-junit",
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
