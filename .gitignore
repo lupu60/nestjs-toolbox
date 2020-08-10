@@ -63,3 +63,5 @@ typings/
 build/
 dist/
 tsconfig.build.tsbuildinfo
+
+**/junit.xml

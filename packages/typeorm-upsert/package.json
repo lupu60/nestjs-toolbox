@@ -1,45 +1,48 @@
 {
-  "name": "@nest-toolbox/typeorm-upsert",
-  "description": "upsert function for typeorm",
-  "version": "1.1.2",
-  "author": "bogdanlupu <lupu60@gmail.com>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
-  "license": "MIT",
-  "keywords": [
-    "typeorm",
-    "postgres"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
-    "access": "public"
-  },
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rimraf -rf ./dist",
-    "compile": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "npm run build"
-  },
-  "gitHead": "8704142ee8b8c990d2b1872faf52ef8d32bbeb95",
-  "dependencies": {
-    "lodash": "4.17.19",
-    "rimraf": "3.0.2",
-    "typeorm": "0.2.25"
-  },
-  "devDependencies": {
-    "typescript": "3.9.7"
-  }
+    "name": "@nest-toolbox/typeorm-upsert",
+    "description": "upsert function for typeorm",
+    "version": "1.1.2",
+    "author": "bogdanlupu <lupu60@gmail.com>",
+    "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
+    "license": "MIT",
+    "keywords": [
+        "typeorm",
+        "postgres"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "publicConfig": {
+        "access": "public"
+    },
+    "main": "dist/index",
+    "types": "dist/index",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "test": "jest --config ../../jest.config.json",
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "build": "npm run clean && npm run compile",
+        "clean": "rimraf -rf ./dist",
+        "compile": "tsc -p tsconfig.build.json",
+        "prepublishOnly": "npm run build",
+        "cleanup": "rimraf -rf dist coverage"
+    },
+    "gitHead": "8704142ee8b8c990d2b1872faf52ef8d32bbeb95",
+    "dependencies": {
+        "lodash": "4.17.19",
+        "rimraf": "3.0.2",
+        "typeorm": "0.2.25"
+    },
+    "devDependencies": {
+        "typescript": "3.9.7"
+    }
 }

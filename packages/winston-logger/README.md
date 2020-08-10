@@ -1,9 +1,9 @@
-
 ### Winston Logger Service
 
 NestJS LoggerService that uses Winston.
 
 ### Installation
+
 ```
 npm i @nest-toolbox/winston-logger
 ```

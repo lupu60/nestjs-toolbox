@@ -3,6 +3,7 @@
 NestJS LoggerService that uses Bunyan.
 
 ### Installation
+
 ```
 npm i @nest-toolbox/bunyan-logger
 ```

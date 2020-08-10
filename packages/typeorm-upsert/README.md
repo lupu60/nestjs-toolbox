@@ -1,6 +1,7 @@
 # `typeorm-upsert`
 
 ## Installation
+
 ```
 npm i @nest-toolbox/typeorm-upsert
 ```
