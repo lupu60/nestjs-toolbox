@@ -8,8 +8,7 @@
   "keywords": [
     "nestjs",
     "toolbox",
-    "logger",
-    "winston"
+    "open-api"
   ],
   "repository": {
     "type": "git",
