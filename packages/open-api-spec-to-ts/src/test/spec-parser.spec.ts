@@ -2,7 +2,8 @@ import { readDir, removeFile } from '../files';
 import { generate } from '../spec-parser';
 
 describe('OpenAPISpecParser', () => {
-    const interfaceFilePath = `${__dirname}/interfaces`;
+    const basePath = '../open-api-spec-to-ts/src/test';
+    const interfaceFilePath = `${basePath}/interfaces`;
 
     afterAll(async () => {
         const files = await readDir(interfaceFilePath);
@@ -10,12 +11,12 @@ describe('OpenAPISpecParser', () => {
     });
 
     it('should generate from a valid Open API file', async () => {
-        const testFile = `${__dirname}/uspto.json`;
+        const testFile = `${basePath}/uspto.json`;
         await generate(testFile, interfaceFilePath);
     });
 
     it('should generate from a valid Open API file 2', async () => {
-        const testFile = `${__dirname}/petstore.json`;
+        const testFile = `${basePath}/petstore.json`;
         await generate(testFile, interfaceFilePath);
     });
 

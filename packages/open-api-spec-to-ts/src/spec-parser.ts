@@ -40,7 +40,7 @@ function logError(message: any) {
 function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject) {
     const objectSchema = inputSchema as SchemaObject;
     const refSchema = inputSchema as ReferenceObject;
-    switch (objectSchema?.type) {
+    switch (objectSchema.type) {
         case 'object':
             return Object.values(preprocessProperties(objectSchema.properties));
         case 'array':
