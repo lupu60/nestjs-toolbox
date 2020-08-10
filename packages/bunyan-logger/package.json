@@ -35,12 +35,12 @@
     },
     "scripts": {
         "build": "npm run clean && npm run compile",
-        "test": "jest --config ../../jest.config.json",
-        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
         "clean": "rimraf -rf ./dist",
+        "cleanup": "rimraf -rf dist coverage",
         "compile": "tsc -p tsconfig.build.json",
-        "prepublishOnly": "npm run build",
-        "cleanup": "rimraf -rf dist coverage"
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "test": "jest --ci --config ../../jest.config.json ",
+        "prepublishOnly": "npm run build"
     },
     "dependencies": {
         "@nestjs/common": "^7.2.0",

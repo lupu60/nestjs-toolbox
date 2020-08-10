@@ -34,12 +34,12 @@
         "npm": "6"
     },
     "scripts": {
-        "test": "jest --config ../../jest.config.json",
-        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
         "build": "npm run clean && npm run compile",
         "clean": "rimraf -rf ./dist",
-        "compile": "tsc -p tsconfig.build.json",
         "cleanup": "rimraf -rf dist coverage",
+        "compile": "tsc -p tsconfig.build.json",
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "test": "jest --ci --config ../../jest.config.json ",
         "prepublishOnly": "npm run build"
     },
     "dependencies": {

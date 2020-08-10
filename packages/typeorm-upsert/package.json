@@ -28,13 +28,13 @@
         "dist"
     ],
     "scripts": {
-        "test": "jest --config ../../jest.config.json",
-        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
         "build": "npm run clean && npm run compile",
         "clean": "rimraf -rf ./dist",
+        "cleanup": "rimraf -rf dist coverage",
         "compile": "tsc -p tsconfig.build.json",
-        "prepublishOnly": "npm run build",
-        "cleanup": "rimraf -rf dist coverage"
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "test": "jest --ci --config ../../jest.config.json ",
+        "prepublishOnly": "npm run build"
     },
     "gitHead": "8704142ee8b8c990d2b1872faf52ef8d32bbeb95",
     "dependencies": {
