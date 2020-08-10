@@ -2,6 +2,12 @@
   "name": "nestjs-toolbox",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
+  "maintainers": [
+    {
+      "name": "bogdan lupu",
+      "email": "lupu60@gmail.com"
+    }
+  ],
   "publicConfig": {
     "access": "public"
   },
@@ -30,18 +36,32 @@
     "node": "12",
     "npm": "6"
   },
+  "scripts": {
+    "bootstrap": "npm install lerna && lerna bootstrap && npm install",
+    "format": "prettier --write \"packages/**/*.{ts,json}\"",
+    "reset": "npm run cleanup && rimraf -rf node_modules && npm run bootstrap",
+    "test": "lerna run test",
+    "build": "npm run cleanup && lerna run compile",
+    "cleanup": "lerna run cleanup --stream --parallel",
+    "lint": "lerna run lint",
+    "publish": "lerna publish --force-publish=* --skip-npm --skip-git",
+    "prepublishOnly": "npm run build"
+  },
   "devDependencies": {
+    "@lerna/publish": "3.22.1",
+    "@types/jest": "26.0.9",
+    "jest": "26.2.2",
+    "jest-junit": "11.1.0",
     "lerna": "3.22.1",
     "npm-run-all": "^4.1.5",
     "prettier": "2.0.5",
     "rimraf": "^3.0.0",
-    "standard-version": "8.0.0",
+    "standard-version": "8.0.1",
+    "ts-jest": "26.1.4",
     "tsconfig-paths": "3.9.0",
     "tslint": "6.1.2",
     "tslint-clean-code": "0.2.10",
     "tslint-config-prettier": "^1.18.0",
-    "tslint-immutable": "^6.0.1",
-    "typescript": "^3.5.3",
-    "@lerna/publish": "3.22.1"
+    "typescript": "^3.5.3"
   }
 }

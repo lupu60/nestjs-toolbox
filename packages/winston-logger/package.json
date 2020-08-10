@@ -1,58 +1,61 @@
 {
-  "name": "@nest-toolbox/winston-logger",
-  "description": "nestjs toolbox",
-  "version": "1.1.2",
-  "author": "bogdanlupu <lupu60@gmail.com>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme",
-  "license": "MIT",
-  "keywords": [
-    "nestjs",
-    "toolbox",
-    "logger",
-    "winston"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
-    "access": "public"
-  },
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": "12",
-    "npm": "6"
-  },
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rimraf -rf ./dist",
-    "compile": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "@nestjs/common": "^7.2.0",
-    "@nestjs/core": "^7.2.0",
-    "@nestjs/platform-express": "^7.2.0",
-    "@types/express": "4.17.6",
-    "@types/node": "14.0.14",
-    "chalk": "^4.1.0",
-    "lodash": "4.17.19",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "~3.0.2",
-    "rxjs": "^6.5.5",
-    "ts-node": "8.10.2",
-    "typescript": "3.9.5",
-    "winston": "^3.2.1"
-  },
-  "gitHead": "bccd36f626890db6297a1d18df26c69239a763b0"
+    "name": "@nest-toolbox/winston-logger",
+    "description": "nestjs toolbox",
+    "version": "1.1.2",
+    "author": "bogdanlupu <lupu60@gmail.com>",
+    "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme",
+    "license": "MIT",
+    "keywords": [
+        "nestjs",
+        "toolbox",
+        "logger",
+        "winston"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "publicConfig": {
+        "access": "public"
+    },
+    "main": "dist/index",
+    "types": "dist/index",
+    "files": [
+        "dist"
+    ],
+    "engines": {
+        "node": "12",
+        "npm": "6"
+    },
+    "scripts": {
+        "build": "npm run clean && npm run compile",
+        "clean": "rimraf -rf ./dist",
+        "cleanup": "rimraf -rf dist coverage",
+        "compile": "tsc -p tsconfig.build.json",
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "test": "jest --ci --config ../../jest.config.json ",
+        "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "@nestjs/common": "^7.2.0",
+        "@nestjs/core": "^7.2.0",
+        "@nestjs/platform-express": "^7.2.0",
+        "@types/express": "4.17.6",
+        "@types/node": "14.0.14",
+        "chalk": "^4.1.0",
+        "lodash": "4.17.19",
+        "reflect-metadata": "^0.1.13",
+        "rimraf": "~3.0.2",
+        "rxjs": "^6.5.5",
+        "ts-node": "8.10.2",
+        "typescript": "3.9.5",
+        "winston": "^3.2.1"
+    },
+    "gitHead": "bccd36f626890db6297a1d18df26c69239a763b0"
 }

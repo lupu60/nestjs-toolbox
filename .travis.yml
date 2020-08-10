@@ -6,8 +6,8 @@ cache:
   - node_modules
   - '$HOME/.npm'
 install:
-  - npm install
-  - npm install -g lerna
+  - npm run bootstrap
 script:
-  - lerna bootstrap
-  - lerna run build
+  - npm run build
+  - npm run test
+  - npm run lint
