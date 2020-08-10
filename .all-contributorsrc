@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "lupu60",
+      "name": "Lupu",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5337610?v=4",
+      "profile": "https://github.com/lupu60",
+      "contributions": [
+        "code",
+        "infra",
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "nestjs-toolbox",
+  "projectOwner": "lupu60",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
