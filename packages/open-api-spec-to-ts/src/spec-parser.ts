@@ -68,7 +68,7 @@ function preprocessProperties(inputProperties) {
 
 async function createImport(
   name: string,
-  schema: SchemaObject,
+  schema: SchemaObject | ReferenceObject,
   filePath: string,
 ) {
   const refsMap: { key: string } | undefined = extractRefsFromSchema(schema);
@@ -127,7 +127,7 @@ async function createInterfaceContent(
   const components = openApiSpec.components;
   const schema = openApiSpec.components.schemas[name];
 
-  await createImport(name, schema as SchemaObject, filePath);
+  await createImport(name, schema, filePath);
 
   const options = {
     bannerComment: '',
@@ -156,7 +156,7 @@ async function createInterfaceContent(
   if (!options.declareExternallyReferenced) {
     content = removeEnum(content);
   }
-  
+
   await appendFile(filePath, content);
   return content;
 }
@@ -267,5 +267,6 @@ export async function generate(
     logSuccess('Typescript interfaces generated');
   } catch (error) {
     logError(error.message);
+    throw error
   }
 }
