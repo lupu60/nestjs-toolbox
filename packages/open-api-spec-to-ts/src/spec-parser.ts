@@ -42,34 +42,28 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject) {
     const refSchema = inputSchema as ReferenceObject;
     switch (objectSchema?.type) {
         case 'object':
-            return preprocessProperties(objectSchema.properties);
+            return Object.values(preprocessProperties(objectSchema.properties));
         case 'array':
             return extractRefsFromSchema(objectSchema.items);
         default:
-            if (refSchema.$ref) {
-                return refSchema.$ref;
-            }
             // TODO: Handle allOf, anyOf
-            return undefined;
+            return refSchema.$ref || undefined;
     }
 }
 
-function preprocessProperties(inputProperties) {
+function preprocessProperties(inputProperties: { [key: string]: SchemaObject | ReferenceObject }) {
     if (inputProperties) {
-        return Object.entries(inputProperties).reduce((acc, [name, value]) => {
-            return { ...acc, [name]: extractRefsFromSchema(value) };
-        }, {});
+        return Object.entries(inputProperties).reduce((acc, [name, value]) => ({ ...acc, [name]: extractRefsFromSchema(value) }), {});
     }
-    return undefined;
+    return {};
 }
 
 async function createImport(name: string, schema: SchemaObject | ReferenceObject, filePath: string) {
-    const refsMap: { key: string } | undefined = extractRefsFromSchema(schema);
-    if (!refsMap || !Object.values(refsMap).length) {
+    const references: any = extractRefsFromSchema(schema);
+    if (!references || !references.length) {
         return;
     }
-
-    const refsArray: string[] = Object.values(refsMap);
+    const refsArray: string[] = typeof references === 'string' ? [references] : references.flat();
     const $refs = refsArray
         .filter((val, index) => val !== undefined && !val.includes(name) && refsArray.indexOf(val) === index)
         .map((val) => val.split('/')[3]);
@@ -107,9 +101,9 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
     const options = {
         bannerComment: '',
         declareExternallyReferenced: false,
-        enableConstEnums: true,
+        enableConstEnums: false,
         unknownAny: false,
-        unreachableDefinitions: true,
+        unreachableDefinitions: false,
         strictIndexSignatures: false,
         style: {
             bracketSpacing: true,
@@ -170,7 +164,7 @@ async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath
     await schemasNames.reduce(async (prevPromise, schemaKey) => {
         try {
             await prevPromise;
-            return await delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
+            return delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
         } catch (error) {
             logError(error.message);
             return Promise.resolve({} as TsInterface);
