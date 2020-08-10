@@ -48,7 +48,7 @@
         "@nestjs/platform-express": "^7.2.0",
         "@types/bunyan": "^1.8.6",
         "@types/express": "4.17.6",
-        "@types/node": "14.0.14",
+        "@types/node": "14.0.27",
         "bunyan": "1.8.14",
         "bunyan-format": "^0.2.1",
         "chalk": "^4.1.0",
