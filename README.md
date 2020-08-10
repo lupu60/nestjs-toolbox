@@ -19,6 +19,7 @@
     <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"  />
   </a>
   <a href="https://www.codefactor.io/repository/github/lupu60/nestjs-toolbox"><img src="https://www.codefactor.io/repository/github/lupu60/nestjs-toolbox/badge" alt="CodeFactor" /></a>
+  <a href="https://deepscan.io/dashboard#view=project&tid=5310&pid=7118&bid=66230"><img src="https://deepscan.io/api/teams/5310/projects/7118/branches/66230/badge/grade.svg" alt="DeepScan grade"></a>
 </div>
 
 ### List of packages
