@@ -18,13 +18,14 @@
      <a href="https://lerna.js.org/">
     <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"  />
   </a>
+  <a href="https://www.codefactor.io/repository/github/lupu60/nestjs-toolbox"><img src="https://www.codefactor.io/repository/github/lupu60/nestjs-toolbox/badge" alt="CodeFactor" /></a>
 </div>
 
 ### List of packages
 
-- [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme)
-- [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
-- [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme)
+-   [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme)
+-   [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
+-   [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme)
 
 ## Support on Beerpay
 
