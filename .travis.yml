@@ -9,7 +9,7 @@ install:
   - npm install
   - npm install -g lerna
 script:
-  - lerna bootstrap
-  - lerna run build
-  - lerna run test
-  - lerna run lint
+  - npm run bootstrap
+  - npm run build
+  - npm run test
+  - npm run lint
