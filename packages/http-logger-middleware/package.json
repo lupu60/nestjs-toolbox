@@ -1,0 +1,47 @@
+{
+    "name": "@nest-toolbox/http-logger-middleware",
+    "description": "nest js http-logger-middleware",
+    "version": "1.1.8",
+    "author": "bogdanlupu <lupu60@gmail.com>",
+    "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme",
+    "license": "MIT",
+    "keywords": [
+        "nestjs",
+        "http-logger-middleware"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "publicConfig": {
+        "access": "public"
+    },
+    "main": "dist/index",
+    "types": "dist/index",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "npm run clean && npm run compile",
+        "clean": "rimraf -rf ./dist",
+        "cleanup": "rimraf -rf dist coverage",
+        "compile": "tsc -p tsconfig.build.json",
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "test": "jest --ci --config ../../jest.config.json ",
+        "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "@nestjs/common": "7.4.2",
+        "chalk": "4.1.0"
+    },
+    "devDependencies": {
+        "rimraf": "3.0.2",
+        "typescript": "3.9.7"
+    }
+}
