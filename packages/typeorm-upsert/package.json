@@ -1,7 +1,7 @@
 {
     "name": "@nest-toolbox/typeorm-upsert",
     "description": "upsert function for typeorm",
-    "version": "1.1.7",
+    "version": "1.1.8",
     "author": "bogdanlupu <lupu60@gmail.com>",
     "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
     "license": "MIT",
@@ -36,7 +36,7 @@
         "test": "jest --ci --config ../../jest.config.json ",
         "prepublishOnly": "npm run build"
     },
-    "gitHead": "8704142ee8b8c990d2b1872faf52ef8d32bbeb95",
+    "gitHead": "22fa04ad005370f2b8e4fa326f6fdc03eb3b2b44",
     "dependencies": {
         "lodash": "4.17.19",
         "rimraf": "3.0.2",
