@@ -1,59 +1,59 @@
 {
-  "name": "@nest-toolbox/open-api-spec-to-ts",
-  "description": "nestjs toolbox",
-  "version": "1.1.8",
-  "author": "getlarge <ed@getlarge.eu>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts#readme",
-  "license": "MIT",
-  "keywords": [
-    "nestjs",
-    "toolbox",
-    "open-api"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
-    "access": "public"
-  },
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": "12",
-    "npm": "6"
-  },
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rimraf -rf ./dist",
-    "cleanup": "rimraf -rf dist coverage",
-    "compile": "tsc -p tsconfig.build.json",
-    "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
-    "test": "jest --ci --config ../../jest.config.json ",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "@nestjs/common": "^7.2.0",
-    "@nestjs/core": "^7.2.0",
-    "@nestjs/swagger": "4.5.12",
-    "@types/node": "14.0.14",
-    "chalk": "^4.1.0",
-    "json-schema-to-typescript": "9.1.1",
-    "lodash": "4.17.19",
-    "rimraf": "~3.0.2",
-    "ts-node": "8.10.2"
-  },
-  "devDependencies": {
-    "typescript": "3.9.7"
-  },
-  "gitHead": "22fa04ad005370f2b8e4fa326f6fdc03eb3b2b44"
+    "name": "@nest-toolbox/open-api-spec-to-ts",
+    "description": "nestjs toolbox",
+    "version": "1.1.8",
+    "author": "getlarge <ed@getlarge.eu>",
+    "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts#readme",
+    "license": "MIT",
+    "keywords": [
+        "nestjs",
+        "toolbox",
+        "open-api"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "publicConfig": {
+        "access": "public"
+    },
+    "main": "dist/index",
+    "types": "dist/index",
+    "files": [
+        "dist"
+    ],
+    "engines": {
+        "node": "12",
+        "npm": "6"
+    },
+    "scripts": {
+        "build": "npm run clean && npm run compile",
+        "clean": "rimraf -rf ./dist",
+        "cleanup": "rimraf -rf dist coverage",
+        "compile": "tsc -p tsconfig.build.json",
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "test": "jest --ci --config ../../jest.config.json ",
+        "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "@nestjs/common": "^7.2.0",
+        "@nestjs/core": "^7.2.0",
+        "@nestjs/swagger": "4.5.12",
+        "@types/node": "14.0.14",
+        "chalk": "^4.1.0",
+        "json-schema-to-typescript": "9.1.1",
+        "lodash": "4.17.19",
+        "rimraf": "~3.0.2",
+        "ts-node": "8.10.2"
+    },
+    "devDependencies": {
+        "typescript": "3.9.7"
+    },
+    "gitHead": "22fa04ad005370f2b8e4fa326f6fdc03eb3b2b44"
 }
