@@ -1,0 +1,5 @@
+ ☐ add http logger midleware
+ ☐ SentryFilter
+ ☐ parts of the auth module
+ ☐ slack notifications module
+ ☐ UploadUtility

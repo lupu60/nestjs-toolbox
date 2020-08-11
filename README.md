@@ -42,6 +42,7 @@
 - [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
 - [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme)
 - [Open-API-Spec-to-TS](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts#readme)
+- [HttpLoggerMiddleware](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme)
 
 
 ## Support on Beerpay
