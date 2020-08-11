@@ -29,7 +29,8 @@
     "toolbox",
     "logger",
     "bunyan",
-    "winston"
+    "winston",
+    "open-api"
   ],
   "engines": {
     "node": "12",

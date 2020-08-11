@@ -38,9 +38,11 @@
 
 ### List of packages
 
--   [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme)
--   [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
--   [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme)
+- [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme)
+- [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
+- [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme)
+- [Open-API-Spec-to-TS](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts#readme)
+
 
 ## Support on Beerpay
 
