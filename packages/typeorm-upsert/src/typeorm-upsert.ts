@@ -17,7 +17,7 @@ export async function TypeOrmUpsert<T>(
         keyNamingTransform?: (k: string) => string;
         doNotUpsert?: string[];
     },
-): Promise<T[]> {
+): Promise<T | T[]> {
     options = options ? options : {};
     const keyNamingTransform = options.keyNamingTransform ?? ((k) => k);
     const doNotUpsert = options.doNotUpsert ?? [];
