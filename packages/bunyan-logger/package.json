@@ -48,6 +48,7 @@
         "@types/node": "14.6.0",
         "bunyan": "1.8.14",
         "bunyan-format": "^0.2.1",
+        "colors": "1.4.0",
         "ts-node": "9.0.0"
     },
     "gitHead": "22fa04ad005370f2b8e4fa326f6fdc03eb3b2b44",

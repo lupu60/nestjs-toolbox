@@ -50,6 +50,16 @@ describe('BunyanLoggerService', () => {
         logger.log(['test===',testObject]);
     });
 
+    it('should log object', () => {
+        const key1Value = 'key1Value'
+        const testObject = {
+            key1: key1Value,
+            key2: 'key2',
+            key3:'key3',
+        }
+        logger.error(['error===',testObject]);
+    });
+
     it('should throw project name is required', () => {
         expect(() => {
             const loggerWithErr = new BunyanLoggerService({
