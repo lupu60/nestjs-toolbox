@@ -4,9 +4,12 @@ describe('BunyanLoggerService', () => {
     let logger: BunyanLoggerService;
     beforeEach(() => {
         logger = new BunyanLoggerService({
-            projectName: 'ProjectName',
+            projectId: 'ProjectName',
             formatterOptions: {
-                outputMode: 'long',
+                color: true,
+                levelInString:true,
+                outputMode: 'short',
+                src:true,
             },
         });
     });
@@ -16,24 +19,46 @@ describe('BunyanLoggerService', () => {
     });
 
     it('should log', () => {
-        logger.log('Hello');
+        logger.log('Hello From Bunyan');
     });
+
     it('should war', () => {
-        logger.warn('Hello Warning');
+        logger.warn('Warning From Bunyan');
     });
+
     it('should err', () => {
-        logger.error('Hello Error');
+        logger.error('Error from Bunyan');
+    });
+
+    it('should log object', () => {
+        const key1Value = 'key1Value'
+        const testObject = {
+            key1: key1Value,
+            key2: 'key2',
+            key3:'key3',
+        }
+        logger.log(testObject);
+    });
+
+    it('should log object', () => {
+        const key1Value = 'key1Value'
+        const testObject = {
+            key1: key1Value,
+            key2: 'key2',
+            key3:'key3',
+        }
+        logger.log(['test===',testObject]);
     });
 
     it('should throw project name is required', () => {
         expect(() => {
             const loggerWithErr = new BunyanLoggerService({
-                projectName: '',
+                projectId: '',
                 formatterOptions: {
                     outputMode: 'long',
                 },
             });
             expect(loggerWithErr).toBeUndefined();
-        }).toThrowError('projectName is required');
+        }).toThrowError('projectId is required');
     });
 });

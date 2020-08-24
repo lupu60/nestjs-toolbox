@@ -1,15 +1,14 @@
 import { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
 import * as bunyanFormat from 'bunyan-format';
-import * as chalk from 'chalk';
-import { isEmpty, isNil } from 'lodash';
 export class BunyanLoggerService implements LoggerService {
     private readonly bunyanLogger: Bunyan;
+    private isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
     /**
      * Creates an instance of BunyanLoggerService.
      * @param {({
-     *     projectName: string;
+     *     projectId: string;
      *     formatterOptions: {
      *       outputMode: string; // short|long|simple|json|bunyan
      *       color?: boolean;
@@ -21,37 +20,38 @@ export class BunyanLoggerService implements LoggerService {
      * @memberof BunyanLoggerService
      */
     constructor(options: {
-        projectName: string;
+        projectId: string;
         formatterOptions: {
-            outputMode: string;
-            color?: boolean;
-            levelInString?: boolean;
-            colorFromLevel?: any;
+            [key: string]: any;
         };
-        customStreams?: any[];
+        customStreams?: Bunyan.Stream[];
     }) {
-        const { projectName, formatterOptions, customStreams } = options;
-        if (isNil(projectName) || isEmpty(projectName)) {
-            throw new Error(`projectName is required`);
+        const { projectId, formatterOptions, customStreams } = options;
+        if (projectId == null || this.isEmpty(projectId)) {
+            throw new Error(`projectId is required`);
         }
-        const formatOut = bunyanFormat(formatterOptions);
-        const streams: Bunyan.Stream[] = [{ level: 'info', type: 'stream', stream: formatOut }, ...(customStreams || [])];
+        const defaultStream: Bunyan.Stream = { level: 'info', type: 'stream', stream: bunyanFormat(formatterOptions) };
+        const streams: Bunyan.Stream[] = [defaultStream, ...(customStreams || [])];
+
         this.bunyanLogger = Bunyan.createLogger({
             level: Bunyan.INFO,
-            name: projectName,
+            name: projectId,
             streams: [...streams],
         });
     }
 
-    public log(message: any, context?: string | undefined) {
-        this.bunyanLogger.info({ context }, message);
+    public log(message: any | any[], context?: string | undefined) {
+        message = Array.isArray(message) ? message : [message];
+        this.bunyanLogger.info({ context }, ...message);
     }
 
-    public error(message: any, trace?: string | undefined, context?: string | undefined) {
-        this.bunyanLogger.error({ context, trace }, chalk.red.bold(message));
+    public error(message: any | any[], trace?: string | undefined, context?: string | undefined) {
+        message = Array.isArray(message) ? message : [message];
+        this.bunyanLogger.error({ context, trace }, ...message);
     }
 
-    public warn(message: any, context?: string | undefined) {
-        this.bunyanLogger.warn({ context }, message);
+    public warn(message: any | any[], context?: string | undefined) {
+        message = Array.isArray(message) ? message : [message];
+        this.bunyanLogger.warn({ context }, ...message);
     }
 }

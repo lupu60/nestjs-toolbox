@@ -54,6 +54,8 @@ bootstrap();
 
 ### BunyanLoggerService constructor options
 
+check https://github.com/thlorenz/bunyan-format
+
 ```js
 options: {
     projectName: string;
