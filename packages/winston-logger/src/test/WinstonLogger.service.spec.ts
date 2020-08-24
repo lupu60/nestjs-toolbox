@@ -2,7 +2,7 @@ import { WinstonLoggerService } from '../WinstonLogger.service';
 describe('WinstonLoggerService', () => {
     let logger: WinstonLoggerService;
     beforeEach(() => {
-        logger = new WinstonLoggerService({ projectName: 'ProjectName' });
+        logger = new WinstonLoggerService({ projectName: 'ProjectName' , timeFormatStr:'YYYY-MM-DD HH:mm:ss'});
     });
 
     it('should be defined', () => {
@@ -10,15 +10,34 @@ describe('WinstonLoggerService', () => {
     });
 
     it('should log', () => {
-        logger.log('Hello');
+        logger.log('Hello From Winston','Test');
     });
 
     it('should war', () => {
-        logger.warn('Hello Warning');
+        logger.warn('Warning From Winston','Test');
     });
 
     it('should err', () => {
-        logger.error('Hello Error', 'trace');
+        logger.error('Error From Winston', 'trace');
+    });
+    it('should log object', () => {
+        const key1Value = 'key1Value'
+        const testObject = {
+            key1: key1Value,
+            key2: 'key2',
+            key3:'key3',
+        }
+        logger.log(testObject);
+    });
+
+    it('should log object', () => {
+        const key1Value = 'key1Value'
+        const testObject = {
+            key1: key1Value,
+            key2: 'key2',
+            key3:'key3',
+        }
+        logger.log(`${testObject}`);
     });
 
     it('should throw project name is required', () => {

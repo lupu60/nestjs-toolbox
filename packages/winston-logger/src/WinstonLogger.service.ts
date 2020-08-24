@@ -1,9 +1,9 @@
 import { LoggerService } from '@nestjs/common';
 import * as winston from 'winston';
-import { isEmpty, isNil } from 'lodash';
 
 export class WinstonLoggerService implements LoggerService {
     private readonly winstonLogger: any;
+    private isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
     /**
      * Creates an instance of WinstonLoggerService.
@@ -12,7 +12,7 @@ export class WinstonLoggerService implements LoggerService {
      */
     constructor(options: { projectName: string; transports?: any[]; timeFormatStr?: string; customFormatter?: any }) {
         const { projectName, transports, timeFormatStr, customFormatter } = options;
-        if (isNil(projectName) || isEmpty(projectName)) {
+        if (projectName == null || this.isEmpty(projectName)) {
             throw new Error(`projectName is required`);
         }
         const timestamp = timeFormatStr ? winston.format.timestamp({ format: timeFormatStr }) : winston.format.timestamp();

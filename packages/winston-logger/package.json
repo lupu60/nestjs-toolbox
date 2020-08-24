@@ -44,18 +44,13 @@
     },
     "dependencies": {
         "@nestjs/common": "^7.2.0",
-        "@nestjs/core": "^7.2.0",
-        "@nestjs/platform-express": "^7.2.0",
-        "@types/express": "4.17.6",
-        "@types/node": "14.0.14",
-        "chalk": "^4.1.0",
-        "lodash": "4.17.19",
-        "reflect-metadata": "^0.1.13",
-        "rimraf": "~3.0.2",
-        "rxjs": "^6.5.5",
-        "ts-node": "8.10.2",
-        "typescript": "3.9.5",
+        "@types/node": "14.6.0",
+        "ts-node": "9.0.0",
         "winston": "^3.2.1"
+    },
+    "devDependencies": {
+        "rimraf": "3.0.2",
+        "typescript": "4.0.2"
     },
     "gitHead": "22fa04ad005370f2b8e4fa326f6fdc03eb3b2b44"
 }
