@@ -61,16 +61,16 @@ function preprocessProperties(inputProperties: { [key: string]: SchemaObject | R
 async function createImport(name: string, schema: SchemaObject | ReferenceObject, filePath: string) {
     const references: any = extractRefsFromSchema(schema);
     if (!references || !references.length) {
-        return;
+        return [];
     }
     const refsArray: string[] = typeof references === 'string' ? [references] : references.flat();
-    const $refs = refsArray
-        .filter((val, index) => val !== undefined && !val.includes(name) && refsArray.indexOf(val) === index)
-        .map((val) => val.split('/')[3]);
+    const $refs = refsArray.filter((val, index) => val !== undefined && refsArray.indexOf(val) === index).map((val) => val.split('/')[3]);
 
-    if ($refs.length) {
-        await appendFile(filePath, `import { ${$refs.join(', ')} } from './'; \n\n`);
+    const imports = $refs.filter((val) => !val.includes(name));
+    if ($refs.length && imports.length) {
+        await appendFile(filePath, `import { ${imports.join(', ')} } from './'; \n\n`);
     }
+    return $refs;
 }
 
 async function createInterfaceFile(name: string, interfacesDirPath: string): Promise<string> {
@@ -83,6 +83,7 @@ async function createInterfaceFile(name: string, interfacesDirPath: string): Pro
 function removeEnum(content: string): string {
     const enumStartPosition = content.search('export enum');
     const interfaceStartPosition = content.search('export interface');
+
     if (enumStartPosition > -1 && interfaceStartPosition > -1) {
         const enumEndPosition = content.slice(enumStartPosition, content.length).indexOf('}') + enumStartPosition;
         const enumParts = content.slice(enumStartPosition, enumEndPosition + 1);
@@ -92,11 +93,23 @@ function removeEnum(content: string): string {
     return content;
 }
 
+function checkSelfReference(name: string, content: string): string {
+    const interfaceStartPosition = content.search('export interface');
+    const interfaceEndPosition = content.slice(interfaceStartPosition, content.length).indexOf('}') + interfaceStartPosition;
+    const interfaceParts = content.slice(interfaceStartPosition, interfaceEndPosition + 1).split('{');
+    const selfRefIndex = interfaceParts[1].indexOf(name);
+    if (selfRefIndex > -1) {
+        const selfRef = interfaceParts[1].slice(selfRefIndex, selfRefIndex + name.length + 1);
+        content = content.replace(selfRef, name);
+    }
+    return content;
+}
+
 async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, filePath: string): Promise<string> {
     const components = openApiSpec.components;
     const schema = openApiSpec.components.schemas[name];
 
-    await createImport(name, schema, filePath);
+    const dependencies = await createImport(name, schema, filePath);
 
     const options = {
         bannerComment: '',
@@ -125,7 +138,9 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
     if (!options.declareExternallyReferenced) {
         content = removeEnum(content);
     }
-
+    if (dependencies.includes(name)) {
+        content = checkSelfReference(name, content);
+    }
     await appendFile(filePath, content);
     return content;
 }

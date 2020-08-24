@@ -208,6 +208,12 @@
                     "total": {
                         "type": "integer"
                     },
+                    "dataSetSubLists": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/dataSetList"
+                        }
+                    },
                     "apis": {
                         "type": "array",
                         "items": {
