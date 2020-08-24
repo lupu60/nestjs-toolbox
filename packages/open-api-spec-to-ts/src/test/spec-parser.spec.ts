@@ -10,7 +10,7 @@ describe('OpenAPISpecParser', () => {
         return Promise.all(Object.values(files).map((file) => removeFile(`${interfaceFilePath}/${file}`)));
     });
 
-    it('should generate from a valid Open API file', async () => {
+    it.skip('should generate from a valid Open API file', async () => {
         const testFile = `${basePath}/uspto.json`;
         await generate(testFile, interfaceFilePath);
     });
