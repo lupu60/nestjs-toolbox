@@ -46,7 +46,15 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject) {
         case 'array':
             return extractRefsFromSchema(objectSchema.items);
         default:
-            // TODO: Handle allOf, anyOf
+            if (objectSchema.oneOf) {
+                return Object.values(objectSchema.oneOf).map((item) => extractRefsFromSchema(item));
+            }
+            if (objectSchema.anyOf) {
+                return Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item));
+            }
+            if (objectSchema.allOf) {
+                return Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item));
+            }
             return refSchema.$ref || undefined;
     }
 }
@@ -83,7 +91,6 @@ async function createInterfaceFile(name: string, interfacesDirPath: string): Pro
 function removeEnum(content: string): string {
     const enumStartPosition = content.search('export enum');
     const interfaceStartPosition = content.search('export interface');
-
     if (enumStartPosition > -1 && interfaceStartPosition > -1) {
         const enumEndPosition = content.slice(enumStartPosition, content.length).indexOf('}') + enumStartPosition;
         const enumParts = content.slice(enumStartPosition, enumEndPosition + 1);
@@ -100,7 +107,8 @@ function checkSelfReference(name: string, content: string): string {
     const selfRefIndex = interfaceParts[1].indexOf(name);
     if (selfRefIndex > -1) {
         const selfRef = interfaceParts[1].slice(selfRefIndex, selfRefIndex + name.length + 1);
-        content = content.replace(selfRef, name);
+        const regex = new RegExp(selfRef, 'g');
+        content = content.replace(regex, name);
     }
     return content;
 }
