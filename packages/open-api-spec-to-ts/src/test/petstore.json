@@ -177,13 +177,13 @@
                     "children": {
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/Pet"
-                            },
-                            {
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/Pet"
                                 }
+                            },
+                            {
+                                "$ref": "#/components/schemas/Pet"
                             }
                         ]
                     },
