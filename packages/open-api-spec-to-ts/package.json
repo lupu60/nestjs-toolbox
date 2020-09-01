@@ -35,7 +35,7 @@
     "scripts": {
         "build": "npm run clean && npm run compile",
         "clean": "rimraf -rf ./dist",
-        "cleanup": "rimraf -rf dist coverage node_modules",
+        "cleanup": "rimraf -rf dist coverage ",
         "compile": "tsc -p tsconfig.build.json",
         "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
         "test": "jest --ci --config ../../jest.config.json ",
