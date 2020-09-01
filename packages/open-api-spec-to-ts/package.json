@@ -44,16 +44,16 @@
     "dependencies": {
         "@nestjs/common": "^7.2.0",
         "@nestjs/core": "^7.2.0",
-        "@nestjs/swagger": "4.5.12",
-        "@types/node": "14.0.14",
+        "@nestjs/swagger": "4.6.0",
+        "@types/node": "14.6.2",
         "chalk": "^4.1.0",
         "json-schema-to-typescript": "9.1.1",
-        "lodash": "4.17.19",
+        "lodash": "4.17.20",
         "rimraf": "~3.0.2",
-        "ts-node": "8.10.2"
+        "ts-node": "9.0.0"
     },
     "devDependencies": {
-        "typescript": "3.9.7"
+        "typescript": "4.0.2"
     },
     "gitHead": "cc164bd38bb811f559a559c2004899288987e3be"
 }

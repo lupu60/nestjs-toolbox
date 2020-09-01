@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Repository } from 'typeorm';
 
 /*
@@ -22,8 +21,8 @@ export async function TypeOrmUpsert<T>(
     const keyNamingTransform = options.keyNamingTransform ?? ((k) => k);
     const doNotUpsert = options.doNotUpsert ?? [];
     const isCamelCase = (k: string) => /^[a-z]+[A-Z]/.test(k);
-    const sampleObject = _.isArray(object) ? object[0] : object;
-    const keys: string[] = _.difference(_.keys(sampleObject), doNotUpsert);
+    const sampleObject = Array.isArray(object) ? object[0] : object;
+    const keys: string[] = [Object.keys(sampleObject), doNotUpsert].reduce((a, b) => a.filter(c => !b.includes(c)));
     const setterString = keys.map((k) => {
         if (isCamelCase(k)) {
             return `"${keyNamingTransform(k)}"=EXCLUDED."${k}"`;
