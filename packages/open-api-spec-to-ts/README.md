@@ -32,7 +32,7 @@ const openApiFilePath = argv.openApiPath || './openapi.json';
 const interfacesDirPath = argv.interfacesPath || './interfaces';
 const verbosity = argv.verbosity || LogLevel.INFO;
 
-generate(openApiFilePath, interfacesDirPath, verbosity);
+generate(openApiFilePath, interfacesDirPath, { verbosity });
 ```
 
 ```bash
