@@ -22,8 +22,8 @@
     "listFiles": false /* Print names of files part of the compilation. */,
     "pretty": true /* Stylize errors and messages using color and context. */,
 
-    "lib": ["es2017"],
-    "typeRoots": ["node_modules/@types", "./src/types"]
+    "lib": ["es2017","DOM"],
+    "typeRoots": ["node_modules/@types"]
   },
   "exclude": ["node_modules", "dist"]
 }
