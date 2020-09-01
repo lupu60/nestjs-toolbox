@@ -1,1 +1,1 @@
-export { BunyanLoggerService } from './bunyan-logger.service.ts'
+export { BunyanLoggerService } from './bunyan-logger.service'
