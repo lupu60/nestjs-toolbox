@@ -1,4 +1,4 @@
-import { BunyanLoggerService } from '../BunyanLogger.service';
+import { BunyanLoggerService } from '../bunyan-logger.service';
 
 describe('BunyanLoggerService', () => {
     let logger: BunyanLoggerService;

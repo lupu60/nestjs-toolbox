@@ -1,4 +1,4 @@
-import { WinstonLoggerService } from '../WinstonLogger.service';
+import { WinstonLoggerService } from '../winston-logger.service';
 describe('WinstonLoggerService', () => {
     let logger: WinstonLoggerService;
     beforeEach(() => {

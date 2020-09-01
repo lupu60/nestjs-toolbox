@@ -1,1 +1,1 @@
-export { WinstonLoggerService } from './WinstonLogger.service';
+export { WinstonLoggerService } from './winston-logger.service';

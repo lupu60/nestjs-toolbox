@@ -2,6 +2,7 @@ import { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
 import * as bunyanFormat from 'bunyan-format';
 import * as colors from 'colors';
+
 export class BunyanLoggerService implements LoggerService {
     private readonly bunyanLogger: Bunyan;
     private isEmpty = (obj) => [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
