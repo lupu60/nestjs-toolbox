@@ -1,7 +1,7 @@
 {
     "name": "@nest-toolbox/bunyan-logger",
     "description": "nestjs toolbox",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "author": "bogdanlupu <lupu60@gmail.com>",
     "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme",
     "license": "MIT",
