@@ -1,0 +1,59 @@
+{
+    "name": "@nest-toolbox/access-control",
+    "description": "nestjs toolbox",
+    "version": "1.1.10",
+    "author": "getlarge <ed@getlarge.eu>",
+    "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control#readme",
+    "license": "MIT",
+    "keywords": [
+        "nestjs",
+        "toolbox",
+        "open-api"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "publicConfig": {
+        "access": "public"
+    },
+    "main": "dist/index",
+    "types": "dist/index",
+    "files": [
+        "dist"
+    ],
+    "engines": {
+        "node": "12",
+        "npm": "6"
+    },
+    "scripts": {
+        "build": "npm run clean && npm run compile",
+        "clean": "rimraf -rf ./dist",
+        "cleanup": "rimraf -rf dist coverage",
+        "compile": "tsc -p tsconfig.build.json",
+        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+        "test": "jest --ci --config ../../jest.config.json ",
+        "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "@nestjs/common": "^7.2.0",
+        "@nestjs/core": "^7.2.0",
+        "@types/node": "14.6.2",
+        "chalk": "^4.1.0",
+        "reflect-metadata": "^0.1.13",
+        "rimraf": "~3.0.2",
+        "role-acl": "4.5.4",
+        "ts-node": "8.10.2"
+    },
+    "devDependencies": {
+        "@nestjs/testing": "7.4.2",
+        "rxjs": "6.6.2",
+        "typescript": "3.9.7"
+    }
+}
