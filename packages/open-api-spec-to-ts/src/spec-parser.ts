@@ -3,9 +3,9 @@
 import { OpenAPIObject } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import * as chalk from 'chalk';
-import { compile } from 'json-schema-to-typescript';
+import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
-import { snakeCase } from 'lodash';
+import { flatten, snakeCase } from 'lodash';
 import * as path from 'path';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
@@ -17,27 +17,50 @@ export enum LogLevel {
     INFO,
 }
 
-let loggingLevel = LogLevel.NONE;
+export interface Options extends JSONToTSOptions {
+    verbosity: LogLevel;
+}
+
+let baseOptions: Options = {
+    verbosity: LogLevel.NONE,
+    bannerComment: '',
+    cwd: process.cwd(),
+    declareExternallyReferenced: false,
+    enableConstEnums: false,
+    ignoreMinAndMaxItems: false,
+    unknownAny: false,
+    unreachableDefinitions: false,
+    strictIndexSignatures: false,
+    style: {
+        bracketSpacing: true,
+        printWidth: 120,
+        semi: true,
+        singleQuote: true,
+        tabWidth: 4,
+        useTabs: false,
+    },
+    $refOptions: {},
+};
 
 function logInfo(message: any) {
-    if (loggingLevel >= LogLevel.INFO) {
+    if (baseOptions.verbosity >= LogLevel.INFO) {
         console.log(chalk.cyan.bold(message), 'SpecParser');
     }
 }
 
 function logSuccess(message: any) {
-    if (loggingLevel >= LogLevel.INFO) {
+    if (baseOptions.verbosity >= LogLevel.INFO) {
         console.log(chalk.green.bold(message), 'SpecParser');
     }
 }
 
 function logError(message: any) {
-    if (loggingLevel >= LogLevel.ERROR) {
+    if (baseOptions.verbosity >= LogLevel.ERROR) {
         console.log(chalk.red.bold(message), 'SpecParser');
     }
 }
 
-function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject) {
+function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): string | string[] {
     const objectSchema = inputSchema as SchemaObject;
     const refSchema = inputSchema as ReferenceObject;
     switch (objectSchema.type) {
@@ -46,7 +69,15 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject) {
         case 'array':
             return extractRefsFromSchema(objectSchema.items);
         default:
-            // TODO: Handle allOf, anyOf
+            if (objectSchema.oneOf) {
+                return flatten(Object.values(objectSchema.oneOf).map((item) => extractRefsFromSchema(item)));
+            }
+            if (objectSchema.anyOf) {
+                return flatten(Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)));
+            }
+            if (objectSchema.allOf) {
+                return flatten(Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)));
+            }
             return refSchema.$ref || undefined;
     }
 }
@@ -83,7 +114,6 @@ async function createInterfaceFile(name: string, interfacesDirPath: string): Pro
 function removeEnum(content: string): string {
     const enumStartPosition = content.search('export enum');
     const interfaceStartPosition = content.search('export interface');
-
     if (enumStartPosition > -1 && interfaceStartPosition > -1) {
         const enumEndPosition = content.slice(enumStartPosition, content.length).indexOf('}') + enumStartPosition;
         const enumParts = content.slice(enumStartPosition, enumEndPosition + 1);
@@ -100,7 +130,8 @@ function checkSelfReference(name: string, content: string): string {
     const selfRefIndex = interfaceParts[1].indexOf(name);
     if (selfRefIndex > -1) {
         const selfRef = interfaceParts[1].slice(selfRefIndex, selfRefIndex + name.length + 1);
-        content = content.replace(selfRef, name);
+        const regex = new RegExp(selfRef, 'g');
+        content = content.replace(regex, name);
     }
     return content;
 }
@@ -111,31 +142,14 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
 
     const dependencies = await createImport(name, schema, filePath);
 
-    const options = {
-        bannerComment: '',
-        declareExternallyReferenced: false,
-        enableConstEnums: false,
-        unknownAny: false,
-        unreachableDefinitions: false,
-        strictIndexSignatures: false,
-        style: {
-            bracketSpacing: true,
-            printWidth: 120,
-            semi: true,
-            singleQuote: true,
-            tabWidth: 4,
-            useTabs: false,
-        },
-    };
-
     const schemaAndDefinitions = {
         ...schema,
         components,
     } as NormalizedJSONSchema;
-    let content = await compile(schemaAndDefinitions, name, options);
+    let content = await compile(schemaAndDefinitions, name, baseOptions);
 
     // TODO: check future updates from json-schema-to-typescript, as next step should not be needed
-    if (!options.declareExternallyReferenced) {
+    if (!baseOptions.declareExternallyReferenced) {
         content = removeEnum(content);
     }
     if (dependencies.includes(name)) {
@@ -204,8 +218,12 @@ function appendTitles(openApiSpec: OpenAPIObject): void {
     });
 }
 
-export async function generate(openApiFilePath = './openapi.json', interfacesDirPath = './interfaces', logLevel = LogLevel.NONE): Promise<void> {
-    loggingLevel = logLevel;
+export async function generate(
+    openApiFilePath = './openapi.json',
+    interfacesDirPath = './interfaces',
+    options: Partial<Options> = {},
+): Promise<void> {
+    baseOptions = { ...baseOptions, ...options };
     try {
         const swaggerSpec: OpenAPIObject = JSON.parse(await readFile(openApiFilePath));
         appendTitles(swaggerSpec);

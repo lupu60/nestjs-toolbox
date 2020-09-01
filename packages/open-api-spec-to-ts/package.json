@@ -44,11 +44,11 @@
     "dependencies": {
         "@nestjs/common": "^7.2.0",
         "@nestjs/core": "^7.2.0",
-        "@nestjs/swagger": "4.5.12",
+        "@nestjs/swagger": "4.6.0",
         "@types/node": "14.0.14",
         "chalk": "^4.1.0",
         "json-schema-to-typescript": "9.1.1",
-        "lodash": "4.17.19",
+        "lodash": "4.17.20",
         "rimraf": "~3.0.2",
         "ts-node": "8.10.2"
     },
