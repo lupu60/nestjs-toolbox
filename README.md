@@ -38,6 +38,7 @@
 
 ### List of packages
 
+
 - [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme)
 - [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
 - [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme)
@@ -45,6 +46,10 @@
 - [HttpLoggerMiddleware](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme)
 - [Access-Control](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control#readme)
 
+## Sponsors
+<a href="https://www.jetbrains.com/?from=nestjs-toolbox">
+     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/946px-JetBrains_Logo_2016.svg.png"  alt="JetBrains" width="150"/>
+</a>   
 
 ## Support on Beerpay
 
