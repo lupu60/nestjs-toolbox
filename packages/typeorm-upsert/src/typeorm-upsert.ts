@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
  * the row does not already exist but you do not want to overwrite this field if it already exists
  */
 export async function TypeOrmUpsert<T>(
-    repository: Repository<T>,
+    repository: Repository<T>|Repository<any>|any,
     object: T | T[],
     conflictKey: string,
     options?: {
