@@ -47,7 +47,7 @@
         "@nestjs/swagger": "4.6.1",
         "@types/node": "14.14.6",
         "chalk": "^4.1.0",
-        "json-schema-to-typescript": "9.1.1",
+        "json-schema-to-typescript": "10.0.0",
         "lodash": "4.17.20",
         "rimraf": "~3.0.2",
         "ts-node": "9.0.0"
