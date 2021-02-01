@@ -44,7 +44,7 @@
     "dependencies": {
         "@nestjs/common": "^7.2.0",
         "@nestjs/core": "^7.2.0",
-        "@nestjs/swagger": "4.7.9",
+        "@nestjs/swagger": "4.7.12",
         "@types/node": "14.14.20",
         "chalk": "^4.1.0",
         "json-schema-to-typescript": "9.1.1",
