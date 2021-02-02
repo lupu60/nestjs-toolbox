@@ -1,6 +1,22 @@
 import { _generateSetterString, TypeOrmUpsert, _keys, _chunkValues } from '../typeorm-upsert';
 
 describe('Dummy Test', () => {
+  const array = [
+    { id: 1, name: 'foo' },
+    { id: 2, name: 'bar' },
+    { id: 3, name: 'foo' },
+    { id: 4, name: 'bar' },
+  ];
+  const repository = jest.fn();
+  // @ts-ignore
+  repository.createQueryBuilder = jest.fn().mockReturnValue({
+    insert: jest.fn().mockReturnValue({
+      values: jest.fn().mockReturnValue({
+        onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) }),
+      }),
+    }),
+  });
+
   it('should be defined', () => {
     expect(TypeOrmUpsert).toBeDefined();
   });
@@ -36,47 +52,17 @@ describe('Dummy Test', () => {
   });
 
   it('should chunk huge arrays', () => {
-    const array = [
-      { id: 1, name: 'foo' },
-      { id: 2, name: 'bar' },
-      { id: 3, name: 'foo' },
-      { id: 4, name: 'bar' },
-    ];
     const chunk = _chunkValues({ values: array, chunk: 2 });
     expect(chunk.length).toEqual(2);
   });
 
   it('should save', async () => {
-    const repository = jest.fn();
-    // @ts-ignore
-    repository.createQueryBuilder = jest.fn().mockReturnValue({
-      insert: jest.fn().mockReturnValue({
-        values: jest.fn().mockReturnValue({
-          onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) }),
-        }),
-      }),
-    });
     const data = [{ id: 1, name: '' }];
     const saved = await TypeOrmUpsert(repository, data, 'id');
     expect(saved).toBeDefined();
   });
 
   it('should save', async () => {
-    const repository = jest.fn();
-    // @ts-ignore
-    repository.createQueryBuilder = jest.fn().mockReturnValue({
-      insert: jest.fn().mockReturnValue({
-        values: jest.fn().mockReturnValue({
-          onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) }),
-        }),
-      }),
-    });
-    const array = [
-      { id: 1, name: 'foo' },
-      { id: 2, name: 'bar' },
-      { id: 3, name: 'foo' },
-      { id: 4, name: 'bar' },
-    ];
     const saved = await TypeOrmUpsert(repository, array, 'id', { chunk: 3 });
     expect(saved).toBeDefined();
   });
