@@ -39,7 +39,7 @@
     "gitHead": "cc164bd38bb811f559a559c2004899288987e3be",
     "dependencies": {
         "rimraf": "3.0.2",
-        "typeorm": "0.2.29"
+        "typeorm": "0.2.30"
     },
     "devDependencies": {
         "typescript": "4.1.3"
