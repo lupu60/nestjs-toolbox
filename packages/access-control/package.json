@@ -46,13 +46,13 @@
         "@nestjs/core": "^7.2.0",
         "@types/node": "14.14.22",
         "reflect-metadata": "^0.1.13",
-        "role-acl": "4.5.4",
-        "ts-node": "9.1.1"
+        "role-acl": "4.5.4"
     },
     "devDependencies": {
         "@nestjs/testing": "7.6.9",
         "rimraf": "~3.0.2",
         "rxjs": "6.6.3",
+        "ts-node": "9.1.1",
         "typescript": "4.1.3"
     }
 }

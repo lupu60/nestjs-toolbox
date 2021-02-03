@@ -1,4 +1,4 @@
-import { Abstract, DynamicModule, Global, Module, Type } from '@nestjs/common';
+import { Abstract, DynamicModule, Global, Module, Type, ModuleMetadata, Provider } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
 import { ACOptions } from './ac-options.interface';
 import { RULES_BUILDER_TOKEN } from './constants';
@@ -6,48 +6,68 @@ import { GrantsController } from './controller/grants.controller';
 import { RulesBuilder } from './rules-builder.class';
 
 // tslint:disable-next-line: ban-types
-type Injection = (Type<any> | string | symbol | Abstract<any> | Function)[];
+export type Injection = (Type<any> | string | symbol | Abstract<any> | Function)[];
+
+export interface AccessControlOptionsFactory {
+  createAccessControlOptions(rules: RulesBuilder, options?: ACOptions): Promise<RulesBuilder> | RulesBuilder;
+}
+
+export interface AccessControlModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
+  name?: string;
+  useExisting?: Type<AccessControlOptionsFactory>;
+  useClass?: Type<RulesBuilder>;
+  useFactory?: (...args: any[]) => Promise<RulesBuilder> | RulesBuilder;
+  inject?: Injection;
+}
 
 @Global()
 @Module({})
 export class AccessControlModule {
-    public static forRules(rules: RulesBuilder, options?: ACOptions): DynamicModule {
-        let controllers = [];
+  public static forRules(rules: RulesBuilder, options?: ACOptions): DynamicModule {
+    let controllers = [];
 
-        if (options) {
-            Reflect.defineMetadata(PATH_METADATA, options.grantsEndpoint, GrantsController);
-            controllers = [...(options.grantsEndpoint ? [GrantsController] : [])];
-        }
-
-        return {
-            module: AccessControlModule,
-            controllers: [...controllers],
-            providers: [
-                {
-                    provide: RULES_BUILDER_TOKEN,
-                    useValue: rules,
-                },
-            ],
-            exports: [
-                {
-                    provide: RULES_BUILDER_TOKEN,
-                    useValue: rules,
-                },
-            ],
-        };
+    if (options) {
+      Reflect.defineMetadata(PATH_METADATA, options.grantsEndpoint, GrantsController);
+      controllers = [...(options.grantsEndpoint ? [GrantsController] : [])];
     }
 
-    public static forRootAsync(options: { inject?: Injection; useFactory: (...args: any) => RulesBuilder | Promise<RulesBuilder> }): DynamicModule {
-        const provider = {
-            provide: RULES_BUILDER_TOKEN,
-            useFactory: options.useFactory,
-            inject: options.inject || [],
-        };
+    return {
+      module: AccessControlModule,
+      controllers: [...controllers],
+      providers: [
+        {
+          provide: RULES_BUILDER_TOKEN,
+          useValue: rules,
+        },
+      ],
+      exports: [
+        {
+          provide: RULES_BUILDER_TOKEN,
+          useValue: rules,
+        },
+      ],
+    };
+  }
 
-        return {
-            module: AccessControlModule,
-            providers: [provider],
-            exports: [provider],
-        };
+  public static forRootAsync(options: AccessControlModuleAsyncOptions): DynamicModule {
+    const { inject = [], imports = [], useFactory, useExisting, useClass } = options;
+    let provider: Provider<RulesBuilder | Promise<RulesBuilder>> = {
+      provide: RULES_BUILDER_TOKEN,
+      useFactory,
+      inject,
+    };
+
+    if (useExisting) {
+      provider = { ...provider, useExisting };
+    } else if (useClass) {
+      provider = { ...provider, useClass };
     }
+
+    return {
+      module: AccessControlModule,
+      imports,
+      providers: [provider],
+      exports: [provider],
+    };
+  }
 }
