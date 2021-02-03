@@ -1,4 +1,4 @@
-### Open API spec to TS
+# Nest ACL
 
 Fork of [nest-access-control](https://github.com/nestjsx/nest-access-control), instead making use of [role-acl](https://github.com/tensult/role-acl).
 It offers a great flexibility on how to build condition to grant or deny access to specific resources and related actions.
@@ -9,7 +9,7 @@ It offers a great flexibility on how to build condition to grant or deny access 
 npm i @nest-toolbox/access-control
 ```
 
-### Example
+## Example
 
 ### Constants
 
