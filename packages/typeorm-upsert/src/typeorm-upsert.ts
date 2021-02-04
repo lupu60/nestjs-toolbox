@@ -28,7 +28,7 @@ export async function TypeOrmUpsert<T>(
   const onConflict = `("${conflictKey}") DO UPDATE SET ${setterString}`;
   const chunkedValues = _chunkValues({ values: object, chunk });
   return (await _chunkPromises({ repository, chunkedValues, onConflict })).reduce((acc, current) => {
-    return acc.concat(current.raw);
+    return acc.concat(current?.raw);
   }, []);
 }
 
