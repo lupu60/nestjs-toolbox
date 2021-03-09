@@ -29,8 +29,8 @@
         "dist"
     ],
     "engines": {
-        "node": "12",
-        "npm": "6"
+        "node": "14",
+        "npm": "7"
     },
     "scripts": {
         "build": "npm run clean && npm run compile",
