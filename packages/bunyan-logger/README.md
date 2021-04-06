@@ -16,13 +16,14 @@ You can pass any custom stream supported by Bunyan
 import { NestFactory } from '@nestjs/core';
 import { BunyanLoggerService } from "@nest-toolbox/bunyan-logger";
 import { AppModule } from './app.module';
+const Elasticsearch = require('bunyan-elasticsearch');
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
     ApplicationModule,
     {
       logger: new BunyanLoggerService({
-        projectName: 'project',
+        projectId: 'project',
         formatterOptions: {
           outputMode: 'long',
         },
@@ -30,15 +31,21 @@ async function bootstrap() {
     },
   );
 
+  const esStream = new Elasticsearch({
+    type: 'logs',
+    host: 'localhost:9300',
+  });
+
   const app = await NestFactory.create<NestExpressApplication>(
     ApplicationModule,
     {
       logger: new BunyanLoggerService({
-        projectName: 'project',
+        projectId: 'project',
         formatterOptions: {
           outputMode: 'long',
         },
         customStreams: [
+          { stream: esStream },
           {
             path: 'foo.log',
           },
@@ -66,5 +73,8 @@ options: {
       colorFromLevel?: any;
     };
     customStreams?: any[];
+    extraFields?: {
+      [key: string]: string;
+    };
 }
 ```
