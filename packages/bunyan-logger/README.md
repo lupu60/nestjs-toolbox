@@ -44,6 +44,10 @@ async function bootstrap() {
         formatterOptions: {
           outputMode: 'long',
         },
+        extraFields?: {
+          environment:'production',
+          microservice: 'users',
+        };
         customStreams: [
           { stream: esStream },
           {
