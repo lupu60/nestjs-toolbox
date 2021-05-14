@@ -45,7 +45,7 @@
     "dependencies": {
         "@nestjs/common": "7.6.13",
         "@types/bunyan": "1.8.6",
-        "@types/node": "14.14.22",
+        "@types/node": "15.0.3",
         "bunyan": "1.8.15",
         "bunyan-format": "0.2.1",
         "colors": "1.4.0",
