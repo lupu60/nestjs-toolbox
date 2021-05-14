@@ -8,6 +8,7 @@ export interface FormatterOptions {
   color?: boolean;
   levelInString?: boolean;
   colorFromLevel?: any;
+  src?: boolean;
 }
 
 export class BunyanLoggerService implements LoggerService {
