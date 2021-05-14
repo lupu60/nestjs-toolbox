@@ -38,7 +38,7 @@
     },
     "dependencies": {
         "@nestjs/common": "7.6.13",
-        "chalk": "4.1.0"
+        "chalk": "4.1.1"
     },
     "devDependencies": {
         "rimraf": "3.0.2",
