@@ -49,7 +49,7 @@
         "role-acl": "4.5.4"
     },
     "devDependencies": {
-        "@nestjs/testing": "7.6.15",
+        "@nestjs/testing": "7.6.17",
         "rimraf": "~3.0.2",
         "rxjs": "6.6.3",
         "ts-node": "9.1.1",
