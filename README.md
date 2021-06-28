@@ -51,12 +51,6 @@
      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/946px-JetBrains_Logo_2016.svg.png"  alt="JetBrains" width="150"/>
 </a>   
 
-## Support on Beerpay
-
-Hey dude! Help me out for a couple of :beers:!
-
-[![Beerpay](https://beerpay.io/lupu60/nestjs-toolbox/badge.svg?style=beer-square)](https://beerpay.io/lupu60/nestjs-toolbox) [![Beerpay](https://beerpay.io/lupu60/nestjs-toolbox/make-wish.svg?style=flat-square)](https://beerpay.io/lupu60/nestjs-toolbox?focus=wish)
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
