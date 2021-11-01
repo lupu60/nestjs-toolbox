@@ -42,6 +42,6 @@
         "typeorm": "0.2.38"
     },
     "devDependencies": {
-        "typescript": "4.4.3"
+        "typescript": "4.4.4"
     }
 }
