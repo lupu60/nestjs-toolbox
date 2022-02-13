@@ -1,11 +1,14 @@
 # `bootstrap-log`
 
-> TODO: description
+> get a nice bootstrap log with your configs
 
 ## Usage
 
 ```
-const bootstrapLog = require('bootstrap-log');
+import { BootstrapLog } from '@nest-toolbox/bootstrap-log';
 
-// TODO: DEMONSTRATE API
+  await app.listen(port, () => {
+    const { hostname, environment, database_url } = config();
+    BootstrapLog({ config: { environment, hostname, package_json_body: packageBody, database_url, swagger: true } });
+  });
 ```
