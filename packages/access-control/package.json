@@ -1,7 +1,7 @@
 {
     "name": "@nest-toolbox/access-control",
     "description": "nestjs toolbox",
-    "version": "1.4.6",
+    "version": "1.4.7",
     "author": "getlarge <ed@getlarge.eu>",
     "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control#readme",
     "license": "MIT",
