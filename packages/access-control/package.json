@@ -54,5 +54,6 @@
         "rxjs": "6.6.7",
         "ts-node": "10.4.0",
         "typescript": "4.5.4"
-    }
+    },
+    "gitHead": "1d1905d8ec2bc50c2ddc7d802f4171bfc12f6684"
 }

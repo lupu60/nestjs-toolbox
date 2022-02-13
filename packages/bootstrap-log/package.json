@@ -43,11 +43,12 @@
   },
   "dependencies": {
     "@nestjs/common": "7.6.15",
-    "chalk": "5.0.0",
+    "colors": "1.4.0",
     "ts-node": "10.4.0"
   },
   "devDependencies": {
     "rimraf": "~3.0.2",
     "typescript": "4.5.4"
-  }
+  },
+  "gitHead": "1d1905d8ec2bc50c2ddc7d802f4171bfc12f6684"
 }
