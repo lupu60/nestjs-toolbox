@@ -1,5 +1,7 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import * as chalk from 'chalk';
+const isEmpty = (obj) => JSON.stringify(obj) === '{}';
+
 @Injectable()
 export class HttpLoggerMiddleware implements NestMiddleware {
   logger = new Logger('HTTP');
@@ -11,13 +13,13 @@ export class HttpLoggerMiddleware implements NestMiddleware {
     this.log('---------------------------------------------------------------------------------');
     this.log('request method:', req.method);
     this.log('request url: ', requestUrl);
-    if (query) {
+    if (query && !isEmpty(query)) {
       this.log('request query: ', JSON.stringify(query));
     }
-    if (params) {
+    if (params && !isEmpty(params)) {
       this.log('request params: ', JSON.stringify(params));
     }
-    if (body) {
+    if (body && !isEmpty(body)) {
       this.log('request body: ', JSON.stringify(body));
     }
     this.log('---------------------------------------------------------------------------------');
