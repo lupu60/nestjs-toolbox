@@ -1,0 +1,56 @@
+{
+  "name": "@nest-toolbox/progress-bar",
+  "version": "1.4.8",
+  "description": "a simple progress bar for log running tasks",
+  "author": "bogdanlupu <lupu60@gmail.com>",
+  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/progress-bar#readme",
+  "license": "MIT",
+  "keywords": [
+    "nestjs",
+    "toolbox",
+    "progress"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
+  "publicConfig": {
+    "access": "public"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "private": false,
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=12 <=15",
+    "npm": ">= 6 <=7"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf -rf ./dist",
+    "cleanup": "rimraf -rf dist coverage",
+    "compile": "tsc -p tsconfig.build.json",
+    "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+    "test": "jest --ci --config ../../jest.config.json ",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@nestjs/common": "7.6.15",
+    "colors": "1.4.0",
+    "reflect-metadata": "0.1.13",
+    "ts-node": "10.4.0"
+  },
+  "devDependencies": {
+    "rimraf": "~3.0.2",
+    "typescript": "4.5.4"
+  }
+}

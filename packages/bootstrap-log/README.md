@@ -2,6 +2,8 @@
 
 > get a nice bootstrap log with your configs
 
+![alt text](https://pasteboard.co/bBxdFdWEoesz.png)
+
 ## Usage
 
 ```
