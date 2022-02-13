@@ -1,7 +1,7 @@
 {
   "name": "@nest-toolbox/open-api-spec-to-ts",
   "description": "nestjs toolbox",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "author": "getlarge <ed@getlarge.eu>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts#readme",
   "license": "MIT",
