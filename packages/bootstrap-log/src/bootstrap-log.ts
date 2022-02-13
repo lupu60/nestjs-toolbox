@@ -23,7 +23,7 @@ export function BootstrapLog(options: { config: AppConfig }) {
   logger.log(colors.red.bold(`🚀 Server is using ${environment} environment`));
   logger.log(colors.blue.bold(`✅ Server running on 👉 ${hostname}/api`));
   if (database_url) {
-    logger.log(colors.blue.bold(`💾 Database ${JSON.stringify({ url: database_url })}`));
+    logger.log(colors.blue.bold(`💾 Database ${database_url}`));
   }
   if (swagger) {
     logger.log(colors.green.bold(`📄 Swagger 👉 ${hostname}/swagger/`));
