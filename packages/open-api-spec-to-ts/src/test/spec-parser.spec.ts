@@ -2,26 +2,26 @@ import { readDir, removeFile } from '../files';
 import { generate } from '../spec-parser';
 
 describe('OpenAPISpecParser', () => {
-    const basePath = '../open-api-spec-to-ts/src/test';
-    const interfaceFilePath = `${basePath}/interfaces`;
+  const basePath = '../open-api-spec-to-ts/src/test';
+  const interfaceFilePath = `${basePath}/interfaces`;
 
-    afterAll(async () => {
-        const files = await readDir(interfaceFilePath);
-        return Promise.all(Object.values(files).map((file) => removeFile(`${interfaceFilePath}/${file}`)));
-    });
+  afterAll(async () => {
+    const files = await readDir(interfaceFilePath);
+    return Promise.all(Object.values(files).map((file) => removeFile(`${interfaceFilePath}/${file}`)));
+  });
 
-    // xit('should generate from a valid Open API file', async () => {
-    //     const testFile = `${basePath}/uspto.json`;
-    //     await generate(testFile, interfaceFilePath);
-    // });
+  // xit('should generate from a valid Open API file', async () => {
+  //     const testFile = `${basePath}/uspto.json`;
+  //     await generate(testFile, interfaceFilePath);
+  // });
 
-    // it('should generate from a valid Open API file 2', async () => {
-    //     const testFile = `${basePath}/petstore.json`;
-    //     await generate(testFile, interfaceFilePath);
-    // });
+  // it('should generate from a valid Open API file 2', async () => {
+  //     const testFile = `${basePath}/petstore.json`;
+  //     await generate(testFile, interfaceFilePath);
+  // });
 
-    it('should throw no such file or directory', async () => {
-        const invalidTestFile = `./invalid-path.json`;
-        await expect(generate(invalidTestFile, interfaceFilePath)).rejects.toThrow(`ENOENT: no such file or directory, open '${invalidTestFile}'`);
-    });
+  it('should throw no such file or directory', async () => {
+    const invalidTestFile = `./invalid-path.json`;
+    await expect(generate(invalidTestFile, interfaceFilePath)).rejects.toThrow(`ENOENT: no such file or directory, open '${invalidTestFile}'`);
+  });
 });

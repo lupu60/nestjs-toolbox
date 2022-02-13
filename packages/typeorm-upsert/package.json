@@ -1,47 +1,47 @@
 {
-    "name": "@nest-toolbox/typeorm-upsert",
-    "description": "upsert function for typeorm",
-    "version": "1.4.8",
-    "author": "bogdanlupu <lupu60@gmail.com>",
-    "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
-    "license": "MIT",
-    "keywords": [
-        "typeorm",
-        "postgres"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-    },
-    "bugs": {
-        "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-    },
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
-    },
-    "publicConfig": {
-        "access": "public"
-    },
-    "main": "dist/index",
-    "types": "dist/index",
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "npm run clean && npm run compile",
-        "clean": "rimraf -rf ./dist",
-        "cleanup": "rimraf -rf dist coverage ",
-        "compile": "tsc -p tsconfig.build.json",
-        "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
-        "test": "jest --ci --config ../../jest.config.json ",
-        "prepublishOnly": "npm run build"
-    },
-    "gitHead": "bfa41a24d5c085427ced65ff92078936ffdf62b6",
-    "dependencies": {
-        "rimraf": "3.0.2",
-        "typeorm": "0.2.41"
-    },
-    "devDependencies": {
-        "typescript": "4.5.4"
-    }
+  "name": "@nest-toolbox/typeorm-upsert",
+  "description": "upsert function for typeorm",
+  "version": "1.4.8",
+  "author": "bogdanlupu <lupu60@gmail.com>",
+  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
+  "license": "MIT",
+  "keywords": [
+    "typeorm",
+    "postgres"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "publicConfig": {
+    "access": "public"
+  },
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf -rf ./dist",
+    "cleanup": "rimraf -rf dist coverage ",
+    "compile": "tsc -p tsconfig.build.json",
+    "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+    "test": "jest --ci --config ../../jest.config.json ",
+    "prepublishOnly": "npm run build"
+  },
+  "gitHead": "bfa41a24d5c085427ced65ff92078936ffdf62b6",
+  "dependencies": {
+    "rimraf": "3.0.2",
+    "typeorm": "0.2.41"
+  },
+  "devDependencies": {
+    "typescript": "4.5.5"
+  }
 }

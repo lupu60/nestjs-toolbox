@@ -4,10 +4,10 @@ import { RulesBuilder } from '../rules-builder.class';
 
 @Controller()
 export class GrantsController {
-    constructor(@InjectRulesBuilder() private readonly ruleBuilder: RulesBuilder) {}
+  constructor(@InjectRulesBuilder() private readonly ruleBuilder: RulesBuilder) {}
 
-    @Get()
-    public getGrants() {
-        return this.ruleBuilder.getGrants();
-    }
+  @Get()
+  public getGrants() {
+    return this.ruleBuilder.getGrants();
+  }
 }

@@ -25,11 +25,7 @@ export async function* rows<T>(options: {
   }
 }
 
-export async function* set<T>(options: {
-  repository: Repository<T>;
-  where: FindConditions<T>;
-  limit?: number;
-}): AsyncGenerator<T[]> {
+export async function* set<T>(options: { repository: Repository<T>; where: FindConditions<T>; limit?: number }): AsyncGenerator<T[]> {
   const { repository, where, limit = 100 } = options;
   const total = await repository.count(where);
   let offset = 0;
