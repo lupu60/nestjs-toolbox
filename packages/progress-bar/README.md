@@ -1,7 +1,8 @@
 # `progress-bar`
 
 > simple progress bar
-> ![](https://pasteboard.co/JJnbF3rTUEss.png)
+
+![alt-text](https://gcdnb.pbrd.co/images/JJnbF3rTUEss.png?o=1)
 
 ## Usage
 

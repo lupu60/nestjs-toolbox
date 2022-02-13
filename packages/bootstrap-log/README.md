@@ -2,7 +2,7 @@
 
 > get a nice bootstrap log with your configs
 
-![alt text](https://pasteboard.co/bBxdFdWEoesz.png)
+![alt text](https://gcdnb.pbrd.co/images/bBxdFdWEoesz.png?o=1)
 
 ## Usage
 

@@ -38,15 +38,15 @@
 
 ### List of packages
 
-- [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme)
-- [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger#readme)
-- [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme)
-- [Open-API-Spec-to-TS](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts#readme)
-- [HttpLoggerMiddleware](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme)
-- [Access-Control](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control#readme)
-- [BootstrapLog](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bootstrap-log#readme)
-- [ProgressBar](https://github.com/lupu60/nests-toolbox/tree/master/packages/progress-bar#readme)
-- [Typeorm-Paginate](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-paginate#readme)
+- [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger)
+- [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger)
+- [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert)
+- [Open-API-Spec-to-TS](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts)
+- [HttpLoggerMiddleware](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware)
+- [Access-Control](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control)
+- [BootstrapLog](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bootstrap-log)
+- [ProgressBar](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/progress-bar)
+- [Typeorm-Paginate](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-paginate)
 
 ## Sponsors
 
