@@ -1,6 +1,6 @@
 {
   "name": "@nest-toolbox/bootstrap-log",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "bootstrap log for nestjs applications",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/bootstrap-log#readme",
