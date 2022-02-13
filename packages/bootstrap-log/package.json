@@ -24,7 +24,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "private": "false",
+  "private": false,
   "main": "dist/index",
   "types": "dist/index",
   "files": [
