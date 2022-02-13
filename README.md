@@ -46,6 +46,7 @@
 - [Access-Control](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control#readme)
 - [BootstrapLog](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bootstrap-log#readme)
 - [ProgressBar](https://github.com/lupu60/nests-toolbox/tree/master/packages/progress-bar#readme)
+- [Typeorm-Paginate](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-paginate#readme)
 
 ## Sponsors
 
