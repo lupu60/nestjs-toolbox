@@ -1,13 +1,14 @@
 {
-  "name": "@nest-toolbox/progress-bar",
+  "name": "@nest-toolbox/typeorm-paginate",
   "version": "1.4.8",
-  "description": "a simple progress bar for log running tasks",
+  "description": "paginate typeorm table",
   "author": "bogdanlupu <lupu60@gmail.com>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/progress-bar#readme",
+  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/typeorm-paginate#readme",
   "license": "MIT",
   "keywords": [
     "nestjs",
-    "toolbox"
+    "toolbox",
+    "progress"
   ],
   "repository": {
     "type": "git",
@@ -43,10 +44,10 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "7.6.15",
-    "colors": "1.4.0",
     "reflect-metadata": "0.1.13",
-    "ts-node": "10.4.0"
+    "ts-node": "10.4.0",
+    "type-fest": "2.11.2",
+    "typeorm": "0.2.41"
   },
   "devDependencies": {
     "rimraf": "~3.0.2",
