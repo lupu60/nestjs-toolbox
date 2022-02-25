@@ -19,7 +19,7 @@ export interface Options {
   develop: string;
   feature: string;
   commitSha: string;
-  tag: boolean;
+  tag: boolean | string;
   packageJson: string;
   developLabel: string;
   alphaLabel: string;
@@ -82,8 +82,8 @@ async function generate(options) {
 
 async function main() {
   const options = program.opts() as Options;
+  options.tag = options.tag == 'true';
   // console.log(JSON.stringify(options));
-
   if (options.packageJson) {
     options.version = await exec<string>(`cat ${options.packageJson} |
       grep version |
