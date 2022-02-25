@@ -42,13 +42,13 @@ program
 
 function generate_develop_version(options: Options) {
   const { version, developLabel, labelSeparator, commitIdSeparator, commitSha } = options;
-  const develop_version = `${version}${labelSeparator}${developLabel}${commitIdSeparator}${commitSha}`;
+  const develop_version = `${version}${labelSeparator}${developLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
   return develop_version;
 }
 
 function generate_master_version(options: Options) {
   const { version, commitIdSeparator, commitSha } = options;
-  const develop_version = `${version}${commitIdSeparator}${commitSha}`;
+  const develop_version = `${version}${commitIdSeparator}${commitSha.slice(0, 7)}`;
   return develop_version;
 }
 
