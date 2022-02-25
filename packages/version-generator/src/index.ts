@@ -65,11 +65,13 @@ async function main() {
   }
 
   if (!options.version) {
-    throw new Error('version is required');
+    console.error(new Error('version is required'));
+    return;
   }
 
   if (!options.commitSha) {
-    throw new Error('commit sha is required');
+    console.error(new Error('commit sha is required'));
+    return;
   }
 
   const branch = await exec<string>('git branch --show-current');
@@ -82,3 +84,8 @@ async function main() {
 }
 
 main();
+
+process.on('uncaughtException', (err) => {
+  console.error(err);
+  process.exit(1);
+});
