@@ -17,10 +17,12 @@ function exec<T>(command): Promise<T> {
 export interface Options {
   master: string;
   develop: string;
+  feature: string;
   commitSha: string;
   tag: boolean;
   packageJson: string;
   developLabel: string;
+  alphaLabel: string;
   labelSeparator: string;
   commitIdSeparator: string;
   version: string;
@@ -35,21 +37,47 @@ program
   .option('--tag [boolean]', '--tag [boolean]', false)
   .option('--master [master]', 'master branch identifier', 'master')
   .option('--develop [develop]', 'develop branch identifier', 'develop')
+  .option('--feature [feature]', 'feature branch identifier', 'feature')
   .option('--develop-label [develop-label]', 'develop-label identifier', 'beta')
+  .option('--alpha-label [alpha-label]', 'alpha-label identifier', 'alpha')
   .option('--label-separator [label-separator]', 'label-separator', '-')
   .option('--commit-id-separator [commit-id-separator]', 'commit-id-separator', '.')
   .parse(process.argv);
 
+function generate_feature_version(options: Options) {
+  const { version, alphaLabel, labelSeparator, commitIdSeparator, commitSha } = options;
+  return `${version}${labelSeparator}${alphaLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
+}
+
 function generate_develop_version(options: Options) {
   const { version, developLabel, labelSeparator, commitIdSeparator, commitSha } = options;
-  const develop_version = `${version}${labelSeparator}${developLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
-  return develop_version;
+  return `${version}${labelSeparator}${developLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
 }
 
 function generate_master_version(options: Options) {
   const { version, commitIdSeparator, commitSha } = options;
-  const develop_version = `${version}${commitIdSeparator}${commitSha.slice(0, 7)}`;
-  return develop_version;
+  return `${version}${commitIdSeparator}${commitSha.slice(0, 7)}`;
+}
+
+async function generate(options) {
+  const branch = await exec<string>('git branch --show-current');
+
+  const isMaster = branch.includes(options.master) || options.tag;
+  if (isMaster) {
+    return generate_master_version(options);
+  }
+
+  const isDevelop = branch.includes(options.develop) && !options.tag;
+  if (isDevelop) {
+    return generate_develop_version(options);
+  }
+
+  const isFeature = branch.includes(options.feature);
+  if (isFeature) {
+    return generate_feature_version(options);
+  }
+
+  return undefined;
 }
 
 async function main() {
@@ -74,13 +102,8 @@ async function main() {
     return;
   }
 
-  const branch = await exec<string>('git branch --show-current');
-  if (branch.includes(options.master) || options.tag) {
-    console.log(generate_master_version(options));
-  }
-  if (branch.includes(options.develop) && !options.tag) {
-    console.log(generate_develop_version(options));
-  }
+  const generated = await generate(options);
+  console.log(generated);
 }
 
 main();
