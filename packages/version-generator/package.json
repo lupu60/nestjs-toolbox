@@ -1,6 +1,6 @@
 {
   "name": "@nest-toolbox/version-generator",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "a simple version-generator",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/version-generator#readme",
