@@ -15,9 +15,10 @@ export interface Options {
 
 program
   .name('version-generator')
+  .description('Generate version from git branch and commit sha')
   .option('-v, --version [0.0.0]', 'version from package json')
   .option('--commit-sha [commit-sha]')
-  .option('--tag [boolean], --tag [boolean]', 'false')
+  .option('--tag [boolean]', '--tag [boolean]', false)
   .option('--master [master]', 'master branch identifier', 'master')
   .option('--develop [develop]', 'develop branch identifier', 'develop')
   .option('--develop-label [develop-label]', 'develop-label identifier', 'beta')
@@ -68,4 +69,5 @@ async function main() {
   }
 }
 
+// console.log(JSON.stringify(options));
 main();
