@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { program } from 'commander';
 const { exec: callbackexec } = require('child_process');
 

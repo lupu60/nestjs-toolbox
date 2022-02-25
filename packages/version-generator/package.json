@@ -25,6 +25,7 @@
   },
   "private": false,
   "main": "dist/index",
+  "bin": "./dist/index.js",
   "types": "dist/index",
   "files": [
     "dist"
@@ -43,12 +44,12 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "colors": "1.4.0",
     "commander": "9.0.0",
     "reflect-metadata": "0.1.13",
     "ts-node": "10.4.0"
   },
   "devDependencies": {
+    "@types/commander": "2.12.2",
     "@types/node": "17.0.8",
     "rimraf": "~3.0.2",
     "typescript": "4.5.5"
