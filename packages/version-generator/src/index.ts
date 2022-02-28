@@ -1,18 +1,8 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 const { exec: callbackexec } = require('child_process');
-
-function exec<T>(command): Promise<T> {
-  return new Promise(function (resolve, reject) {
-    callbackexec(command, (error, stdout, stderr) => {
-      if (error || stderr) {
-        reject(error || stderr);
-        return;
-      }
-      resolve(stdout.trim());
-    });
-  });
-}
+const fs = require('fs');
+const path = require('path');
 
 export interface Options {
   master: string;
@@ -59,8 +49,29 @@ function generate_master_version(options: Options) {
   return `${version}${commitIdSeparator}${commitSha.slice(0, 7)}`;
 }
 
+function exec<T>(command): Promise<T> {
+  return new Promise(function (resolve, reject) {
+    callbackexec(command, (error, stdout, stderr) => {
+      if (error || stderr) {
+        reject(error || stderr);
+        return;
+      }
+      resolve(stdout.trim());
+    });
+  });
+}
+
+function getCurrentBranchName(p = process.cwd()) {
+  const gitHeadPath = `${p}/.git/HEAD`;
+  return fs.existsSync(p)
+    ? fs.existsSync(gitHeadPath)
+      ? fs.readFileSync(gitHeadPath, 'utf-8').trim().split('/')[2]
+      : getCurrentBranchName(path.resolve(p, '..'))
+    : false;
+}
+
 async function generate(options) {
-  const branch = await exec<string>('git branch --show-current');
+  const branch = await getCurrentBranchName();
 
   const isMaster = branch.includes(options.master) || options.tag;
   if (isMaster) {
