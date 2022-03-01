@@ -46,7 +46,7 @@
   "dependencies": {
     "commander": "9.0.0",
     "reflect-metadata": "0.1.13",
-    "ts-node": "10.4.0"
+    "ts-node": "10.5.0"
   },
   "devDependencies": {
     "@types/commander": "2.12.2",

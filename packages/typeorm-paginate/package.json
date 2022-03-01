@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "reflect-metadata": "0.1.13",
-    "ts-node": "10.4.0",
+    "ts-node": "10.5.0",
     "type-fest": "2.12.0",
     "typeorm": "0.2.44"
   },
