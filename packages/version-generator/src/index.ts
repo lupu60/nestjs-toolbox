@@ -70,11 +70,20 @@ function getCurrentBranchName(p = process.cwd()) {
     : false;
 }
 
+function isMaster({ options, branch }) {
+  if (options.tag) {
+    return true;
+  }
+  if (branch.includes(options.master)) {
+    return true;
+  }
+  return false;
+}
+
 async function generate(options) {
   const branch = await getCurrentBranchName();
 
-  const isMaster = branch.includes(options.master) || options.tag;
-  if (isMaster) {
+  if (isMaster({ options, branch })) {
     return generate_master_version(options);
   }
 
