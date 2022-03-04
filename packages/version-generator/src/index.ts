@@ -88,7 +88,7 @@ async function generate(options) {
     return generate_feature_version(options);
   }
 
-  return undefined;
+  return 'latest';
 }
 
 async function main() {
