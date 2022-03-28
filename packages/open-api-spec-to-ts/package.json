@@ -1,7 +1,7 @@
 {
   "name": "@nest-toolbox/open-api-spec-to-ts",
   "description": "nestjs toolbox",
-  "version": "1.4.9",
+  "version": "1.4.17",
   "author": "getlarge <ed@getlarge.eu>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts#readme",
   "license": "MIT",
@@ -49,11 +49,11 @@
     "json-schema-to-typescript": "9.1.1",
     "lodash": "4.17.21",
     "rimraf": "~3.0.2",
-    "ts-node": "10.4.0"
+    "ts-node": "10.5.0"
   },
   "devDependencies": {
-    "@types/node": "17.0.8",
-    "typescript": "4.5.5"
+    "@types/node": "17.0.21",
+    "typescript": "4.6.2"
   },
   "gitHead": "a6b171b15d2a2eaab6a05cbb181f5f2528f1be35"
 }

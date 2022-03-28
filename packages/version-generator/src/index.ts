@@ -1,22 +1,9 @@
 #!/usr/bin/env node
 import { program } from 'commander';
+import { generate_version, Options } from './lib/lib';
 const { exec: callbackexec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-
-export interface Options {
-  master: string;
-  develop: string;
-  feature: string;
-  commitSha: string;
-  tag: boolean | string;
-  packageJson: string;
-  developLabel: string;
-  alphaLabel: string;
-  labelSeparator: string;
-  commitIdSeparator: string;
-  version: string;
-}
 
 program
   .name('version-generator')
@@ -33,21 +20,6 @@ program
   .option('--label-separator [label-separator]', 'label-separator', '-')
   .option('--commit-id-separator [commit-id-separator]', 'commit-id-separator', '.')
   .parse(process.argv);
-
-function generate_feature_version(options: Options) {
-  const { version, alphaLabel, labelSeparator, commitIdSeparator, commitSha } = options;
-  return `${version}${labelSeparator}${alphaLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
-}
-
-function generate_develop_version(options: Options) {
-  const { version, developLabel, labelSeparator, commitIdSeparator, commitSha } = options;
-  return `${version}${labelSeparator}${developLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
-}
-
-function generate_master_version(options: Options) {
-  const { version, commitIdSeparator, commitSha } = options;
-  return `${version}${commitIdSeparator}${commitSha.slice(0, 7)}`;
-}
 
 function exec<T>(command): Promise<T> {
   return new Promise(function (resolve, reject) {
@@ -68,27 +40,6 @@ function getCurrentBranchName(p = process.cwd()) {
       ? fs.readFileSync(gitHeadPath, 'utf-8').trim().split('/')[2]
       : getCurrentBranchName(path.resolve(p, '..'))
     : false;
-}
-
-async function generate(options) {
-  const branch = await getCurrentBranchName();
-
-  const isMaster = branch.includes(options.master) || options.tag;
-  if (isMaster) {
-    return generate_master_version(options);
-  }
-
-  const isDevelop = branch.includes(options.develop) && !options.tag;
-  if (isDevelop) {
-    return generate_develop_version(options);
-  }
-
-  const isFeature = branch.includes(options.feature);
-  if (isFeature) {
-    return generate_feature_version(options);
-  }
-
-  return undefined;
 }
 
 async function main() {
@@ -112,8 +63,8 @@ async function main() {
     console.error(new Error('commit sha is required'));
     return;
   }
-
-  const generated = await generate(options);
+  const branch = await getCurrentBranchName();
+  const generated = generate_version(options, branch);
   console.log(generated);
 }
 

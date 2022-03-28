@@ -1,6 +1,6 @@
 {
   "name": "@nest-toolbox/version-generator",
-  "version": "1.4.16",
+  "version": "1.4.18",
   "description": "a simple version-generator",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/version-generator#readme",
@@ -46,13 +46,13 @@
   "dependencies": {
     "commander": "9.0.0",
     "reflect-metadata": "0.1.13",
-    "ts-node": "10.4.0"
+    "ts-node": "10.5.0"
   },
   "devDependencies": {
     "@types/commander": "2.12.2",
-    "@types/node": "17.0.8",
+    "@types/node": "17.0.21",
     "rimraf": "~3.0.2",
-    "typescript": "4.5.5"
+    "typescript": "4.6.2"
   },
   "gitHead": "a373cb6ca41984656cc31b54ac4eaeb435cbc078"
 }

@@ -16,13 +16,14 @@ export class ProgressBar {
   tick() {
     this.current++;
     this.progress = this.current === this.total ? 1 : Number((this.current / this.total).toFixed(2));
-    if (Math.abs(this.progress - this.previousProgress) > 0.1) {
+    const shouldLog = Math.abs(this.progress - this.previousProgress) > 0.05 || this.current === this.total;
+    if (shouldLog) {
       this.previousProgress = this.progress;
       const dots = '='.repeat(this.progress * 100);
       const left = Math.abs(1 - this.progress) * 100;
       const empty = ' '.repeat(left);
       const color = this.progress < 0.7 ? colors.yellow : colors.green;
-      this.logger.log(color.bold(`\r${this.identifier} [${dots}${empty}] ${this.progress * 100}%`));
+      this.logger.log(color.bold(`\r${this.identifier} [${dots}${empty}] ${(this.progress * 100).toFixed()}%`));
     }
   }
 }
