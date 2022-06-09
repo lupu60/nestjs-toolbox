@@ -52,7 +52,7 @@
   "devDependencies": {
     "@types/node": "17.0.38",
     "rimraf": "~3.0.2",
-    "typescript": "4.6.3"
+    "typescript": "4.7.3"
   },
   "gitHead": "c2d17d02efe1f507ce8f7b2523f24d32c95127af"
 }
