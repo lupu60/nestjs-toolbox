@@ -48,7 +48,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@lerna/publish": "4.0.0",
+    "@lerna/publish": "5.1.6",
     "@lerna/run": "5.0.0",
     "@types/jest": "27.4.1",
     "jest": "26.6.3",
