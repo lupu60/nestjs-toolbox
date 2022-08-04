@@ -15,7 +15,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "private": "false",
+  "private": false,
   "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
   "repository": {
     "type": "git",
