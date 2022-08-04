@@ -45,6 +45,7 @@
     "build": "npm run cleanup && lerna run compile",
     "cleanup": "lerna run cleanup --stream --parallel",
     "lint": "lerna run lint",
+    "publish": "lerna publish",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
