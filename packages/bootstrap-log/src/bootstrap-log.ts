@@ -21,7 +21,7 @@ export function BootstrapLog(options: { config: AppConfig }) {
   const logger: Logger = new Logger('Bootstrap');
   logger.log(colors.green.bold(`🎉 Bootstrapping ${package_json_body.name}:${package_json_body.version}`));
   logger.log(colors.red.bold(`🚀 Server is using ${environment} environment`));
-  logger.log(colors.blue.bold(`✅ Server running on 👉 ${hostname}/api`));
+  logger.log(colors.blue.bold(`✅ Server running on 👉 ${hostname}`));
   if (database_url) {
     logger.log(colors.blue.bold(`💾 Database ${database_url}`));
   }
