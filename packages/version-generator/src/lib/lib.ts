@@ -7,6 +7,7 @@ export interface Options {
   packageJson: string;
   developLabel: string;
   alphaLabel: string;
+  prodLabel: string;
   labelSeparator: string;
   commitIdSeparator: string;
   version: string;
@@ -23,8 +24,8 @@ export function generate_develop_version(options: Partial<Options>) {
 }
 
 export function generate_master_version(options: Partial<Options>) {
-  const { version, commitIdSeparator, commitSha } = options;
-  return `${version}${commitIdSeparator}${commitSha.slice(0, 7)}`;
+  const { version, commitIdSeparator, commitSha, prodLabel, labelSeparator } = options;
+  return `${version}${labelSeparator}${prodLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
 }
 
 export function isMaster(options: { options: Partial<Options>; branch: string }) {

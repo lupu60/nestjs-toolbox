@@ -17,6 +17,7 @@ program
   .option('--feature [feature]', 'feature branch identifier', 'feature')
   .option('--develop-label [develop-label]', 'develop-label identifier', 'beta')
   .option('--alpha-label [alpha-label]', 'alpha-label identifier', 'alpha')
+  .option('--prod-label [prod-label]', 'prod-label identifier', 'prod')
   .option('--label-separator [label-separator]', 'label-separator', '-')
   .option('--commit-id-separator [commit-id-separator]', 'commit-id-separator', '.')
   .parse(process.argv);

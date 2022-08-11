@@ -12,6 +12,7 @@ describe('version-generator', () => {
   const version = '1.0.0';
   const alphaLabel = 'alpha';
   const developLabel = 'beta';
+  const prodLabel = 'prod';
   const labelSeparator = '-';
   const commitIdSeparator = '.';
   const commitSha = 'ebffb639b71631c1221fd9ee1c0d32e4fbe9a024';
@@ -19,6 +20,7 @@ describe('version-generator', () => {
   const options = {
     version,
     alphaLabel,
+    prodLabel,
     developLabel,
     labelSeparator,
     commitIdSeparator,
@@ -40,7 +42,7 @@ describe('version-generator', () => {
 
   it('generate_master_version', () => {
     const generated = generate_master_version(options);
-    expect(generated).toEqual('1.0.0.ebffb63');
+    expect(generated).toEqual('1.0.0-prod.ebffb63');
   });
 
   it('isMaster', () => {
@@ -67,6 +69,7 @@ describe('version-generator', () => {
       version,
       alphaLabel,
       developLabel,
+      prodLabel,
       labelSeparator,
       commitIdSeparator,
       commitSha,
@@ -75,8 +78,8 @@ describe('version-generator', () => {
       feature: 'feature',
     };
 
-    expect(generate_version(options, 'master')).toEqual('1.0.0.ebffb63');
-    expect(generate_version({ ...options, tag: true }, 'develop')).toEqual('1.0.0.ebffb63');
+    expect(generate_version(options, 'master')).toEqual('1.0.0-prod.ebffb63');
+    expect(generate_version({ ...options, tag: true }, 'develop')).toEqual('1.0.0-prod.ebffb63');
     expect(generate_version(options, 'develop')).toEqual('1.0.0-beta.ebffb63');
     expect(generate_version(options, 'feature/cool-feature')).toEqual('1.0.0-alpha.ebffb63');
   });
