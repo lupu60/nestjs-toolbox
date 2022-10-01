@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@lerna/publish": "5.5.1",
-    "@lerna/run": "5.5.1",
+    "@lerna/run": "5.6.1",
     "@types/jest": "27.4.1",
     "jest": "26.6.3",
     "jest-junit": "14.0.0",
