@@ -42,13 +42,13 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "^7.2.0",
-    "@nestjs/core": "^7.2.0",
+    "@nestjs/common": "^9.0.11",
+    "@nestjs/core": "^9.0.11",
     "reflect-metadata": "^0.1.13",
     "role-acl": "4.5.4"
   },
   "devDependencies": {
-    "@nestjs/testing": "7.6.18",
+    "@nestjs/testing": "9.0.11",
     "@types/node": "18.0.0",
     "rimraf": "~3.0.2",
     "rxjs": "6.6.7",
