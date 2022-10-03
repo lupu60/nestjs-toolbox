@@ -37,7 +37,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "7.6.18",
+    "@nestjs/common": "9.1.2",
     "chalk": "4.1.2"
   },
   "devDependencies": {
