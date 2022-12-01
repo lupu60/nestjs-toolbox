@@ -44,7 +44,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "9.0.11",
+    "@nestjs/common": "9.2.1",
     "colors": "1.4.0",
     "reflect-metadata": "0.1.13",
     "ts-node": "10.9.1"
