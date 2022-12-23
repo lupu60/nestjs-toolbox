@@ -34,7 +34,7 @@
     "open-api"
   ],
   "engines": {
-    "node": ">=12 <=15",
+    "node": ">=12 <=16",
     "npm": ">= 6 <=7"
   },
   "scripts": {
