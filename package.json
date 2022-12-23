@@ -35,7 +35,7 @@
   ],
   "engines": {
     "node": ">=12 <=16",
-    "npm": ">= 6 <=7"
+    "npm": ">= 6 <=8"
   },
   "scripts": {
     "bootstrap": "npm install lerna && lerna bootstrap && npm install",
