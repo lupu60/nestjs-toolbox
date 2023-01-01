@@ -52,7 +52,7 @@
     "@lerna/publish": "5.6.2",
     "@lerna/run": "5.6.1",
     "@types/jest": "27.4.1",
-    "eslint": "8.30.0",
+    "eslint": "8.31.0",
     "eslint-config-semistandard": "17.0.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.26.0",
