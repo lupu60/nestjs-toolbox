@@ -1,9 +1,9 @@
-import { FindConditions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Merge } from 'type-fest';
 
 export async function* rows<T>(options: {
   repository: Repository<T>;
-  where: FindConditions<T>;
+  where: any;
   limit?: number;
   offset?: number;
 }): AsyncGenerator<Merge<T, { index: number; progress: number }>> {
@@ -25,7 +25,7 @@ export async function* rows<T>(options: {
   }
 }
 
-export async function* set<T>(options: { repository: Repository<T>; where: FindConditions<T>; limit?: number }): AsyncGenerator<T[]> {
+export async function* set<T>(options: { repository: Repository<T>; where: any; limit?: number }): AsyncGenerator<T[]> {
   const { repository, where, limit = 100 } = options;
   const total = await repository.count(where);
   let offset = 0;

@@ -5,7 +5,6 @@ import { RULES_BUILDER_TOKEN } from './constants';
 import { GrantsController } from './controller/grants.controller';
 import { RulesBuilder } from './rules-builder.class';
 
-// tslint:disable-next-line: ban-types
 export type Injection = (Type<any> | string | symbol | Abstract<any> | Function)[];
 
 export interface AccessControlOptionsFactory {

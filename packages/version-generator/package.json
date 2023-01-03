@@ -31,8 +31,8 @@
     "dist"
   ],
   "engines": {
-    "node": ">=12 <=15",
-    "npm": ">= 6 <=7"
+    "node": ">=12 <=16",
+    "npm": ">= 6 <=8"
   },
   "scripts": {
     "build": "npm run clean && npm run compile",
@@ -50,9 +50,9 @@
   },
   "devDependencies": {
     "@types/commander": "2.12.2",
-    "@types/node": "18.0.0",
+    "@types/node": "18.11.17",
     "rimraf": "~3.0.2",
-    "typescript": "4.8.4"
+    "typescript": "4.9.4"
   },
   "gitHead": "a373cb6ca41984656cc31b54ac4eaeb435cbc078"
 }

@@ -37,12 +37,12 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "9.1.2",
+    "@nestjs/common": "9.2.1",
     "chalk": "4.1.2"
   },
   "devDependencies": {
     "rimraf": "3.0.2",
-    "typescript": "4.8.4"
+    "typescript": "4.9.4"
   },
   "gitHead": "bfa41a24d5c085427ced65ff92078936ffdf62b6"
 }

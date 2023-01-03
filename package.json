@@ -34,8 +34,8 @@
     "open-api"
   ],
   "engines": {
-    "node": ">=12 <=15",
-    "npm": ">= 6 <=7"
+    "node": ">=12 <=16",
+    "npm": ">= 6 <=8"
   },
   "scripts": {
     "bootstrap": "npm install lerna && lerna bootstrap && npm install",
@@ -49,23 +49,26 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@lerna/publish": "5.5.1",
-    "@lerna/run": "5.6.1",
+    "@lerna/publish": "6.3.0",
+    "@lerna/run": "6.3.0",
     "@types/jest": "27.4.1",
+    "eslint": "8.31.0",
+    "eslint-config-semistandard": "17.0.0",
+    "eslint-config-standard": "17.0.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-n": "15.6.0",
+    "eslint-plugin-promise": "6.1.1",
     "jest": "26.6.3",
-    "jest-junit": "14.0.1",
-    "lerna": "5.5.4",
+    "jest-junit": "15.0.0",
+    "lerna": "6.3.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "2.7.1",
+    "prettier": "2.8.1",
     "rimraf": "^3.0.0",
     "standard-version": "9.5.0",
     "ts-jest": "26.5.6",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.1.0",
-    "tslint": "6.1.3",
-    "tslint-clean-code": "0.2.10",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "4.8.4"
+    "typescript": "4.9.4"
   },
   "dependencies": {
     "reflect-metadata": "0.1.13"

@@ -31,8 +31,8 @@
     "dist"
   ],
   "engines": {
-    "node": ">=12 <=15",
-    "npm": ">= 6 <=7"
+    "node": ">=12 <=16",
+    "npm": ">= 6 <=8"
   },
   "scripts": {
     "build": "npm run clean && npm run compile",
@@ -44,15 +44,15 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "9.0.11",
+    "@nestjs/common": "9.2.1",
     "colors": "1.4.0",
     "reflect-metadata": "0.1.13",
     "ts-node": "10.9.1"
   },
   "devDependencies": {
-    "@types/node": "18.0.0",
+    "@types/node": "18.11.17",
     "rimraf": "~3.0.2",
-    "typescript": "4.8.4"
+    "typescript": "4.9.4"
   },
   "gitHead": "c2d17d02efe1f507ce8f7b2523f24d32c95127af"
 }

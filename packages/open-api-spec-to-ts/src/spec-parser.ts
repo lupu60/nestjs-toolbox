@@ -1,5 +1,3 @@
-/* tslint:disable no-console */
-
 import { OpenAPIObject } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import * as chalk from 'chalk';
