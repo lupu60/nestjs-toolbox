@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@lerna/publish": "5.6.2",
-    "@lerna/run": "5.6.1",
+    "@lerna/run": "6.3.0",
     "@types/jest": "27.4.1",
     "eslint": "8.31.0",
     "eslint-config-semistandard": "17.0.0",
