@@ -51,7 +51,7 @@
 ## Sponsors
 
 <a href="https://www.jetbrains.com/?from=nestjs-toolbox">
-     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/946px-JetBrains_Logo_2016.svg.png"  alt="JetBrains" width="150"/>
+     <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png"  alt="JetBrains" width="150"/>
 </a>
 
 ## Contributors ✨
