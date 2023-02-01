@@ -46,7 +46,7 @@
   "dependencies": {
     "reflect-metadata": "0.1.13",
     "ts-node": "10.9.1",
-    "type-fest": "3.5.0",
+    "type-fest": "3.5.4",
     "typeorm": "0.3.10"
   },
   "devDependencies": {
