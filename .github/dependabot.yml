@@ -5,7 +5,7 @@ updates:
   schedule:
     interval: monthly
     time: "03:00"
-  open-pull-requests-limit: 10
+  open-pull-requests-limit: 5
   ignore:
   - dependency-name: "@types/node"
     versions:
