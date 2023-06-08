@@ -38,7 +38,7 @@
   },
   "gitHead": "bfa41a24d5c085427ced65ff92078936ffdf62b6",
   "dependencies": {
-    "rimraf": "5.0.0",
+    "rimraf": "5.0.1",
     "typeorm": "0.3.16"
   },
   "devDependencies": {
