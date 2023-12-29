@@ -48,7 +48,7 @@
     "bunyan": "1.8.15",
     "bunyan-format": "0.2.1",
     "colors": "1.4.0",
-    "ts-node": "10.9.1"
+    "ts-node": "10.9.2"
   },
   "gitHead": "bfa41a24d5c085427ced65ff92078936ffdf62b6",
   "devDependencies": {
