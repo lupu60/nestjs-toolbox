@@ -44,7 +44,7 @@
   "dependencies": {
     "@nestjs/common": "^9.3.1",
     "@nestjs/core": "^9.3.1",
-    "@nestjs/swagger": "7.1.16",
+    "@nestjs/swagger": "7.1.17",
     "chalk": "^4.1.0",
     "json-schema-to-typescript": "9.1.1",
     "lodash": "4.17.21",
