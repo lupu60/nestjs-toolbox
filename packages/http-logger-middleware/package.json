@@ -1,7 +1,7 @@
 {
   "name": "@nest-toolbox/http-logger-middleware",
   "description": "nest js http-logger-middleware",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme",
   "license": "MIT",

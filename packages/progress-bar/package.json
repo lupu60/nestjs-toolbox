@@ -1,6 +1,6 @@
 {
   "name": "@nest-toolbox/progress-bar",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "a simple progress bar for log running tasks",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/progress-bar#readme",
