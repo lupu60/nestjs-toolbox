@@ -70,5 +70,8 @@
   },
   "dependencies": {
     "reflect-metadata": "0.2.1"
+  },
+  "volta": {
+    "node": "16.20.2"
   }
 }
