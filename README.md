@@ -6,14 +6,8 @@
 </div>
 <br />
 <div align="center">
-   <a href="https://travis-ci.org/lupu60/nestjs-toolbox">
-     <img src="https://travis-ci.org/lupu60/nestjs-toolbox.svg?branch=master" />
-   </a>
    <a href="#">
     <img alt="GitHub License" src="https://img.shields.io/github/license/lupu60/nestjs-toolbox">
-   </a>
-   <a href="https://david-dm.org/lupu60/nestjs-toolbox">
-     <img src="https://david-dm.org/lupu60/nestjs-toolbox.svg"  />
    </a>
    <a href="https://lerna.js.org/">
      <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"  />
