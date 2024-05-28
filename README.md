@@ -10,7 +10,7 @@
      <img src="https://travis-ci.org/lupu60/nestjs-toolbox.svg?branch=master" />
    </a>
    <a href="#">
-     <img src="https://img.shields.io/npm/l/@lupu60/nestjs-toolbox"  />
+    <img alt="GitHub License" src="https://img.shields.io/github/license/lupu60/nestjs-toolbox">
    </a>
    <a href="https://david-dm.org/lupu60/nestjs-toolbox">
      <img src="https://david-dm.org/lupu60/nestjs-toolbox.svg"  />
