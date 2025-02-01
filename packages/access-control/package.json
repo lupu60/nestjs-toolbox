@@ -43,12 +43,12 @@
   },
   "dependencies": {
     "@nestjs/common": "^9.0.11",
-    "@nestjs/core": "^9.0.11",
+    "@nestjs/core": "^10.4.4",
     "reflect-metadata": "^0.1.13",
     "role-acl": "4.5.4"
   },
   "devDependencies": {
-    "@nestjs/testing": "9.2.1",
+    "@nestjs/testing": "10.4.4",
     "@types/node": "20.5.7",
     "rimraf": "~5.0.0",
     "rxjs": "7.8.1",
