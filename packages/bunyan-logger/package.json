@@ -43,7 +43,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "9.4.3",
+    "@nestjs/common": "11.0.16",
     "@types/bunyan": "1.8.11",
     "bunyan": "1.8.15",
     "bunyan-format": "0.2.1",
