@@ -1,11 +1,11 @@
 import { OpenAPIObject } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
-import * as chalk from 'chalk';
 import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
 import * as path from 'path';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
+import chalk from 'chalk';
 
 type TsInterface = { filePath: string; name: string; content: string };
 
@@ -20,24 +20,28 @@ export interface Options extends JSONToTSOptions {
 }
 
 let baseOptions: Options = {
-  verbosity: LogLevel.NONE,
-  bannerComment: '',
-  cwd: process.cwd(),
-  declareExternallyReferenced: false,
-  enableConstEnums: false,
-  ignoreMinAndMaxItems: false,
-  unknownAny: false,
-  unreachableDefinitions: false,
-  strictIndexSignatures: false,
-  style: {
-    bracketSpacing: true,
-    printWidth: 120,
-    semi: true,
-    singleQuote: true,
-    tabWidth: 4,
-    useTabs: false,
-  },
-  $refOptions: {},
+   verbosity: LogLevel.NONE,
+   bannerComment: '',
+   cwd: process.cwd(),
+   declareExternallyReferenced: false,
+   enableConstEnums: false,
+   ignoreMinAndMaxItems: false,
+   unknownAny: false,
+   unreachableDefinitions: false,
+   strictIndexSignatures: false,
+   style: {
+      bracketSpacing: true,
+      printWidth: 120,
+      semi: true,
+      singleQuote: true,
+      tabWidth: 4,
+      useTabs: false,
+   },
+   $refOptions: {},
+   additionalProperties: false,
+   inferStringEnumKeysFromValues: false,
+   format: false,
+   maxItems: 0
 };
 
 function logInfo(message: any) {
@@ -143,8 +147,8 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
   const schemaAndDefinitions = {
     ...schema,
     components,
-  } as NormalizedJSONSchema;
-  let content = await compile(schemaAndDefinitions, name, baseOptions);
+  };
+  let content = await compile(schemaAndDefinitions as unknown as NormalizedJSONSchema, name, baseOptions);
 
   // TODO: check future updates from json-schema-to-typescript, as next step should not be needed
   if (!baseOptions.declareExternallyReferenced) {

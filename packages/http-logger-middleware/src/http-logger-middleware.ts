@@ -1,5 +1,5 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 const isEmpty = (obj) => JSON.stringify(obj) === '{}';
 
 @Injectable()
