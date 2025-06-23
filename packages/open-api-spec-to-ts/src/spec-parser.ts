@@ -5,7 +5,6 @@ import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/J
 import { flatten, snakeCase } from 'lodash';
 import * as path from 'path';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
-import chalk from 'chalk';
 
 type TsInterface = { filePath: string; name: string; content: string };
 
@@ -46,19 +45,19 @@ let baseOptions: Options = {
 
 function logInfo(message: any) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
-    console.log(chalk.cyan.bold(message), 'SpecParser');
+    console.log(message, 'SpecParser');
   }
 }
 
 function logSuccess(message: any) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
-    console.log(chalk.green.bold(message), 'SpecParser');
+    console.log(message, 'SpecParser');
   }
 }
 
 function logError(message: any) {
   if (baseOptions.verbosity >= LogLevel.ERROR) {
-    console.log(chalk.red.bold(message), 'SpecParser');
+    console.log(message, 'SpecParser');
   }
 }
 
