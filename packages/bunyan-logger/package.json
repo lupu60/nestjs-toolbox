@@ -30,8 +30,8 @@
     "dist"
   ],
   "engines": {
-    "node": ">=12 <=16",
-    "npm": ">= 6 <=8"
+    "node": ">=18 <=22",
+    "npm": "<=11"
   },
   "scripts": {
     "build": "npm run clean && npm run compile",
