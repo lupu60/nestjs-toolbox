@@ -46,7 +46,8 @@
     "cleanup": "lerna run cleanup --stream --parallel",
     "lint": "lerna run lint",
     "publish": "lerna publish",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "hard-reset": "npm run cleanup && rimraf -rf node_modules && npm run bootstrap && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
   "devDependencies": {
     "@lerna/publish": "^6.6.2",
