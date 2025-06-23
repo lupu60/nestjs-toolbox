@@ -5,6 +5,7 @@
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme",
   "license": "MIT",
+  "type": "module",
   "keywords": [
     "nestjs",
     "http-logger-middleware"
@@ -33,7 +34,7 @@
     "cleanup": "rimraf -rf dist coverage",
     "compile": "tsc -p tsconfig.build.json",
     "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
-    "test": "jest --ci --config ../../jest.config.json ",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --ci --config ../../jest.config.json ",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
