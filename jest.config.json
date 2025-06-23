@@ -1,5 +1,4 @@
 {
-   "type": "module",
     "verbose": true,
     "collectCoverage": true,
     "coverageReporters": ["lcov", "json"],
