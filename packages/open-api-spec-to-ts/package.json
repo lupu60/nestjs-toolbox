@@ -39,7 +39,7 @@
     "cleanup": "rimraf -rf dist coverage ",
     "compile": "tsc -p tsconfig.build.json",
     "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
-    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --ci --config ../../jest.config.json ",
+    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --ci --config ../../jest.config.json ",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
