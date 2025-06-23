@@ -69,6 +69,6 @@ describe('BunyanLoggerService', () => {
         },
       });
       expect(loggerWithErr).toBeUndefined();
-    }).toThrowError('projectId is required');
+    }).toThrow('projectId is required');
   });
 });
