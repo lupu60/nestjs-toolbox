@@ -3,7 +3,6 @@
     "collectCoverage": true,
     "coverageReporters": ["lcov", "json"],
     "collectCoverageFrom": ["**/src/**", "!**/src/test/**"],
-    "colors": true,
     "reporters": ["default", "jest-junit"],
     "testResultsProcessor": "jest-junit",
     "transform": {
