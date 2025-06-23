@@ -46,6 +46,6 @@ describe('WinstonLoggerService', () => {
         projectName: '',
       });
       expect(loggerWithErr).toBeUndefined();
-    }).toThrowError('projectName is required');
+    }).toThrow('projectName is required');
   });
 });

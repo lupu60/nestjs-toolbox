@@ -64,7 +64,7 @@ describe('forRoles', () => {
 
     expect(() => {
       module.get<GrantsController>(GrantsController);
-    }).toThrowError();
+    }).toThrow();
   });
 
   it('Do not expose <grantsEndpoint> when options is not provided', async () => {
@@ -76,6 +76,6 @@ describe('forRoles', () => {
 
     expect(() => {
       module.get<GrantsController>(GrantsController);
-    }).toThrowError();
+    }).toThrow();
   });
 });

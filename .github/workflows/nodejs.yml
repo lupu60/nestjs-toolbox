@@ -8,18 +8,26 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.x, 21.x]
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Important! Enables git history for lerna
+
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, build, and test
-        run: |
-          npm run bootstrap
-          npm run build
-          npm run test
+
+      - name: Bootstrap packages
+        run: npm run bootstrap
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Run tests for changed packages
+        run: npx lerna run test --since origin/master --stream --concurrency 1
         env:
           CI: true
