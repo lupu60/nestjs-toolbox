@@ -42,11 +42,11 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "^9.3.1",
+    "@nestjs/common": "^10.4.16",
     "@nestjs/core": "^9.3.1",
-    "@nestjs/swagger": "7.2.0",
+    "@nestjs/swagger": "7.4.1",
     "chalk": "^4.1.0",
-    "json-schema-to-typescript": "9.1.1",
+    "json-schema-to-typescript": "14.0.0",
     "lodash": "4.17.21",
     "rimraf": "~5.0.1",
     "ts-node": "10.9.1"
