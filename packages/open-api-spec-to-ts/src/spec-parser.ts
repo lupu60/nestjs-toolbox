@@ -1,5 +1,6 @@
 import { OpenAPIObject } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import * as chalk from 'chalk';
 import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
@@ -19,45 +20,41 @@ export interface Options extends JSONToTSOptions {
 }
 
 let baseOptions: Options = {
-   verbosity: LogLevel.NONE,
-   bannerComment: '',
-   cwd: process.cwd(),
-   declareExternallyReferenced: false,
-   enableConstEnums: false,
-   ignoreMinAndMaxItems: false,
-   unknownAny: false,
-   unreachableDefinitions: false,
-   strictIndexSignatures: false,
-   style: {
-      bracketSpacing: true,
-      printWidth: 120,
-      semi: true,
-      singleQuote: true,
-      tabWidth: 4,
-      useTabs: false,
-   },
-   $refOptions: {},
-   additionalProperties: false,
-   inferStringEnumKeysFromValues: false,
-   format: false,
-   maxItems: 0
+  verbosity: LogLevel.NONE,
+  bannerComment: '',
+  cwd: process.cwd(),
+  declareExternallyReferenced: false,
+  enableConstEnums: false,
+  ignoreMinAndMaxItems: false,
+  unknownAny: false,
+  unreachableDefinitions: false,
+  strictIndexSignatures: false,
+  style: {
+    bracketSpacing: true,
+    printWidth: 120,
+    semi: true,
+    singleQuote: true,
+    tabWidth: 4,
+    useTabs: false,
+  },
+  $refOptions: {},
 };
 
 function logInfo(message: any) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
-    console.log(message, 'SpecParser');
+    console.log(chalk.cyan.bold(message), 'SpecParser');
   }
 }
 
 function logSuccess(message: any) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
-    console.log(message, 'SpecParser');
+    console.log(chalk.green.bold(message), 'SpecParser');
   }
 }
 
 function logError(message: any) {
   if (baseOptions.verbosity >= LogLevel.ERROR) {
-    console.log(message, 'SpecParser');
+    console.log(chalk.red.bold(message), 'SpecParser');
   }
 }
 
@@ -146,8 +143,8 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
   const schemaAndDefinitions = {
     ...schema,
     components,
-  };
-  let content = await compile(schemaAndDefinitions as unknown as NormalizedJSONSchema, name, baseOptions);
+  } as NormalizedJSONSchema;
+  let content = await compile(schemaAndDefinitions, name, baseOptions);
 
   // TODO: check future updates from json-schema-to-typescript, as next step should not be needed
   if (!baseOptions.declareExternallyReferenced) {
