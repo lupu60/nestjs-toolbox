@@ -21,6 +21,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Bootstrap packages
         run: npm run bootstrap
 
