@@ -32,28 +32,28 @@
     "node": "14",
     "npm": "7"
   },
-  "type": "module",
   "scripts": {
     "build": "npm run clean && npm run compile",
     "clean": "rimraf -rf ./dist",
     "cleanup": "rimraf -rf dist coverage ",
     "compile": "tsc -p tsconfig.build.json",
     "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
-    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --ci --config ../../jest.config.json ",
+    "test": "jest --ci --config ../../jest.config.json ",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "^11.1.3",
-    "@nestjs/core": "^11.1.3",
-    "@nestjs/swagger": "11.2.0",
-    "json-schema-to-typescript": "15.0.4",
+    "@nestjs/common": "^9.3.1",
+    "@nestjs/core": "^9.3.1",
+    "@nestjs/swagger": "7.2.0",
+    "chalk": "^4.1.0",
+    "json-schema-to-typescript": "9.1.1",
     "lodash": "4.17.21",
-    "rimraf": "~6.0.1",
-    "ts-node": "10.9.2"
+    "rimraf": "~5.0.1",
+    "ts-node": "10.9.1"
   },
   "devDependencies": {
-    "@types/node": "24.0.3",
-    "typescript": "5.8.3"
+    "@types/node": "20.5.7",
+    "typescript": "4.9.5"
   },
   "gitHead": "a6b171b15d2a2eaab6a05cbb181f5f2528f1be35"
 }
