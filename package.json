@@ -38,7 +38,7 @@
     "npm": "<=11"
   },
   "scripts": {
-    "bootstrap": "npm install lerna && npm install",
+    "bootstrap": "npm install lerna && npm ci",
     "format": "prettier --write \"packages/**/*.{ts,json}\"",
     "reset": "npm run cleanup && rimraf -rf node_modules",
     "test": "lerna run test",
