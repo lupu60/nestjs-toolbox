@@ -40,14 +40,14 @@
   "scripts": {
     "bootstrap": "npm install lerna && npm install",
     "format": "prettier --write \"packages/**/*.{ts,json}\"",
-    "reset": "npm run cleanup && rimraf -rf node_modules && npm run bootstrap",
+    "reset": "npm run cleanup && rimraf -rf node_modules",
     "test": "lerna run test",
     "build": "npm run cleanup && lerna run compile",
     "cleanup": "lerna run cleanup --stream --parallel",
     "lint": "lerna run lint",
     "publish": "lerna publish",
     "prepublishOnly": "npm run build",
-    "hard-reset": "npm run cleanup && rimraf -rf node_modules && npm run bootstrap && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
+    "hard-reset": "npm run cleanup && rimraf -rf node_modules && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
   "devDependencies": {
     "@types/jest": "30.0.0",
