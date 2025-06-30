@@ -33,6 +33,7 @@
     "winston",
     "open-api"
   ],
+  "workspaces": ["packages/*"],
   "engines": {
     "node": ">=18 <=22",
     "npm": "<=11"
