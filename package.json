@@ -50,8 +50,6 @@
     "hard-reset": "npm run cleanup && rimraf -rf node_modules && npm run bootstrap && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
   "devDependencies": {
-    "@lerna/publish": "^6.6.2",
-    "@lerna/run": "^6.6.2",
     "@types/jest": "30.0.0",
     "eslint": "9.29.0",
     "eslint-plugin-import": "2.32.0",
