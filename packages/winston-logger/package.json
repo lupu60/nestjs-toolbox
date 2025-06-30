@@ -28,11 +28,10 @@
   "types": "dist/index",
   "files": [
     "dist"
-  ],
-  "engines": {
-    "node": "14",
-    "npm": "7"
-  },
+  ],  "engines": {
+   "node": ">=18 <=22",
+   "npm": "<=11"
+ },
   "scripts": {
     "build": "npm run clean && npm run compile",
     "clean": "rimraf -rf ./dist",

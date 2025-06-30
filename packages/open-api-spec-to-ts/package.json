@@ -29,8 +29,8 @@
     "dist"
   ],
   "engines": {
-    "node": "14",
-    "npm": "7"
+    "node": ">=18 <=22",
+    "npm": "<=11"
   },
   "scripts": {
     "build": "npm run clean && npm run compile",
@@ -42,13 +42,14 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "^9.3.1",
-    "@nestjs/core": "^9.3.1",
-    "@nestjs/swagger": "7.2.0",
+    "@nestjs/common": "^11.1.3",
+    "@nestjs/core": "^11.1.3",
+    "@nestjs/swagger": "^7.4.2",
     "chalk": "^4.1.0",
     "json-schema-to-typescript": "9.1.1",
     "lodash": "4.17.21",
     "rimraf": "~5.0.1",
+    "role-acl": "3.2.2",
     "ts-node": "10.9.1"
   },
   "devDependencies": {
