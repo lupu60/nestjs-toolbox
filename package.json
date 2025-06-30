@@ -46,11 +46,10 @@
     "cleanup": "lerna run cleanup --stream --parallel",
     "lint": "lerna run lint",
     "publish": "lerna publish",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "hard-reset": "npm run cleanup && rimraf -rf node_modules && npm run bootstrap && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
   "devDependencies": {
-    "@lerna/publish": "^6.6.2",
-    "@lerna/run": "^6.6.2",
     "@types/jest": "30.0.0",
     "eslint": "9.29.0",
     "eslint-plugin-import": "2.32.0",
@@ -58,7 +57,7 @@
     "eslint-plugin-promise": "7.2.1",
     "jest": "^30.0.2",
     "jest-junit": "16.0.0",
-    "lerna": "^8.2.2",
+    "lerna": "^8.2.3",
     "npm-run-all": "^4.1.5",
     "prettier": "3.6.0",
     "rimraf": "^6.0.1",
