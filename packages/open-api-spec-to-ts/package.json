@@ -50,7 +50,7 @@
     "lodash": "4.17.21",
     "rimraf": "~5.0.1",
     "role-acl": "3.2.2",
-    "ts-node": "10.9.1"
+    "ts-node": "10.9.2"
   },
   "devDependencies": {
     "@types/node": "20.5.7",
