@@ -25,7 +25,7 @@ describe('WinstonLoggerService', () => {
     const testObject = {
       key1: key1Value,
       key2: 'key2',
-      key3: 'key3',
+      key3: 'key3'
     };
     logger.log(testObject);
   });
@@ -35,7 +35,7 @@ describe('WinstonLoggerService', () => {
     const testObject = {
       key1: key1Value,
       key2: 'key2',
-      key3: 'key3',
+      key3: 'key3'
     };
     logger.log(`${testObject}`);
   });
@@ -43,7 +43,7 @@ describe('WinstonLoggerService', () => {
   it('should throw project name is required', () => {
     expect(() => {
       const loggerWithErr = new WinstonLoggerService({
-        projectName: '',
+        projectName: ''
       });
       expect(loggerWithErr).toBeUndefined();
     }).toThrow('projectName is required');

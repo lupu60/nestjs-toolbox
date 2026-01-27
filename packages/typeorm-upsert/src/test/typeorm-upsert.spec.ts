@@ -5,16 +5,16 @@ describe('Dummy Test', () => {
     { id: 1, name: 'foo' },
     { id: 2, name: 'bar' },
     { id: 3, name: 'foo' },
-    { id: 4, name: 'bar' },
+    { id: 4, name: 'bar' }
   ];
   const repository = {
     createQueryBuilder: jest.fn().mockReturnValue({
       insert: jest.fn().mockReturnValue({
         values: jest.fn().mockReturnValue({
-          onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) }),
-        }),
-      }),
-    }),
+          onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) })
+        })
+      })
+    })
   } as any;
 
   it('should be defined', () => {
@@ -78,22 +78,22 @@ describe('Dummy Test', () => {
                   execute: jest.fn().mockResolvedValue({
                     raw: [
                       { id: 1, name: 'foo' },
-                      { id: 2, name: 'bar' },
-                    ],
-                  }),
-                }),
-              }),
-            }),
+                      { id: 2, name: 'bar' }
+                    ]
+                  })
+                })
+              })
+            })
           }),
           select: jest.fn().mockReturnThis(),
           where: jest.fn().mockReturnThis(),
-          getRawMany: jest.fn().mockResolvedValue([{ id: 1 }]), // id: 1 exists, id: 2 doesn't
-        }),
+          getRawMany: jest.fn().mockResolvedValue([{ id: 1 }]) // id: 1 exists, id: 2 doesn't
+        })
       };
 
       const data = [
         { id: 1, name: 'foo' },
-        { id: 2, name: 'bar' },
+        { id: 2, name: 'bar' }
       ];
 
       const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
@@ -115,16 +115,16 @@ describe('Dummy Test', () => {
               onConflict: jest.fn().mockReturnValue({
                 returning: jest.fn().mockReturnValue({
                   execute: jest.fn().mockResolvedValue({
-                    raw: [{ id: 1, name: 'foo' }],
-                  }),
-                }),
-              }),
-            }),
+                    raw: [{ id: 1, name: 'foo' }]
+                  })
+                })
+              })
+            })
           }),
           select: jest.fn().mockReturnThis(),
           where: jest.fn().mockReturnThis(),
-          getRawMany: jest.fn().mockResolvedValue([]), // doesn't exist, so it will be inserted
-        }),
+          getRawMany: jest.fn().mockResolvedValue([]) // doesn't exist, so it will be inserted
+        })
       };
 
       const data = { id: 1, name: 'foo' };
@@ -144,13 +144,13 @@ describe('Dummy Test', () => {
               onConflict: jest.fn().mockReturnValue({
                 returning: jest.fn().mockReturnValue({
                   execute: jest.fn().mockResolvedValue({
-                    raw: [{ id: 1, name: 'foo' }],
-                  }),
-                }),
-              }),
-            }),
-          }),
-        }),
+                    raw: [{ id: 1, name: 'foo' }]
+                  })
+                })
+              })
+            })
+          })
+        })
       };
 
       const data = [{ id: 1, name: 'foo' }];
@@ -172,13 +172,13 @@ describe('Dummy Test', () => {
               onConflict: jest.fn().mockReturnValue({
                 returning: jest.fn().mockReturnValue({
                   execute: jest.fn().mockResolvedValue({
-                    raw: [{ id: 1, name: 'foo' }],
-                  }),
-                }),
-              }),
-            }),
-          }),
-        }),
+                    raw: [{ id: 1, name: 'foo' }]
+                  })
+                })
+              })
+            })
+          })
+        })
       };
 
       const data = [{ id: 1, name: 'foo' }];

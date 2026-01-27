@@ -5,7 +5,7 @@ import {
   generate_version,
   isDevelop,
   isFeature,
-  isMaster,
+  isMaster
 } from '../lib/lib';
 
 describe('version-generator', () => {
@@ -25,7 +25,7 @@ describe('version-generator', () => {
     commitSha,
     master: 'master',
     develop: 'develop',
-    feature: 'feature',
+    feature: 'feature'
   };
 
   it('generate_feature_version', () => {
@@ -72,7 +72,7 @@ describe('version-generator', () => {
       commitSha,
       master: 'master',
       develop: 'develop',
-      feature: 'feature',
+      feature: 'feature'
     };
 
     expect(generate_version(options, 'master')).toEqual('1.0.0.ebffb63');

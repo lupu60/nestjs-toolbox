@@ -36,15 +36,15 @@ export class AccessControlModule {
       providers: [
         {
           provide: RULES_BUILDER_TOKEN,
-          useValue: rules,
-        },
+          useValue: rules
+        }
       ],
       exports: [
         {
           provide: RULES_BUILDER_TOKEN,
-          useValue: rules,
-        },
-      ],
+          useValue: rules
+        }
+      ]
     };
   }
 
@@ -55,18 +55,18 @@ export class AccessControlModule {
     if (useExisting) {
       provider = {
         provide: RULES_BUILDER_TOKEN,
-        useExisting,
+        useExisting
       };
     } else if (useClass) {
       provider = {
         provide: RULES_BUILDER_TOKEN,
-        useClass,
+        useClass
       };
     } else {
       provider = {
         provide: RULES_BUILDER_TOKEN,
         useFactory: useFactory || (() => new RulesBuilder()),
-        inject,
+        inject
       };
     }
 
@@ -74,7 +74,7 @@ export class AccessControlModule {
       module: AccessControlModule,
       imports,
       providers: [provider],
-      exports: [provider],
+      exports: [provider]
     };
   }
 }

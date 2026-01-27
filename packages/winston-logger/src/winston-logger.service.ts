@@ -4,7 +4,7 @@ import * as winston from 'winston';
 export class WinstonLoggerService implements LoggerService {
   private readonly winstonLogger: winston.Logger;
   private isEmpty = (obj: unknown): boolean => {
-    if (!obj || typeof obj !== 'object') return false;
+    if (!obj || typeof obj !== 'object') {return false;}
     const constructorName = (obj as object).constructor?.name;
     return (constructorName === 'Object' || constructorName === 'Array') && !Object.entries(obj).length;
   };
@@ -16,8 +16,8 @@ export class WinstonLoggerService implements LoggerService {
    */
   constructor(options: { projectName: string; transports?: winston.transport[]; timeFormatStr?: string; customFormatter?: winston.Logform.Format }) {
     const { projectName, transports, timeFormatStr, customFormatter } = options;
-    if (projectName == null || (typeof projectName === 'string' && projectName.trim() === '') || this.isEmpty(projectName)) {
-      throw new Error(`projectName is required`);
+    if (projectName === null || projectName === undefined || (typeof projectName === 'string' && projectName.trim() === '') || this.isEmpty(projectName)) {
+      throw new Error('projectName is required');
     }
     const timestamp = timeFormatStr ? winston.format.timestamp({ format: timeFormatStr }) : winston.format.timestamp();
     const formatter = customFormatter ? customFormatter : this.getDefaultFormat();
@@ -26,7 +26,7 @@ export class WinstonLoggerService implements LoggerService {
       level: 'info',
       format: winston.format.combine(timestamp, winston.format.simple(), formatter),
       defaultMeta: { service: projectName },
-      transports: [new winston.transports.Console(), ...(transports || [])],
+      transports: [new winston.transports.Console(), ...(transports || [])]
     });
   }
 
@@ -41,7 +41,7 @@ export class WinstonLoggerService implements LoggerService {
     this.winstonLogger.log({
       level: 'info',
       message: String(message),
-      context,
+      context
     });
   }
 
@@ -50,7 +50,7 @@ export class WinstonLoggerService implements LoggerService {
       level: 'error',
       message: String(message),
       trace,
-      context,
+      context
     });
   }
 
@@ -58,7 +58,7 @@ export class WinstonLoggerService implements LoggerService {
     this.winstonLogger.log({
       level: 'warn',
       message: String(message),
-      context,
+      context
     });
   }
 }

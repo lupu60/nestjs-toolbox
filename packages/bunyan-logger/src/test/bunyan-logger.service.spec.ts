@@ -9,8 +9,8 @@ describe('BunyanLoggerService', () => {
         color: true,
         levelInString: true,
         outputMode: 'short',
-        src: true,
-      },
+        src: true
+      }
     });
   });
 
@@ -35,7 +35,7 @@ describe('BunyanLoggerService', () => {
     const testObject = {
       key1: key1Value,
       key2: 'key2',
-      key3: 'key3',
+      key3: 'key3'
     };
     logger.log(testObject);
   });
@@ -45,7 +45,7 @@ describe('BunyanLoggerService', () => {
     const testObject = {
       key1: key1Value,
       key2: 'key2',
-      key3: 'key3',
+      key3: 'key3'
     };
     logger.log(['test===', testObject]);
   });
@@ -55,7 +55,7 @@ describe('BunyanLoggerService', () => {
     const testObject = {
       key1: key1Value,
       key2: 'key2',
-      key3: 'key3',
+      key3: 'key3'
     };
     logger.error(['error===', testObject]);
   });
@@ -65,8 +65,8 @@ describe('BunyanLoggerService', () => {
       const loggerWithErr = new BunyanLoggerService({
         projectId: '',
         formatterOptions: {
-          outputMode: 'long',
-        },
+          outputMode: 'long'
+        }
       });
       expect(loggerWithErr).toBeUndefined();
     }).toThrow('projectId is required');
@@ -140,8 +140,8 @@ describe('BunyanLoggerService', () => {
         projectId: 'TestProject',
         formatterOptions: {
           color: false,
-          outputMode: 'short',
-        },
+          outputMode: 'short'
+        }
       });
 
       const errorSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'error');
@@ -160,8 +160,8 @@ describe('BunyanLoggerService', () => {
         projectId: 'TestProject',
         formatterOptions: {
           color: true,
-          outputMode: 'short',
-        },
+          outputMode: 'short'
+        }
       });
 
       const errorSpy = jest.spyOn(loggerWithColors['bunyanLogger'], 'error');
@@ -180,8 +180,8 @@ describe('BunyanLoggerService', () => {
       const loggerDefault = new BunyanLoggerService({
         projectId: 'TestProject',
         formatterOptions: {
-          outputMode: 'short',
-        },
+          outputMode: 'short'
+        }
       });
 
       const warnSpy = jest.spyOn(loggerDefault['bunyanLogger'], 'warn');
@@ -201,8 +201,8 @@ describe('BunyanLoggerService', () => {
         projectId: 'TestProject',
         formatterOptions: {
           color: false,
-          outputMode: 'short',
-        },
+          outputMode: 'short'
+        }
       });
 
       const warnSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'warn');
@@ -222,9 +222,9 @@ describe('BunyanLoggerService', () => {
       const loggerWithMaxLength = new BunyanLoggerService({
         projectId: 'TestProject',
         formatterOptions: {
-          outputMode: 'short',
+          outputMode: 'short'
         },
-        maxLength: 10,
+        maxLength: 10
       });
 
       const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
@@ -242,9 +242,9 @@ describe('BunyanLoggerService', () => {
       const loggerWithMaxLength = new BunyanLoggerService({
         projectId: 'TestProject',
         formatterOptions: {
-          outputMode: 'short',
+          outputMode: 'short'
         },
-        maxLength: 15,
+        maxLength: 15
       });
 
       const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');
@@ -264,9 +264,9 @@ describe('BunyanLoggerService', () => {
       const loggerWithMaxLength = new BunyanLoggerService({
         projectId: 'TestProject',
         formatterOptions: {
-          outputMode: 'short',
+          outputMode: 'short'
         },
-        maxLength: 20,
+        maxLength: 20
       });
 
       const errorSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'error');
@@ -286,8 +286,8 @@ describe('BunyanLoggerService', () => {
       const loggerWithoutMaxLength = new BunyanLoggerService({
         projectId: 'TestProject',
         formatterOptions: {
-          outputMode: 'short',
-        },
+          outputMode: 'short'
+        }
       });
 
       const logSpy = jest.spyOn(loggerWithoutMaxLength['bunyanLogger'], 'info');
@@ -305,9 +305,9 @@ describe('BunyanLoggerService', () => {
       const loggerWithMaxLength = new BunyanLoggerService({
         projectId: 'TestProject',
         formatterOptions: {
-          outputMode: 'short',
+          outputMode: 'short'
         },
-        maxLength: 100,
+        maxLength: 100
       });
 
       const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
@@ -325,9 +325,9 @@ describe('BunyanLoggerService', () => {
       const loggerWithMaxLength = new BunyanLoggerService({
         projectId: 'TestProject',
         formatterOptions: {
-          outputMode: 'short',
+          outputMode: 'short'
         },
-        maxLength: 8,
+        maxLength: 8
       });
 
       const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
@@ -349,9 +349,9 @@ describe('BunyanLoggerService', () => {
         projectId: 'TestProject',
         formatterOptions: {
           color: true,
-          outputMode: 'short',
+          outputMode: 'short'
         },
-        maxLength: 12,
+        maxLength: 12
       });
 
       const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');

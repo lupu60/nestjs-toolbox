@@ -16,9 +16,9 @@ describe('Grants Controller #getGrants', () => {
       providers: [
         {
           provide: RULES_BUILDER_TOKEN,
-          useValue: roles,
-        },
-      ],
+          useValue: roles
+        }
+      ]
     }).compile();
 
     controller = module.get<GrantsController>(GrantsController);

@@ -1,11 +1,11 @@
+import { existsSync, mkdirSync } from 'fs';
+import * as path from 'path';
 import { OpenAPIObject } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import * as chalk from 'chalk';
 import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
-import * as path from 'path';
-import { existsSync, mkdirSync } from 'fs';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
 type TsInterface = { filePath: string; name: string; content: string };
@@ -36,9 +36,9 @@ let baseOptions: Options = {
     semi: true,
     singleQuote: true,
     tabWidth: 4,
-    useTabs: false,
+    useTabs: false
   },
-  $refOptions: {},
+  $refOptions: {}
 };
 
 function logInfo(message: any) {
@@ -64,10 +64,10 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
   const refSchema = inputSchema as ReferenceObject;
   switch (objectSchema.type) {
     case 'object':
-      if (!objectSchema.properties) return undefined;
+      if (!objectSchema.properties) {return undefined;}
       return Object.values(preprocessProperties(objectSchema.properties));
     case 'array':
-      if (!objectSchema.items) return undefined;
+      if (!objectSchema.items) {return undefined;}
       return extractRefsFromSchema(objectSchema.items);
     default:
       if (objectSchema.oneOf) {
@@ -157,7 +157,7 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
 
   const schemaAndDefinitions = {
     ...schema,
-    components,
+    components
   } as NormalizedJSONSchema;
   let content = await compile(schemaAndDefinitions, name, baseOptions);
 
@@ -196,8 +196,8 @@ function delayedParsing(schemaKey: string, openApiSpec: OpenAPIObject, interface
         parseSchema(schemaKey, openApiSpec, interfacesDirPath)
           .then((res) => resolve(res))
           .catch((e) => reject(e)),
-      ms,
-    ),
+      ms
+    )
   );
 }
 
@@ -256,7 +256,7 @@ function appendTitles(openApiSpec: OpenAPIObject): void {
 export async function generate(
   openApiFilePath = './openapi.json',
   interfacesDirPath = './interfaces',
-  options: Partial<Options> = {},
+  options: Partial<Options> = {}
 ): Promise<void> {
   baseOptions = { ...baseOptions, ...options };
   try {

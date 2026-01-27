@@ -37,6 +37,7 @@
   "workspaces": [
     "packages/*"
   ],
+  "type": "module",
   "engines": {
     "node": ">=18 <=22",
     "npm": "<=11"
@@ -53,6 +54,8 @@
   },
   "devDependencies": {
     "@types/jest": "30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "eslint": "9.29.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-n": "17.20.0",
@@ -67,7 +70,8 @@
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "typescript-eslint": "^8.54.0"
   },
   "dependencies": {
     "reflect-metadata": "0.2.2"
