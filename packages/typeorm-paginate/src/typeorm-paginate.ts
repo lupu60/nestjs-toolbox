@@ -18,14 +18,14 @@ export async function* rows<T extends ObjectLiteral>(options: {
     const rows = await repository.find({
       where: { ...where },
       skip: offset,
-      take: limit
+      take: limit,
     });
     offset += limit;
     for (const row of rows) {
       index++;
       const result: PaginatedRow<T> = Object.assign({}, row, {
         index,
-        progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100
+        progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100,
       });
       yield result;
     }
@@ -44,7 +44,7 @@ export async function* set<T extends ObjectLiteral>(options: {
     const rows = await repository.find({
       where: { ...where },
       skip: offset,
-      take: limit
+      take: limit,
     });
     offset += limit;
     yield rows;

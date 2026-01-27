@@ -31,7 +31,7 @@ export async function TypeOrmUpsert<T extends ObjectLiteral>(
     doNotUpsert?: string[];
     chunk?: number;
     returnStatus?: boolean;
-  }
+  },
 ): Promise<T[] | T | UpsertResult<T>[] | UpsertResult<T>> {
   options = options ? options : {};
   const chunk = options.chunk ?? DEFAULT_CHUNK_SIZE;
@@ -47,7 +47,7 @@ export async function TypeOrmUpsert<T extends ObjectLiteral>(
   const chunkedValues = _chunkValues({ values: valuesArray, chunk });
 
   const results = (await _chunkPromises({ repository, chunkedValues, onConflict, returnStatus, conflictKey })).flatMap(
-    (current) => current?.raw || []
+    (current) => current?.raw || [],
   );
 
   if (returnStatus) {
@@ -56,7 +56,7 @@ export async function TypeOrmUpsert<T extends ObjectLiteral>(
       const { _upsert_status, ...entity } = result;
       return {
         entity: entity as T,
-        status: _upsert_status as UpsertStatus
+        status: _upsert_status as UpsertStatus,
       };
     });
     return Array.isArray(object) ? resultsWithStatus : resultsWithStatus[0];
@@ -80,7 +80,7 @@ export async function _chunkPromises<T extends ObjectLiteral>({
   chunkedValues,
   onConflict,
   returnStatus,
-  conflictKey
+  conflictKey,
 }: {
   repository: Repository<T>;
   chunkedValues: T[][];
@@ -117,7 +117,7 @@ export async function _chunkPromises<T extends ObjectLiteral>({
               const status: UpsertStatus = existingKeys.has(keyValue) ? 'updated' : 'inserted';
               return {
                 ...row,
-                _upsert_status: status
+                _upsert_status: status,
               };
             });
           }
@@ -125,7 +125,7 @@ export async function _chunkPromises<T extends ObjectLiteral>({
         })
         .catch((e: unknown) => {
           throw new Error(`Failed to upsert chunk: ${e instanceof Error ? e.message : String(e)}`);
-        })
+        }),
     );
   }
   return await Promise.all(promises);

@@ -9,14 +9,14 @@ describe('HttpLoggerMiddleware', () => {
       originalUrl: '/api/v1/users',
       method: 'GET',
       body: {
-        name: 'John'
+        name: 'John',
       },
       params: {
-        id: '1'
+        id: '1',
       },
       query: {
-        page: 1
-      }
+        page: 1,
+      },
     } as any as Request;
     const res = {} as Response;
     const http = new HttpLoggerMiddleware();
@@ -28,7 +28,7 @@ describe('HttpLoggerMiddleware', () => {
       protocol: 'http',
       get: () => 'localhost',
       originalUrl: '/api/v1/users',
-      method: 'GET'
+      method: 'GET',
     } as any as Request;
     const res = {} as Response;
     const http = new HttpLoggerMiddleware();

@@ -2,10 +2,12 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import importPlugin from 'eslint-plugin-import';
 import promisePlugin from 'eslint-plugin-promise';
+import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
+  prettierConfig,
   {
     files: ['**/*.ts'],
     languageOptions: {
@@ -20,25 +22,13 @@ export default tseslint.config(
       promise: promisePlugin
     },
     rules: {
-      // Standard.js style rules
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'single'],
-      'comma-dangle': ['error', 'never'],
-      'space-before-function-paren': ['error', {
-        'anonymous': 'always',
-        'named': 'never',
-        'asyncArrow': 'always'
-      }],
-      'no-trailing-spaces': 'error',
-      'eol-last': ['error', 'always'],
-      'no-multiple-empty-lines': ['error', { 'max': 2, 'maxEOF': 1 }],
-      'padded-blocks': ['error', 'never'],
-      'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
+      // Code quality rules (formatting handled by Prettier)
       'camelcase': ['error', { 
         'properties': 'never', 
         'ignoreDestructuring': true, 
         'allow': ['^_upsert_status$', '^_[a-z_]+$', '^[a-z]+_[a-z_]+$'] 
       }],
+      // Code quality rules
       'no-control-regex': 'off',
       'curly': ['error', 'all'],
       'eqeqeq': ['error', 'always'],
@@ -46,7 +36,6 @@ export default tseslint.config(
       'no-var': 'error',
       'prefer-const': 'error',
       'prefer-arrow-callback': 'error',
-      'arrow-spacing': ['error', { 'before': true, 'after': true }],
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', {
         'argsIgnorePattern': '^_',

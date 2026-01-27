@@ -11,9 +11,9 @@ describe('forRootAsync', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         AccessControlModule.forRootAsync({
-          useFactory: (): RulesBuilder => new RulesBuilder()
-        })
-      ]
+          useFactory: (): RulesBuilder => new RulesBuilder(),
+        }),
+      ],
     }).compile();
 
     const rules = module.get(RULES_BUILDER_TOKEN);
@@ -28,9 +28,9 @@ describe('forRootAsync', () => {
           useFactory: async (): Promise<RulesBuilder> => {
             await delay(100);
             return new RulesBuilder();
-          }
-        })
-      ]
+          },
+        }),
+      ],
     }).compile();
 
     const rules = module.get(RULES_BUILDER_TOKEN);
@@ -45,7 +45,7 @@ describe('forRoles', () => {
     const options: ACOptions = { grantsEndpoint: 'grants' };
 
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AccessControlModule.forRules(rules, options)]
+      imports: [AccessControlModule.forRules(rules, options)],
     }).compile();
 
     const controller = module.get<GrantsController>(GrantsController);
@@ -59,7 +59,7 @@ describe('forRoles', () => {
     const options: ACOptions = {};
 
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AccessControlModule.forRules(rules, options)]
+      imports: [AccessControlModule.forRules(rules, options)],
     }).compile();
 
     expect(() => {
@@ -71,7 +71,7 @@ describe('forRoles', () => {
     const rules: RulesBuilder = new RulesBuilder();
 
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AccessControlModule.forRules(rules)]
+      imports: [AccessControlModule.forRules(rules)],
     }).compile();
 
     expect(() => {

@@ -36,9 +36,9 @@ let baseOptions: Options = {
     semi: true,
     singleQuote: true,
     tabWidth: 4,
-    useTabs: false
+    useTabs: false,
   },
-  $refOptions: {}
+  $refOptions: {},
 };
 
 function logInfo(message: any) {
@@ -64,10 +64,14 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
   const refSchema = inputSchema as ReferenceObject;
   switch (objectSchema.type) {
     case 'object':
-      if (!objectSchema.properties) {return undefined;}
+      if (!objectSchema.properties) {
+        return undefined;
+      }
       return Object.values(preprocessProperties(objectSchema.properties));
     case 'array':
-      if (!objectSchema.items) {return undefined;}
+      if (!objectSchema.items) {
+        return undefined;
+      }
       return extractRefsFromSchema(objectSchema.items);
     default:
       if (objectSchema.oneOf) {
@@ -157,7 +161,7 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
 
   const schemaAndDefinitions = {
     ...schema,
-    components
+    components,
   } as NormalizedJSONSchema;
   let content = await compile(schemaAndDefinitions, name, baseOptions);
 
@@ -196,8 +200,8 @@ function delayedParsing(schemaKey: string, openApiSpec: OpenAPIObject, interface
         parseSchema(schemaKey, openApiSpec, interfacesDirPath)
           .then((res) => resolve(res))
           .catch((e) => reject(e)),
-      ms
-    )
+      ms,
+    ),
   );
 }
 
@@ -256,7 +260,7 @@ function appendTitles(openApiSpec: OpenAPIObject): void {
 export async function generate(
   openApiFilePath = './openapi.json',
   interfacesDirPath = './interfaces',
-  options: Partial<Options> = {}
+  options: Partial<Options> = {},
 ): Promise<void> {
   baseOptions = { ...baseOptions, ...options };
   try {
