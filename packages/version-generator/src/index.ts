@@ -21,9 +21,9 @@ program
   .option('--commit-id-separator [commit-id-separator]', 'commit-id-separator', '.')
   .parse(process.argv);
 
-function exec<T>(command): Promise<T> {
+function exec<T>(command: string): Promise<T> {
   return new Promise(function (resolve, reject) {
-    callbackexec(command, (error, stdout, stderr) => {
+    callbackexec(command, (error: Error | null, stdout: string, stderr: string) => {
       if (error || stderr) {
         reject(error || stderr);
         return;

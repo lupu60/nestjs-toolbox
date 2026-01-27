@@ -52,6 +52,7 @@
   },
   "gitHead": "cc4a6899ce809f5cb33825baf5bce97e0a339b46",
   "devDependencies": {
+    "@types/bunyan-format": "^0.2.4",
     "@types/node": "24.0.3",
     "rimraf": "~6.0.1",
     "typescript": "5.8.3"

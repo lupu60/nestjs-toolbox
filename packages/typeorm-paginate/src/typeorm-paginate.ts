@@ -1,9 +1,9 @@
-import { Repository, FindOptionsWhere } from 'typeorm';
+import { ObjectLiteral, Repository, FindOptionsWhere } from 'typeorm';
 import { Merge } from 'type-fest';
 
 const DEFAULT_PAGINATION_LIMIT = 100;
 
-export async function* rows<T>(options: {
+export async function* rows<T extends ObjectLiteral>(options: {
   repository: Repository<T>;
   where: FindOptionsWhere<T> | FindOptionsWhere<T>[];
   limit?: number;
@@ -11,7 +11,7 @@ export async function* rows<T>(options: {
 }): AsyncGenerator<Merge<T, { index: number; progress: number }>> {
   const { repository, where, limit = DEFAULT_PAGINATION_LIMIT } = options;
   let { offset = 0 } = options;
-  const total = await repository.count(where);
+  const total = await repository.count({ where });
   let index = 0;
   while (offset < total) {
     const rows = await repository.find({
@@ -27,9 +27,9 @@ export async function* rows<T>(options: {
   }
 }
 
-export async function* set<T>(options: { repository: Repository<T>; where: FindOptionsWhere<T> | FindOptionsWhere<T>[]; limit?: number }): AsyncGenerator<T[]> {
+export async function* set<T extends ObjectLiteral>(options: { repository: Repository<T>; where: FindOptionsWhere<T> | FindOptionsWhere<T>[]; limit?: number }): AsyncGenerator<T[]> {
   const { repository, where, limit = DEFAULT_PAGINATION_LIMIT } = options;
-  const total = await repository.count(where);
+  const total = await repository.count({ where });
   let offset = 0;
   while (offset < total) {
     const rows = await repository.find({

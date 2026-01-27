@@ -59,25 +59,30 @@ function logError(message: any) {
   }
 }
 
-function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): string | string[] {
+function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): string | string[] | undefined {
   const objectSchema = inputSchema as SchemaObject;
   const refSchema = inputSchema as ReferenceObject;
   switch (objectSchema.type) {
     case 'object':
+      if (!objectSchema.properties) return undefined;
       return Object.values(preprocessProperties(objectSchema.properties));
     case 'array':
+      if (!objectSchema.items) return undefined;
       return extractRefsFromSchema(objectSchema.items);
     default:
       if (objectSchema.oneOf) {
-        return flatten(Object.values(objectSchema.oneOf).map((item) => extractRefsFromSchema(item)));
+        const refs = Object.values(objectSchema.oneOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        return flatten(refs);
       }
       if (objectSchema.anyOf) {
-        return flatten(Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)));
+        const refs = Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        return flatten(refs);
       }
       if (objectSchema.allOf) {
-        return flatten(Object.values(objectSchema.allOf).map((item) => extractRefsFromSchema(item)));
+        const refs = Object.values(objectSchema.allOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        return flatten(refs);
       }
-      return refSchema.$ref || undefined;
+      return refSchema.$ref;
   }
 }
 
@@ -137,7 +142,10 @@ function checkSelfReference(name: string, content: string): string {
 
 async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, filePath: string): Promise<string> {
   const components = openApiSpec.components;
-  const schema = openApiSpec.components.schemas[name];
+  if (!components || !components.schemas) {
+    throw new Error('OpenAPI spec must have components.schemas');
+  }
+  const schema = components.schemas[name];
 
   const dependencies = await createImport(name, schema, filePath);
 
@@ -188,19 +196,22 @@ function delayedParsing(schemaKey: string, openApiSpec: OpenAPIObject, interface
 }
 
 async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<void> {
+  if (!openApiSpec.components || !openApiSpec.components.schemas) {
+    return;
+  }
   const schemasNames = Object.keys(openApiSpec.components.schemas).sort();
-  await schemasNames.reduce(
-    async (prevPromise, schemaKey) => {
-      try {
-        await prevPromise;
-        return delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
-      } catch (error) {
-        logError(error.message);
-        return Promise.resolve({} as TsInterface);
-      }
-    },
-    Promise.resolve({} as TsInterface),
-  );
+  let prevPromise: Promise<TsInterface | null> = Promise.resolve(null);
+  for (const schemaKey of schemasNames) {
+    try {
+      await prevPromise;
+      prevPromise = delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      logError(errorMessage);
+      prevPromise = Promise.resolve(null);
+    }
+  }
+  await prevPromise;
 }
 
 function ensureDirectoryExists(dirPath: string): void {
@@ -214,14 +225,17 @@ async function removeExistingInterfaces(interfacesPath: string): Promise<void[]>
   if (!existsSync(interfacesPath)) {
     return Promise.resolve([]);
   }
-  const files: string[] = await readDir(interfacesPath);
-  if (!files) {
+  const files = await readDir(interfacesPath);
+  if (!files || files.length === 0) {
     return Promise.resolve([]);
   }
-  return Promise.all(Object.values(files).map((file) => removeFile(path.join(interfacesPath, file))));
+  return Promise.all(files.map((file) => removeFile(path.join(interfacesPath, file))));
 }
 
 function appendTitles(openApiSpec: OpenAPIObject): void {
+  if (!openApiSpec.components || !openApiSpec.components.schemas) {
+    return;
+  }
   Object.entries(openApiSpec.components.schemas).forEach(([name, schema]) => {
     const objectSchema: any = schema;
     if (objectSchema.type) {
@@ -248,7 +262,8 @@ export async function generate(
     await openApiToInterfaces(swaggerSpec, interfacesDirPath);
     logSuccess('Typescript interfaces generated');
   } catch (error) {
-    logError(error.message);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logError(errorMessage);
     throw error;
   }
 }

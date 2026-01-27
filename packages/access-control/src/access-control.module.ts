@@ -23,7 +23,7 @@ export interface AccessControlModuleAsyncOptions extends Pick<ModuleMetadata, 'i
 @Module({})
 export class AccessControlModule {
   public static forRules(rules: RulesBuilder, options?: ACOptions): DynamicModule {
-    let controllers = [];
+    let controllers: Type<any>[] = [];
 
     if (options) {
       Reflect.defineMetadata(PATH_METADATA, options.grantsEndpoint, GrantsController);
@@ -52,7 +52,7 @@ export class AccessControlModule {
     const { inject = [], imports = [], useFactory, useExisting, useClass } = options;
     let provider: Provider<RulesBuilder | Promise<RulesBuilder>> = {
       provide: RULES_BUILDER_TOKEN,
-      useFactory,
+      useFactory: useFactory || (() => new RulesBuilder()),
       inject,
     };
 
