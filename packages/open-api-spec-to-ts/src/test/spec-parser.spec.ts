@@ -9,7 +9,7 @@ describe('OpenAPISpecParser', () => {
   const findPackageRoot = (startDir: string): string | null => {
     let dir = startDir;
     const root = resolve('/');
-    
+
     while (dir !== root) {
       if (existsSync(join(dir, 'package.json'))) {
         // Check if this is the open-api-spec-to-ts package
@@ -24,18 +24,18 @@ describe('OpenAPISpecParser', () => {
       }
       dir = dirname(dir);
     }
-    
+
     return null;
   };
-  
+
   const getTestDir = () => {
     const currentDir = __dirname;
-    
+
     // Check if JSON files exist in current directory (source)
     if (existsSync(join(currentDir, 'uspto.json'))) {
       return currentDir;
     }
-    
+
     // If we're in dist/build, find package root and then src/test
     const packageRoot = findPackageRoot(currentDir);
     if (packageRoot) {
@@ -44,7 +44,7 @@ describe('OpenAPISpecParser', () => {
         return srcTestDir;
       }
     }
-    
+
     // Fallback: try replacing dist/build with src
     const normalizedPath = currentDir.replace(/\\/g, '/');
     const distMatch = normalizedPath.match(/(.*)\/(dist|build)\/src\/test/);
@@ -54,10 +54,10 @@ describe('OpenAPISpecParser', () => {
         return srcTestDir;
       }
     }
-    
+
     return currentDir;
   };
-  
+
   const basePath = getTestDir();
   const interfaceFilePath = join(basePath, 'interfaces');
 

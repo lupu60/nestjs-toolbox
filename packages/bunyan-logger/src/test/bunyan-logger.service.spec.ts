@@ -146,7 +146,7 @@ describe('BunyanLoggerService', () => {
 
       const errorSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'error');
       loggerWithoutColors.error('Error message');
-      
+
       expect(errorSpy).toHaveBeenCalled();
       const callArgs = errorSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -166,7 +166,7 @@ describe('BunyanLoggerService', () => {
 
       const errorSpy = jest.spyOn(loggerWithColors['bunyanLogger'], 'error');
       loggerWithColors.error('Error message');
-      
+
       expect(errorSpy).toHaveBeenCalled();
       const callArgs = errorSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -186,7 +186,7 @@ describe('BunyanLoggerService', () => {
 
       const warnSpy = jest.spyOn(loggerDefault['bunyanLogger'], 'warn');
       loggerDefault.warn('Warning message');
-      
+
       expect(warnSpy).toHaveBeenCalled();
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -207,7 +207,7 @@ describe('BunyanLoggerService', () => {
 
       const warnSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'warn');
       loggerWithoutColors.warn('Warning message');
-      
+
       expect(warnSpy).toHaveBeenCalled();
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -229,7 +229,7 @@ describe('BunyanLoggerService', () => {
 
       const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
       loggerWithMaxLength.log('This is a very long message that should be truncated');
-      
+
       expect(logSpy).toHaveBeenCalled();
       const callArgs = logSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -249,7 +249,7 @@ describe('BunyanLoggerService', () => {
 
       const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');
       loggerWithMaxLength.warn('This is a warning message that exceeds the limit');
-      
+
       expect(warnSpy).toHaveBeenCalled();
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -271,7 +271,7 @@ describe('BunyanLoggerService', () => {
 
       const errorSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'error');
       loggerWithMaxLength.error('This is an error message that is too long');
-      
+
       expect(errorSpy).toHaveBeenCalled();
       const callArgs = errorSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -293,7 +293,7 @@ describe('BunyanLoggerService', () => {
       const logSpy = jest.spyOn(loggerWithoutMaxLength['bunyanLogger'], 'info');
       const longMessage = 'This is a very long message that should not be truncated because maxLength is not set';
       loggerWithoutMaxLength.log(longMessage);
-      
+
       expect(logSpy).toHaveBeenCalled();
       const callArgs = logSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -313,7 +313,7 @@ describe('BunyanLoggerService', () => {
       const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
       const shortMessage = 'Short message';
       loggerWithMaxLength.log(shortMessage);
-      
+
       expect(logSpy).toHaveBeenCalled();
       const callArgs = logSpy.mock.calls[0];
       const logMessage = callArgs[1];
@@ -332,7 +332,7 @@ describe('BunyanLoggerService', () => {
 
       const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
       loggerWithMaxLength.log(['First message', 'Second very long message', 'Third']);
-      
+
       expect(logSpy).toHaveBeenCalled();
       const callArgs = logSpy.mock.calls[0];
       const messages = callArgs.slice(1);
@@ -356,7 +356,7 @@ describe('BunyanLoggerService', () => {
 
       const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');
       loggerWithMaxLength.warn('This is a very long warning message');
-      
+
       expect(warnSpy).toHaveBeenCalled();
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
