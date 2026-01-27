@@ -216,4 +216,155 @@ describe('BunyanLoggerService', () => {
       warnSpy.mockRestore();
     });
   });
+
+  describe('maxLength property', () => {
+    it('should truncate log messages when maxLength is set', () => {
+      const loggerWithMaxLength = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          outputMode: 'short',
+        },
+        maxLength: 10,
+      });
+
+      const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
+      loggerWithMaxLength.log('This is a very long message that should be truncated');
+      
+      expect(logSpy).toHaveBeenCalled();
+      const callArgs = logSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      expect(logMessage).toBe('This is a ');
+      expect(logMessage.length).toBe(10);
+      logSpy.mockRestore();
+    });
+
+    it('should truncate warn messages when maxLength is set', () => {
+      const loggerWithMaxLength = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          outputMode: 'short',
+        },
+        maxLength: 15,
+      });
+
+      const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');
+      loggerWithMaxLength.warn('This is a warning message that exceeds the limit');
+      
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      // Strip ANSI color codes for comparison
+      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      expect(strippedMessage.length).toBe(15);
+      expect(strippedMessage).toBe('This is a warni');
+      warnSpy.mockRestore();
+    });
+
+    it('should truncate error messages when maxLength is set', () => {
+      const loggerWithMaxLength = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          outputMode: 'short',
+        },
+        maxLength: 20,
+      });
+
+      const errorSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'error');
+      loggerWithMaxLength.error('This is an error message that is too long');
+      
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      // Strip ANSI color codes for comparison
+      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      expect(strippedMessage).toBe('This is an error mes');
+      expect(strippedMessage.length).toBe(20);
+      errorSpy.mockRestore();
+    });
+
+    it('should not truncate messages when maxLength is not set', () => {
+      const loggerWithoutMaxLength = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          outputMode: 'short',
+        },
+      });
+
+      const logSpy = jest.spyOn(loggerWithoutMaxLength['bunyanLogger'], 'info');
+      const longMessage = 'This is a very long message that should not be truncated because maxLength is not set';
+      loggerWithoutMaxLength.log(longMessage);
+      
+      expect(logSpy).toHaveBeenCalled();
+      const callArgs = logSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      expect(logMessage).toBe(longMessage);
+      logSpy.mockRestore();
+    });
+
+    it('should not truncate messages shorter than maxLength', () => {
+      const loggerWithMaxLength = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          outputMode: 'short',
+        },
+        maxLength: 100,
+      });
+
+      const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
+      const shortMessage = 'Short message';
+      loggerWithMaxLength.log(shortMessage);
+      
+      expect(logSpy).toHaveBeenCalled();
+      const callArgs = logSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      expect(logMessage).toBe(shortMessage);
+      logSpy.mockRestore();
+    });
+
+    it('should truncate array messages when maxLength is set', () => {
+      const loggerWithMaxLength = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          outputMode: 'short',
+        },
+        maxLength: 8,
+      });
+
+      const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
+      loggerWithMaxLength.log(['First message', 'Second very long message', 'Third']);
+      
+      expect(logSpy).toHaveBeenCalled();
+      const callArgs = logSpy.mock.calls[0];
+      const messages = callArgs.slice(1);
+      expect(messages[0]).toBe('First me');
+      expect(messages[0].length).toBe(8);
+      expect(messages[1]).toBe('Second v');
+      expect(messages[1].length).toBe(8);
+      expect(messages[2]).toBe('Third');
+      logSpy.mockRestore();
+    });
+
+    it('should truncate messages before applying colors', () => {
+      const loggerWithMaxLength = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          color: true,
+          outputMode: 'short',
+        },
+        maxLength: 12,
+      });
+
+      const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');
+      loggerWithMaxLength.warn('This is a very long warning message');
+      
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      // Strip ANSI color codes for comparison
+      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      expect(strippedMessage).toBe('This is a ve');
+      expect(strippedMessage.length).toBe(12);
+      warnSpy.mockRestore();
+    });
+  });
 });
