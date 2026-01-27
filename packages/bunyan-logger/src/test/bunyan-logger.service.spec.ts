@@ -79,7 +79,9 @@ describe('BunyanLoggerService', () => {
     expect(warnSpy).toHaveBeenCalled();
     const callArgs = warnSpy.mock.calls[0];
     const logMessage = callArgs[1];
-    expect(logMessage).toBe('E73882 tried access the PurchaseOrder service with an expired key!');
+    // Strip ANSI color codes for comparison (colors.yellow adds them)
+    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    expect(strippedMessage).toBe('E73882 tried access the PurchaseOrder service with an expired key!');
     warnSpy.mockRestore();
   });
 
@@ -113,7 +115,9 @@ describe('BunyanLoggerService', () => {
     const callArgs = warnSpy.mock.calls[0];
     expect(callArgs[0].context).toBe('AppController');
     const logMessage = callArgs[1];
-    expect(logMessage).toBe('E73882 tried access the PurchaseOrder service');
+    // Strip ANSI color codes for comparison (colors.yellow adds them)
+    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    expect(strippedMessage).toBe('E73882 tried access the PurchaseOrder service');
     warnSpy.mockRestore();
   });
 
@@ -124,7 +128,9 @@ describe('BunyanLoggerService', () => {
     expect(warnSpy).toHaveBeenCalled();
     const callArgs = warnSpy.mock.calls[0];
     const logMessage = callArgs[1];
-    expect(logMessage).toBe('{user} tried access the {service} service');
+    // Strip ANSI color codes for comparison (colors.yellow adds them)
+    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    expect(strippedMessage).toBe('{user} tried access the {service} service');
     warnSpy.mockRestore();
   });
 });

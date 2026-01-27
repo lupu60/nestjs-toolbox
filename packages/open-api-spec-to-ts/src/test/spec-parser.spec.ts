@@ -62,8 +62,17 @@ describe('OpenAPISpecParser', () => {
   const interfaceFilePath = join(basePath, 'interfaces');
 
   afterAll(async () => {
-    const files = await readDir(interfaceFilePath);
-    return Promise.all(Object.values(files).map((file) => removeFile(`${interfaceFilePath}/${file}`)));
+    // Only clean up if the directory exists
+    if (existsSync(interfaceFilePath)) {
+      try {
+        const files = await readDir(interfaceFilePath);
+        if (files) {
+          await Promise.all(Object.values(files).map((file) => removeFile(`${interfaceFilePath}/${file}`)));
+        }
+      } catch (error) {
+        // Ignore errors during cleanup
+      }
+    }
   });
 
   it('should generate from a valid Open API file', async () => {
