@@ -24,21 +24,21 @@ describe('Dummy Test', () => {
   it('should generate setter string', () => {
     const keys = ['id', 'name'];
     const keyNamingTransform = (k) => k;
-    const expectedStatement = 'id=EXCLUDED.id , name=EXCLUDED.name';
+    const expectedStatement = 'id=EXCLUDED.id , name=EXCLUDED.name , "updatedAt"=CURRENT_TIMESTAMP';
     expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
   });
 
   it('should generate setter string', () => {
     const keys = ['id', 'name', 'firstName'];
     const keyNamingTransform = (k) => k;
-    const expectedStatement = 'id=EXCLUDED.id , name=EXCLUDED.name , "firstName"=EXCLUDED."firstName"';
+    const expectedStatement = 'id=EXCLUDED.id , name=EXCLUDED.name , "firstName"=EXCLUDED."firstName" , "updatedAt"=CURRENT_TIMESTAMP';
     expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
   });
 
   it('should generate setter string with right key transform', () => {
     const keys = ['id', 'name', 'first_name'];
     const keyNamingTransform = (k) => k.toUpperCase();
-    const expectedStatement = 'ID=EXCLUDED.id , NAME=EXCLUDED.name , FIRST_NAME=EXCLUDED.first_name';
+    const expectedStatement = 'ID=EXCLUDED.id , NAME=EXCLUDED.name , FIRST_NAME=EXCLUDED.first_name , "updatedAt"=CURRENT_TIMESTAMP';
     expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
   });
 

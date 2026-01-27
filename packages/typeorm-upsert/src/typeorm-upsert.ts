@@ -67,5 +67,7 @@ export function _generateSetterString({ keys, keyNamingTransform }) {
     }
     return `${keyNamingTransform(k)}=EXCLUDED.${k}`;
   });
+  // Always update updatedAt to current timestamp
+  setterString.push('"updatedAt"=CURRENT_TIMESTAMP');
   return setterString.join(' , ');
 }
