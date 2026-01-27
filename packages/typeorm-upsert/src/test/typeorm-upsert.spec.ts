@@ -7,15 +7,15 @@ describe('Dummy Test', () => {
     { id: 3, name: 'foo' },
     { id: 4, name: 'bar' },
   ];
-  const repository = jest.fn();
-  // @ts-ignore
-  repository.createQueryBuilder = jest.fn().mockReturnValue({
-    insert: jest.fn().mockReturnValue({
-      values: jest.fn().mockReturnValue({
-        onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) }),
+  const repository = {
+    createQueryBuilder: jest.fn().mockReturnValue({
+      insert: jest.fn().mockReturnValue({
+        values: jest.fn().mockReturnValue({
+          onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) }),
+        }),
       }),
     }),
-  });
+  } as any;
 
   it('should be defined', () => {
     expect(TypeOrmUpsert).toBeDefined();
@@ -23,21 +23,21 @@ describe('Dummy Test', () => {
 
   it('should generate setter string', () => {
     const keys = ['id', 'name'];
-    const keyNamingTransform = (k) => k;
+    const keyNamingTransform = (k: string) => k;
     const expectedStatement = 'id=EXCLUDED.id , name=EXCLUDED.name , "updatedAt"=CURRENT_TIMESTAMP';
     expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
   });
 
   it('should generate setter string', () => {
     const keys = ['id', 'name', 'firstName'];
-    const keyNamingTransform = (k) => k;
+    const keyNamingTransform = (k: string) => k;
     const expectedStatement = 'id=EXCLUDED.id , name=EXCLUDED.name , "firstName"=EXCLUDED."firstName" , "updatedAt"=CURRENT_TIMESTAMP';
     expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
   });
 
   it('should generate setter string with right key transform', () => {
     const keys = ['id', 'name', 'first_name'];
-    const keyNamingTransform = (k) => k.toUpperCase();
+    const keyNamingTransform = (k: string) => k.toUpperCase();
     const expectedStatement = 'ID=EXCLUDED.id , NAME=EXCLUDED.name , FIRST_NAME=EXCLUDED.first_name , "updatedAt"=CURRENT_TIMESTAMP';
     expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
   });
@@ -58,12 +58,12 @@ describe('Dummy Test', () => {
 
   it('should save', async () => {
     const data = [{ id: 1, name: '' }];
-    const saved = await TypeOrmUpsert(repository, data, 'id');
+    const saved = await TypeOrmUpsert(repository as any, data, 'id');
     expect(saved).toBeDefined();
   });
 
   it('should save', async () => {
-    const saved = await TypeOrmUpsert(repository, array, 'id', { chunk: 3 });
+    const saved = await TypeOrmUpsert(repository as any, array, 'id', { chunk: 3 });
     expect(saved).toBeDefined();
   });
 
@@ -96,7 +96,7 @@ describe('Dummy Test', () => {
         { id: 2, name: 'bar' },
       ];
 
-      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: true });
+      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
       
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
@@ -128,7 +128,7 @@ describe('Dummy Test', () => {
       };
 
       const data = { id: 1, name: 'foo' };
-      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: true });
+      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
       
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(false);
@@ -154,13 +154,14 @@ describe('Dummy Test', () => {
       };
 
       const data = [{ id: 1, name: 'foo' }];
-      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: false });
+      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: false });
       
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
-      expect(result[0]).not.toHaveProperty('status');
-      expect(result[0]).not.toHaveProperty('entity');
-      expect(result[0].id).toBe(1);
+      const resultArray = result as Array<{ id: number; name: string }>;
+      expect(resultArray[0]).not.toHaveProperty('status');
+      expect(resultArray[0]).not.toHaveProperty('entity');
+      expect(resultArray[0].id).toBe(1);
     });
 
     it('should not return status when returnStatus is not specified (backward compatibility)', async () => {
@@ -181,13 +182,14 @@ describe('Dummy Test', () => {
       };
 
       const data = [{ id: 1, name: 'foo' }];
-      const result = await TypeOrmUpsert(mockRepository, data, 'id');
+      const result = await TypeOrmUpsert(mockRepository as any, data, 'id');
       
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
-      expect(result[0]).not.toHaveProperty('status');
-      expect(result[0]).not.toHaveProperty('entity');
-      expect(result[0].id).toBe(1);
+      const resultArray = result as Array<{ id: number; name: string }>;
+      expect(resultArray[0]).not.toHaveProperty('status');
+      expect(resultArray[0]).not.toHaveProperty('entity');
+      expect(resultArray[0].id).toBe(1);
     });
   });
 });

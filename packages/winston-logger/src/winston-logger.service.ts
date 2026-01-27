@@ -16,7 +16,7 @@ export class WinstonLoggerService implements LoggerService {
    */
   constructor(options: { projectName: string; transports?: winston.transport[]; timeFormatStr?: string; customFormatter?: winston.Logform.Format }) {
     const { projectName, transports, timeFormatStr, customFormatter } = options;
-    if (projectName == null || this.isEmpty(projectName)) {
+    if (projectName == null || (typeof projectName === 'string' && projectName.trim() === '') || this.isEmpty(projectName)) {
       throw new Error(`projectName is required`);
     }
     const timestamp = timeFormatStr ? winston.format.timestamp({ format: timeFormatStr }) : winston.format.timestamp();

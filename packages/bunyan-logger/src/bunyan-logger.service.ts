@@ -44,7 +44,7 @@ export class BunyanLoggerService implements LoggerService {
     maxLength?: number;
   }) {
     const { projectId, formatterOptions, customStreams, extraFields, maxLength } = options;
-    if (projectId == null || this.isEmpty(projectId)) {
+    if (projectId == null || (typeof projectId === 'string' && projectId.trim() === '') || this.isEmpty(projectId)) {
       throw new Error(`projectId is required`);
     }
     this.formatterOptions = formatterOptions;
