@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { ObjectLiteral, Repository } from 'typeorm';
 
 export type UpsertStatus = 'inserted' | 'updated';
 
@@ -22,7 +22,7 @@ const UPDATED_AT_COLUMN = 'updatedAt';
  *   chunk - Number of records to process per batch
  *   returnStatus - If true, returns array of UpsertResult with status (inserted/updated) for each entity
  */
-export async function TypeOrmUpsert<T>(
+export async function TypeOrmUpsert<T extends ObjectLiteral>(
   repository: Repository<T>,
   object: T | T[],
   conflictKey: string,
@@ -39,7 +39,7 @@ export async function TypeOrmUpsert<T>(
   const doNotUpsert = options.doNotUpsert ?? [];
   const returnStatus = options.returnStatus ?? false;
   const sampleObject = Array.isArray(object) ? object[0] : object;
-  const keys: string[] = _keys({ sampleObject, doNotUpsert });
+  const keys: string[] = _keys({ sampleObject: sampleObject as Record<string, unknown>, doNotUpsert });
   const setterString = _generateSetterString({ keys, keyNamingTransform });
   const onConflict = `("${conflictKey}") DO UPDATE SET ${setterString}`;
   // Ensure object is always an array for chunking
@@ -73,7 +73,7 @@ interface ChunkPromiseResult {
   raw: Array<Record<string, unknown>>;
 }
 
-export async function _chunkPromises<T>({ 
+export async function _chunkPromises<T extends ObjectLiteral>({ 
   repository, 
   chunkedValues, 
   onConflict, 

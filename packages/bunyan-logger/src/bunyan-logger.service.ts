@@ -17,7 +17,8 @@ export class BunyanLoggerService implements LoggerService {
   private readonly maxLength?: number;
   private isEmpty = (obj: unknown): boolean => {
     if (!obj || typeof obj !== 'object') return false;
-    return [Object, Array].includes((obj as object).constructor) && !Object.entries(obj).length;
+    const constructorName = (obj as object).constructor?.name;
+    return (constructorName === 'Object' || constructorName === 'Array') && !Object.entries(obj).length;
   };
 
   /**
