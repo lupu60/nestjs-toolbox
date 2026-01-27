@@ -1,11 +1,11 @@
+import { existsSync, mkdirSync } from 'fs';
+import * as path from 'path';
 import { OpenAPIObject } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import * as chalk from 'chalk';
 import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
-import * as path from 'path';
-import { existsSync, mkdirSync } from 'fs';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
 type TsInterface = { filePath: string; name: string; content: string };
@@ -64,22 +64,32 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
   const refSchema = inputSchema as ReferenceObject;
   switch (objectSchema.type) {
     case 'object':
-      if (!objectSchema.properties) return undefined;
+      if (!objectSchema.properties) {
+        return undefined;
+      }
       return Object.values(preprocessProperties(objectSchema.properties));
     case 'array':
-      if (!objectSchema.items) return undefined;
+      if (!objectSchema.items) {
+        return undefined;
+      }
       return extractRefsFromSchema(objectSchema.items);
     default:
       if (objectSchema.oneOf) {
-        const refs = Object.values(objectSchema.oneOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        const refs = Object.values(objectSchema.oneOf)
+          .map((item) => extractRefsFromSchema(item))
+          .filter((ref): ref is string | string[] => ref !== undefined);
         return flatten(refs);
       }
       if (objectSchema.anyOf) {
-        const refs = Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        const refs = Object.values(objectSchema.anyOf)
+          .map((item) => extractRefsFromSchema(item))
+          .filter((ref): ref is string | string[] => ref !== undefined);
         return flatten(refs);
       }
       if (objectSchema.allOf) {
-        const refs = Object.values(objectSchema.allOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        const refs = Object.values(objectSchema.allOf)
+          .map((item) => extractRefsFromSchema(item))
+          .filter((ref): ref is string | string[] => ref !== undefined);
         return flatten(refs);
       }
       return refSchema.$ref;

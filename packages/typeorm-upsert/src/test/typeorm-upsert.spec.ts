@@ -97,7 +97,7 @@ describe('Dummy Test', () => {
       ];
 
       const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
-      
+
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
       expect((result as UpsertResult<any>[]).length).toBe(2);
@@ -129,7 +129,7 @@ describe('Dummy Test', () => {
 
       const data = { id: 1, name: 'foo' };
       const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
-      
+
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(false);
       expect((result as UpsertResult<any>).status).toBe('inserted');
@@ -155,7 +155,7 @@ describe('Dummy Test', () => {
 
       const data = [{ id: 1, name: 'foo' }];
       const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: false });
-      
+
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
       const resultArray = result as Array<{ id: number; name: string }>;
@@ -183,7 +183,7 @@ describe('Dummy Test', () => {
 
       const data = [{ id: 1, name: 'foo' }];
       const result = await TypeOrmUpsert(mockRepository as any, data, 'id');
-      
+
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
       const resultArray = result as Array<{ id: number; name: string }>;

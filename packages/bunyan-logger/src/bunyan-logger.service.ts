@@ -16,7 +16,9 @@ export class BunyanLoggerService implements LoggerService {
   private readonly formatterOptions: FormatterOptions;
   private readonly maxLength?: number;
   private isEmpty = (obj: unknown): boolean => {
-    if (!obj || typeof obj !== 'object') return false;
+    if (!obj || typeof obj !== 'object') {
+      return false;
+    }
     const constructorName = (obj as object).constructor?.name;
     return (constructorName === 'Object' || constructorName === 'Array') && !Object.entries(obj).length;
   };
@@ -44,8 +46,8 @@ export class BunyanLoggerService implements LoggerService {
     maxLength?: number;
   }) {
     const { projectId, formatterOptions, customStreams, extraFields, maxLength } = options;
-    if (projectId == null || (typeof projectId === 'string' && projectId.trim() === '') || this.isEmpty(projectId)) {
-      throw new Error(`projectId is required`);
+    if (projectId === null || projectId === undefined || (typeof projectId === 'string' && projectId.trim() === '') || this.isEmpty(projectId)) {
+      throw new Error('projectId is required');
     }
     this.formatterOptions = formatterOptions;
     this.maxLength = maxLength;
@@ -66,7 +68,7 @@ export class BunyanLoggerService implements LoggerService {
    * @returns Truncated message if maxLength is set and message exceeds it
    */
   private truncateMessage(message: unknown): unknown {
-    if (this.maxLength != null && typeof message === 'string' && message.length > this.maxLength) {
+    if (this.maxLength !== null && this.maxLength !== undefined && typeof message === 'string' && message.length > this.maxLength) {
       return message.slice(0, this.maxLength);
     }
     return message;
@@ -134,7 +136,8 @@ export class BunyanLoggerService implements LoggerService {
     // Handle string interpolation if message is a string and we have an object parameter
     if (typeof processedMessage === 'string' && optionalParams.length > 0) {
       const interpolationObject = optionalParams.find(
-        (param): param is Record<string, unknown> => param !== null && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
+        (param): param is Record<string, unknown> =>
+          param !== null && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
       );
       if (interpolationObject) {
         processedMessage = this.interpolateString(processedMessage, interpolationObject);
@@ -202,15 +205,10 @@ export class BunyanLoggerService implements LoggerService {
     // Handle string interpolation
     if (typeof processedMessage === 'string') {
       // Filter out trace and context (strings) before finding interpolation object
-      const nonStringParams = optionalParams.filter(
-        (param) => param !== trace && param !== context,
-      );
+      const nonStringParams = optionalParams.filter((param) => param !== trace && param !== context);
       const interpolationObject = nonStringParams.find(
-        (param): param is Record<string, unknown> => 
-          param !== null && 
-          typeof param === 'object' && 
-          !Array.isArray(param) && 
-          !(param instanceof Error),
+        (param): param is Record<string, unknown> =>
+          param !== null && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
       );
       if (interpolationObject) {
         processedMessage = this.interpolateString(processedMessage, interpolationObject);

@@ -23,16 +23,20 @@ export async function* rows<T extends ObjectLiteral>(options: {
     offset += limit;
     for (const row of rows) {
       index++;
-      const result: PaginatedRow<T> = Object.assign({}, row, { 
-        index, 
-        progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100 
+      const result: PaginatedRow<T> = Object.assign({}, row, {
+        index,
+        progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100,
       });
       yield result;
     }
   }
 }
 
-export async function* set<T extends ObjectLiteral>(options: { repository: Repository<T>; where: FindOptionsWhere<T> | FindOptionsWhere<T>[]; limit?: number }): AsyncGenerator<T[]> {
+export async function* set<T extends ObjectLiteral>(options: {
+  repository: Repository<T>;
+  where: FindOptionsWhere<T> | FindOptionsWhere<T>[];
+  limit?: number;
+}): AsyncGenerator<T[]> {
   const { repository, where, limit = DEFAULT_PAGINATION_LIMIT } = options;
   const total = await repository.count({ where });
   let offset = 0;

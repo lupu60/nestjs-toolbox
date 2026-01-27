@@ -1,5 +1,5 @@
-import { HttpLoggerMiddleware } from '../http-logger-middleware';
 import { Request, Response } from 'express';
+import { HttpLoggerMiddleware } from '../http-logger-middleware';
 
 describe('HttpLoggerMiddleware', () => {
   it('should log', () => {

@@ -22,7 +22,7 @@ program
   .parse(process.argv);
 
 function exec(command: string): Promise<string> {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     callbackexec(command, (error: Error | null, stdout: string, stderr: string) => {
       if (error || stderr) {
         reject(error || stderr);
@@ -46,7 +46,7 @@ function getCurrentBranchName(p = process.cwd()): string {
 
 async function main() {
   const options = program.opts() as Options;
-  options.tag = options.tag == 'true';
+  options.tag = options.tag === 'true';
   // console.log(JSON.stringify(options));
   if (options.packageJson) {
     options.version = await exec(`cat ${options.packageJson} |

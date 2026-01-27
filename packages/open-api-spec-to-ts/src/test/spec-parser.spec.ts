@@ -1,5 +1,5 @@
-import { join, resolve, dirname } from 'path';
 import { existsSync } from 'fs';
+import { join, resolve, dirname } from 'path';
 import { readDir, removeFile } from '../files';
 import { generate } from '../spec-parser';
 
@@ -69,7 +69,7 @@ describe('OpenAPISpecParser', () => {
         if (files) {
           await Promise.all(Object.values(files).map((file) => removeFile(`${interfaceFilePath}/${file}`)));
         }
-      } catch (error) {
+      } catch {
         // Ignore errors during cleanup
       }
     }
@@ -86,7 +86,7 @@ describe('OpenAPISpecParser', () => {
   });
 
   it('should throw no such file or directory', async () => {
-    const invalidTestFile = `./invalid-path.json`;
+    const invalidTestFile = './invalid-path.json';
     await expect(generate(invalidTestFile, interfaceFilePath)).rejects.toThrow(`ENOENT: no such file or directory, open '${invalidTestFile}'`);
   });
 });

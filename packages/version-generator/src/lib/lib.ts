@@ -78,7 +78,7 @@ export function generate_version(options: Partial<Options>, branch: string) {
     }
 
     return 'latest';
-  } catch (error) {
+  } catch {
     return 'latest';
   }
 }
