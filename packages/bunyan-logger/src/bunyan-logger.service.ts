@@ -14,6 +14,7 @@ export interface FormatterOptions {
 export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
   private readonly formatterOptions: FormatterOptions;
+  private readonly maxLength?: number;
   private isEmpty = (obj) => [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 
   /**
@@ -25,6 +26,7 @@ export class BunyanLoggerService implements LoggerService {
    *     extraFields?: {
    *       [key: string]: string;
    *     };
+   *     maxLength?: number;
    *   }} options
    * @memberof BunyanLoggerService
    */
@@ -35,12 +37,14 @@ export class BunyanLoggerService implements LoggerService {
     extraFields?: {
       [key: string]: string;
     };
+    maxLength?: number;
   }) {
-    const { projectId, formatterOptions, customStreams, extraFields } = options;
+    const { projectId, formatterOptions, customStreams, extraFields, maxLength } = options;
     if (projectId == null || this.isEmpty(projectId)) {
       throw new Error(`projectId is required`);
     }
     this.formatterOptions = formatterOptions;
+    this.maxLength = maxLength;
     const defaultStream: Bunyan.Stream = { level: 'info', type: 'stream', stream: bunyanFormat(formatterOptions) };
     const streams: Bunyan.Stream[] = [defaultStream, ...(customStreams || [])];
 
@@ -50,6 +54,18 @@ export class BunyanLoggerService implements LoggerService {
       streams: [...streams],
       ...extraFields,
     });
+  }
+
+  /**
+   * Truncates a string message if it exceeds maxLength
+   * @param message - The message to truncate
+   * @returns Truncated message if maxLength is set and message exceeds it
+   */
+  private truncateMessage(message: any): any {
+    if (this.maxLength != null && typeof message === 'string' && message.length > this.maxLength) {
+      return message.slice(0, this.maxLength);
+    }
+    return message;
   }
 
   /**
@@ -127,7 +143,8 @@ export class BunyanLoggerService implements LoggerService {
   public log(message: any, ...optionalParams: any[]): void {
     const { processedMessage, context } = this.processMessage(message, ...optionalParams);
     const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
-    this.bunyanLogger.info({ context }, ...messages);
+    const truncatedMessages = messages.map((msg) => this.truncateMessage(msg));
+    this.bunyanLogger.info({ context }, ...truncatedMessages);
   }
 
   public error(message: any, ...optionalParams: any[]): void {
@@ -143,7 +160,7 @@ export class BunyanLoggerService implements LoggerService {
         context = optionalParams[optionalParams.length - 1];
       }
 
-      this.bunyanLogger.error({ context, trace }, ...message.map((msg) => this.applyColor(msg, colors.red)));
+      this.bunyanLogger.error({ context, trace }, ...message.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)));
       return;
     }
 
@@ -182,7 +199,7 @@ export class BunyanLoggerService implements LoggerService {
     }
 
     const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
-    this.bunyanLogger.error({ context, trace }, ...messages.map((msg) => this.applyColor(msg, colors.red)));
+    this.bunyanLogger.error({ context, trace }, ...messages.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)));
   }
 
   public warn(message: any, ...optionalParams: any[]): void {
@@ -190,12 +207,12 @@ export class BunyanLoggerService implements LoggerService {
     if (Array.isArray(message)) {
       const lastParam = optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;
       const context = typeof lastParam === 'string' ? lastParam : undefined;
-      this.bunyanLogger.warn({ context }, ...message.map((msg) => this.applyColor(msg, colors.yellow)));
+      this.bunyanLogger.warn({ context }, ...message.map((msg) => this.applyColor(this.truncateMessage(msg), colors.yellow)));
       return;
     }
 
     const { processedMessage, context } = this.processMessage(message, ...optionalParams);
     const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
-    this.bunyanLogger.warn({ context }, ...messages.map((msg) => this.applyColor(msg, colors.yellow)));
+    this.bunyanLogger.warn({ context }, ...messages.map((msg) => this.applyColor(this.truncateMessage(msg), colors.yellow)));
   }
 }
