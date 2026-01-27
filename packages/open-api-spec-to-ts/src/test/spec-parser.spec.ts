@@ -1,10 +1,65 @@
-import { join } from 'path';
+import { join, resolve, dirname } from 'path';
+import { existsSync } from 'fs';
 import { readDir, removeFile } from '../files';
 import { generate } from '../spec-parser';
 
 describe('OpenAPISpecParser', () => {
-  const basePath = __dirname;
-  const interfaceFilePath = join(__dirname, 'interfaces');
+  // Resolve test directory path - works in both source and compiled output
+  // Find the source directory by looking for package.json and then src/test
+  const findPackageRoot = (startDir: string): string | null => {
+    let dir = startDir;
+    const root = resolve('/');
+    
+    while (dir !== root) {
+      if (existsSync(join(dir, 'package.json'))) {
+        // Check if this is the open-api-spec-to-ts package
+        try {
+          const pkg = require(join(dir, 'package.json'));
+          if (pkg.name === '@nest-toolbox/open-api-spec-to-ts') {
+            return dir;
+          }
+        } catch {
+          // Ignore errors
+        }
+      }
+      dir = dirname(dir);
+    }
+    
+    return null;
+  };
+  
+  const getTestDir = () => {
+    const currentDir = __dirname;
+    
+    // Check if JSON files exist in current directory (source)
+    if (existsSync(join(currentDir, 'uspto.json'))) {
+      return currentDir;
+    }
+    
+    // If we're in dist/build, find package root and then src/test
+    const packageRoot = findPackageRoot(currentDir);
+    if (packageRoot) {
+      const srcTestDir = resolve(packageRoot, 'src', 'test');
+      if (existsSync(join(srcTestDir, 'uspto.json'))) {
+        return srcTestDir;
+      }
+    }
+    
+    // Fallback: try replacing dist/build with src
+    const normalizedPath = currentDir.replace(/\\/g, '/');
+    const distMatch = normalizedPath.match(/(.*)\/(dist|build)\/src\/test/);
+    if (distMatch) {
+      const srcTestDir = resolve(distMatch[1], 'src', 'test');
+      if (existsSync(join(srcTestDir, 'uspto.json'))) {
+        return srcTestDir;
+      }
+    }
+    
+    return currentDir;
+  };
+  
+  const basePath = getTestDir();
+  const interfaceFilePath = join(basePath, 'interfaces');
 
   afterAll(async () => {
     const files = await readDir(interfaceFilePath);
