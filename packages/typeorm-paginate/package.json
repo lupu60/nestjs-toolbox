@@ -1,6 +1,6 @@
 {
   "name": "@nest-toolbox/typeorm-paginate",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "paginate typeorm table",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/typeorm-paginate#readme",
