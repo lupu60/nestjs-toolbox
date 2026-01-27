@@ -134,7 +134,8 @@ export class BunyanLoggerService implements LoggerService {
     // Handle string interpolation if message is a string and we have an object parameter
     if (typeof processedMessage === 'string' && optionalParams.length > 0) {
       const interpolationObject = optionalParams.find(
-        (param): param is Record<string, unknown> => param !== null && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
+        (param): param is Record<string, unknown> =>
+          param !== null && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
       );
       if (interpolationObject) {
         processedMessage = this.interpolateString(processedMessage, interpolationObject);
@@ -202,15 +203,10 @@ export class BunyanLoggerService implements LoggerService {
     // Handle string interpolation
     if (typeof processedMessage === 'string') {
       // Filter out trace and context (strings) before finding interpolation object
-      const nonStringParams = optionalParams.filter(
-        (param) => param !== trace && param !== context,
-      );
+      const nonStringParams = optionalParams.filter((param) => param !== trace && param !== context);
       const interpolationObject = nonStringParams.find(
-        (param): param is Record<string, unknown> => 
-          param !== null && 
-          typeof param === 'object' && 
-          !Array.isArray(param) && 
-          !(param instanceof Error),
+        (param): param is Record<string, unknown> =>
+          param !== null && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
       );
       if (interpolationObject) {
         processedMessage = this.interpolateString(processedMessage, interpolationObject);

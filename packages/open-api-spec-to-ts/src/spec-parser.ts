@@ -71,15 +71,21 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
       return extractRefsFromSchema(objectSchema.items);
     default:
       if (objectSchema.oneOf) {
-        const refs = Object.values(objectSchema.oneOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        const refs = Object.values(objectSchema.oneOf)
+          .map((item) => extractRefsFromSchema(item))
+          .filter((ref): ref is string | string[] => ref !== undefined);
         return flatten(refs);
       }
       if (objectSchema.anyOf) {
-        const refs = Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        const refs = Object.values(objectSchema.anyOf)
+          .map((item) => extractRefsFromSchema(item))
+          .filter((ref): ref is string | string[] => ref !== undefined);
         return flatten(refs);
       }
       if (objectSchema.allOf) {
-        const refs = Object.values(objectSchema.allOf).map((item) => extractRefsFromSchema(item)).filter((ref): ref is string | string[] => ref !== undefined);
+        const refs = Object.values(objectSchema.allOf)
+          .map((item) => extractRefsFromSchema(item))
+          .filter((ref): ref is string | string[] => ref !== undefined);
         return flatten(refs);
       }
       return refSchema.$ref;

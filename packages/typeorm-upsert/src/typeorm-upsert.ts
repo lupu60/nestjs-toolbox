@@ -45,8 +45,10 @@ export async function TypeOrmUpsert<T extends ObjectLiteral>(
   // Ensure object is always an array for chunking
   const valuesArray = Array.isArray(object) ? object : [object];
   const chunkedValues = _chunkValues({ values: valuesArray, chunk });
-  
-  const results = (await _chunkPromises({ repository, chunkedValues, onConflict, returnStatus, conflictKey })).flatMap((current) => current?.raw || []);
+
+  const results = (await _chunkPromises({ repository, chunkedValues, onConflict, returnStatus, conflictKey })).flatMap(
+    (current) => current?.raw || [],
+  );
 
   if (returnStatus) {
     // Return results with status
@@ -59,13 +61,13 @@ export async function TypeOrmUpsert<T extends ObjectLiteral>(
     });
     return Array.isArray(object) ? resultsWithStatus : resultsWithStatus[0];
   }
-  
+
   // Return entities without status (backward compatibility)
   const entities = results.map((result: Record<string, unknown>) => {
     const { _upsert_status, ...entity } = result;
     return entity as T;
   });
-  
+
   return Array.isArray(object) ? entities : entities[0];
 }
 
@@ -73,23 +75,23 @@ interface ChunkPromiseResult {
   raw: Array<Record<string, unknown>>;
 }
 
-export async function _chunkPromises<T extends ObjectLiteral>({ 
-  repository, 
-  chunkedValues, 
-  onConflict, 
-  returnStatus, 
-  conflictKey 
-}: { 
-  repository: Repository<T>; 
-  chunkedValues: T[][]; 
-  onConflict: string; 
-  returnStatus: boolean; 
+export async function _chunkPromises<T extends ObjectLiteral>({
+  repository,
+  chunkedValues,
+  onConflict,
+  returnStatus,
+  conflictKey,
+}: {
+  repository: Repository<T>;
+  chunkedValues: T[][];
+  onConflict: string;
+  returnStatus: boolean;
   conflictKey: string;
 }): Promise<ChunkPromiseResult[]> {
   const promises: Promise<ChunkPromiseResult>[] = [];
   for (let i = 0; i < chunkedValues.length; i++) {
     let existingKeys: Set<string | number> = new Set();
-    
+
     if (returnStatus) {
       // Query existing records to determine which will be inserted vs updated
       const conflictValues = chunkedValues[i].map((item) => (item as Record<string, unknown>)[conflictKey]).filter((val) => val != null);
@@ -102,26 +104,28 @@ export async function _chunkPromises<T extends ObjectLiteral>({
         existingKeys = new Set(existingRecords.map((record: Record<string, unknown>) => record[conflictKey] as string | number));
       }
     }
-    
+
     const saveQuery = repository.createQueryBuilder().insert().values(chunkedValues[i]).onConflict(onConflict).returning('*').execute();
-    
+
     promises.push(
-      saveQuery.then((result: ChunkPromiseResult) => {
-        if (returnStatus && result.raw) {
-          // Add status to each result
-          result.raw = result.raw.map((row: Record<string, unknown>) => {
-            const keyValue = row[conflictKey] as string | number;
-            const status: UpsertStatus = existingKeys.has(keyValue) ? 'updated' : 'inserted';
-            return {
-              ...row,
-              _upsert_status: status,
-            };
-          });
-        }
-        return result;
-      }).catch((e: unknown) => {
-        throw new Error(`Failed to upsert chunk: ${e instanceof Error ? e.message : String(e)}`);
-      }),
+      saveQuery
+        .then((result: ChunkPromiseResult) => {
+          if (returnStatus && result.raw) {
+            // Add status to each result
+            result.raw = result.raw.map((row: Record<string, unknown>) => {
+              const keyValue = row[conflictKey] as string | number;
+              const status: UpsertStatus = existingKeys.has(keyValue) ? 'updated' : 'inserted';
+              return {
+                ...row,
+                _upsert_status: status,
+              };
+            });
+          }
+          return result;
+        })
+        .catch((e: unknown) => {
+          throw new Error(`Failed to upsert chunk: ${e instanceof Error ? e.message : String(e)}`);
+        }),
     );
   }
   return await Promise.all(promises);
