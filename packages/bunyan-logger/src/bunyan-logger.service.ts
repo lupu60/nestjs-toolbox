@@ -7,7 +7,7 @@ export interface FormatterOptions {
   outputMode: string; // short|long|simple|json|bunyan
   color?: boolean;
   levelInString?: boolean;
-  colorFromLevel?: any;
+  colorFromLevel?: Record<string, unknown>;
   src?: boolean;
 }
 
@@ -15,7 +15,10 @@ export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
   private readonly formatterOptions: FormatterOptions;
   private readonly maxLength?: number;
-  private isEmpty = (obj) => [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+  private isEmpty = (obj: unknown): boolean => {
+    if (!obj || typeof obj !== 'object') return false;
+    return [Object, Array].includes((obj as object).constructor) && !Object.entries(obj).length;
+  };
 
   /**
    * Creates an instance of BunyanLoggerService.
@@ -61,7 +64,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param message - The message to truncate
    * @returns Truncated message if maxLength is set and message exceeds it
    */
-  private truncateMessage(message: any): any {
+  private truncateMessage(message: unknown): unknown {
     if (this.maxLength != null && typeof message === 'string' && message.length > this.maxLength) {
       return message.slice(0, this.maxLength);
     }
@@ -74,7 +77,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param colorFn - The color function to apply (e.g., colors.red, colors.yellow)
    * @returns Colored or plain message based on formatterOptions.color
    */
-  private applyColor(message: any, colorFn: (msg: string) => string): any {
+  private applyColor(message: unknown, colorFn: (msg: string) => string): unknown {
     // Check if colors are disabled
     if (this.formatterOptions.color === false) {
       return message;
@@ -92,7 +95,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param params - Object with values to replace placeholders
    * @returns Interpolated string
    */
-  private interpolateString(message: string, params: Record<string, any>): string {
+  private interpolateString(message: string, params: Record<string, unknown>): string {
     if (!params || typeof params !== 'object') {
       return message;
     }
@@ -107,7 +110,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param optionalParams - Additional parameters (may include interpolation object and/or context)
    * @returns Object with processed message and context
    */
-  private processMessage(message: any, ...optionalParams: any[]): { processedMessage: any; context?: string } {
+  private processMessage(message: unknown, ...optionalParams: unknown[]): { processedMessage: unknown; context?: string } {
     // Handle backward compatibility: if message is an array, treat it as before
     if (Array.isArray(message)) {
       const lastParam = optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;
@@ -140,14 +143,14 @@ export class BunyanLoggerService implements LoggerService {
     return { processedMessage, context };
   }
 
-  public log(message: any, ...optionalParams: any[]): void {
+  public log(message: unknown, ...optionalParams: unknown[]): void {
     const { processedMessage, context } = this.processMessage(message, ...optionalParams);
     const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
     const truncatedMessages = messages.map((msg) => this.truncateMessage(msg));
     this.bunyanLogger.info({ context }, ...truncatedMessages);
   }
 
-  public error(message: any, ...optionalParams: any[]): void {
+  public error(message: unknown, ...optionalParams: unknown[]): void {
     // Handle backward compatibility: if message is an array, treat it as before
     if (Array.isArray(message)) {
       let trace: string | undefined;
@@ -202,7 +205,7 @@ export class BunyanLoggerService implements LoggerService {
     this.bunyanLogger.error({ context, trace }, ...messages.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)));
   }
 
-  public warn(message: any, ...optionalParams: any[]): void {
+  public warn(message: unknown, ...optionalParams: unknown[]): void {
     // Handle backward compatibility: if message is an array, treat it as before
     if (Array.isArray(message)) {
       const lastParam = optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;

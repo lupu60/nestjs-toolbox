@@ -75,7 +75,7 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
         return flatten(Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)));
       }
       if (objectSchema.allOf) {
-        return flatten(Object.values(objectSchema.anyOf).map((item) => extractRefsFromSchema(item)));
+        return flatten(Object.values(objectSchema.allOf).map((item) => extractRefsFromSchema(item)));
       }
       return refSchema.$ref || undefined;
   }

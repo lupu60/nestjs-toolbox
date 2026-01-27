@@ -2,15 +2,18 @@ import { LoggerService } from '@nestjs/common';
 import * as winston from 'winston';
 
 export class WinstonLoggerService implements LoggerService {
-  private readonly winstonLogger: any;
-  private isEmpty = (obj) => [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+  private readonly winstonLogger: winston.Logger;
+  private isEmpty = (obj: unknown): boolean => {
+    if (!obj || typeof obj !== 'object') return false;
+    return [Object, Array].includes((obj as object).constructor) && !Object.entries(obj).length;
+  };
 
   /**
    * Creates an instance of WinstonLoggerService.
-   * @param {{ projectName: string, transports?: any[], timeFormatStr?: string, customFormatter?: any }} options
+   * @param {{ projectName: string, transports?: winston.transport[], timeFormatStr?: string, customFormatter?: winston.Logform.Format }} options
    * @memberof WinstonLoggerService
    */
-  constructor(options: { projectName: string; transports?: any[]; timeFormatStr?: string; customFormatter?: any }) {
+  constructor(options: { projectName: string; transports?: winston.transport[]; timeFormatStr?: string; customFormatter?: winston.Logform.Format }) {
     const { projectName, transports, timeFormatStr, customFormatter } = options;
     if (projectName == null || this.isEmpty(projectName)) {
       throw new Error(`projectName is required`);
@@ -33,27 +36,27 @@ export class WinstonLoggerService implements LoggerService {
     });
   }
 
-  public log(message: any, context?: string | undefined) {
+  public log(message: unknown, context?: string | undefined): void {
     this.winstonLogger.log({
       level: 'info',
-      message,
+      message: String(message),
       context,
     });
   }
 
-  public error(message: any, trace?: string, context?: string) {
+  public error(message: unknown, trace?: string, context?: string): void {
     this.winstonLogger.log({
       level: 'error',
-      message,
+      message: String(message),
       trace,
       context,
     });
   }
 
-  public warn(message: any, context?: string) {
+  public warn(message: unknown, context?: string): void {
     this.winstonLogger.log({
       level: 'warn',
-      message,
+      message: String(message),
       context,
     });
   }

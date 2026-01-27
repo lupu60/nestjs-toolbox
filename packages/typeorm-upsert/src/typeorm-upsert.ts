@@ -7,6 +7,9 @@ export interface UpsertResult<T> {
   status: UpsertStatus;
 }
 
+const DEFAULT_CHUNK_SIZE = 1000;
+const UPDATED_AT_COLUMN = 'updatedAt';
+
 /*
  * ⚠️ PostgreSQL compatible only ⚠️
  * Repository - TypeORM Repository
@@ -20,7 +23,7 @@ export interface UpsertResult<T> {
  *   returnStatus - If true, returns array of UpsertResult with status (inserted/updated) for each entity
  */
 export async function TypeOrmUpsert<T>(
-  repository: Repository<T> | Repository<any> | any,
+  repository: Repository<T>,
   object: T | T[],
   conflictKey: string,
   options?: {
@@ -29,9 +32,9 @@ export async function TypeOrmUpsert<T>(
     chunk?: number;
     returnStatus?: boolean;
   },
-): Promise<T[] | T | UpsertResult<T>[] | UpsertResult<T> | any> {
+): Promise<T[] | T | UpsertResult<T>[] | UpsertResult<T>> {
   options = options ? options : {};
-  const chunk = options.chunk ?? 1000;
+  const chunk = options.chunk ?? DEFAULT_CHUNK_SIZE;
   const keyNamingTransform = options.keyNamingTransform ?? ((k) => k);
   const doNotUpsert = options.doNotUpsert ?? [];
   const returnStatus = options.returnStatus ?? false;
@@ -43,13 +46,11 @@ export async function TypeOrmUpsert<T>(
   const valuesArray = Array.isArray(object) ? object : [object];
   const chunkedValues = _chunkValues({ values: valuesArray, chunk });
   
-  const results = (await _chunkPromises({ repository, chunkedValues, onConflict, returnStatus, conflictKey })).reduce((acc, current) => {
-    return acc.concat(current?.raw || []);
-  }, []);
+  const results = (await _chunkPromises({ repository, chunkedValues, onConflict, returnStatus, conflictKey })).flatMap((current) => current?.raw || []);
 
   if (returnStatus) {
     // Return results with status
-    const resultsWithStatus: UpsertResult<T>[] = results.map((result: any) => {
+    const resultsWithStatus: UpsertResult<T>[] = results.map((result: Record<string, unknown>) => {
       const { _upsert_status, ...entity } = result;
       return {
         entity: entity as T,
@@ -60,40 +61,56 @@ export async function TypeOrmUpsert<T>(
   }
   
   // Return entities without status (backward compatibility)
-  const entities = results.map((result: any) => {
+  const entities = results.map((result: Record<string, unknown>) => {
     const { _upsert_status, ...entity } = result;
-    return entity;
+    return entity as T;
   });
   
   return Array.isArray(object) ? entities : entities[0];
 }
 
-export async function _chunkPromises({ repository, chunkedValues, onConflict, returnStatus, conflictKey }) {
-  const promises = [];
+interface ChunkPromiseResult {
+  raw: Array<Record<string, unknown>>;
+}
+
+export async function _chunkPromises<T>({ 
+  repository, 
+  chunkedValues, 
+  onConflict, 
+  returnStatus, 
+  conflictKey 
+}: { 
+  repository: Repository<T>; 
+  chunkedValues: T[][]; 
+  onConflict: string; 
+  returnStatus: boolean; 
+  conflictKey: string;
+}): Promise<ChunkPromiseResult[]> {
+  const promises: Promise<ChunkPromiseResult>[] = [];
   for (let i = 0; i < chunkedValues.length; i++) {
     let existingKeys: Set<string | number> = new Set();
     
     if (returnStatus) {
       // Query existing records to determine which will be inserted vs updated
-      const conflictValues = chunkedValues[i].map((item: any) => item[conflictKey]).filter((val: any) => val != null);
+      const conflictValues = chunkedValues[i].map((item) => (item as Record<string, unknown>)[conflictKey]).filter((val) => val != null);
       if (conflictValues.length > 0) {
         const existingRecords = await repository
           .createQueryBuilder()
           .select(conflictKey)
           .where(`${conflictKey} IN (:...ids)`, { ids: conflictValues })
           .getRawMany();
-        existingKeys = new Set(existingRecords.map((record: any) => record[conflictKey]));
+        existingKeys = new Set(existingRecords.map((record: Record<string, unknown>) => record[conflictKey] as string | number));
       }
     }
     
     const saveQuery = repository.createQueryBuilder().insert().values(chunkedValues[i]).onConflict(onConflict).returning('*').execute();
     
     promises.push(
-      saveQuery.then((result: any) => {
+      saveQuery.then((result: ChunkPromiseResult) => {
         if (returnStatus && result.raw) {
           // Add status to each result
-          result.raw = result.raw.map((row: any) => {
-            const keyValue = row[conflictKey];
+          result.raw = result.raw.map((row: Record<string, unknown>) => {
+            const keyValue = row[conflictKey] as string | number;
             const status: UpsertStatus = existingKeys.has(keyValue) ? 'updated' : 'inserted';
             return {
               ...row,
@@ -102,16 +119,16 @@ export async function _chunkPromises({ repository, chunkedValues, onConflict, re
           });
         }
         return result;
-      }).catch((e) => {
-        console.error(e);
+      }).catch((e: unknown) => {
+        throw new Error(`Failed to upsert chunk: ${e instanceof Error ? e.message : String(e)}`);
       }),
     );
   }
   return await Promise.all(promises);
 }
 
-export function _chunkValues({ values, chunk }) {
-  const chunked_arr = [];
+export function _chunkValues<T>({ values, chunk }: { values: T[]; chunk: number }): T[][] {
+  const chunked_arr: T[][] = [];
   // Ensure values is an array
   const valuesArray = Array.isArray(values) ? values : [values];
   let copied = [...valuesArray];
@@ -122,11 +139,11 @@ export function _chunkValues({ values, chunk }) {
   return chunked_arr;
 }
 
-export function _keys({ sampleObject, doNotUpsert }) {
+export function _keys({ sampleObject, doNotUpsert }: { sampleObject: Record<string, unknown>; doNotUpsert: string[] }): string[] {
   return [Object.keys(sampleObject), doNotUpsert].reduce((a, b) => a.filter((c) => !b.includes(c)));
 }
 
-export function _generateSetterString({ keys, keyNamingTransform }) {
+export function _generateSetterString({ keys, keyNamingTransform }: { keys: string[]; keyNamingTransform: (k: string) => string }): string {
   const isCamelCase = (k: string) => /^[a-z]+[A-Z]/.test(k);
   const setterString = keys.map((k) => {
     if (isCamelCase(k)) {
@@ -135,6 +152,6 @@ export function _generateSetterString({ keys, keyNamingTransform }) {
     return `${keyNamingTransform(k)}=EXCLUDED.${k}`;
   });
   // Always update updatedAt to current timestamp
-  setterString.push('"updatedAt"=CURRENT_TIMESTAMP');
+  setterString.push(`"${UPDATED_AT_COLUMN}"=CURRENT_TIMESTAMP`);
   return setterString.join(' , ');
 }
