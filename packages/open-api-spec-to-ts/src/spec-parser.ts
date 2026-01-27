@@ -5,6 +5,7 @@ import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
 import * as path from 'path';
+import { existsSync, mkdirSync } from 'fs';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
 type TsInterface = { filePath: string; name: string; content: string };
@@ -188,19 +189,35 @@ function delayedParsing(schemaKey: string, openApiSpec: OpenAPIObject, interface
 
 async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<void> {
   const schemasNames = Object.keys(openApiSpec.components.schemas).sort();
-  await schemasNames.reduce(async (prevPromise, schemaKey) => {
-    try {
-      await prevPromise;
-      return delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
-    } catch (error) {
-      logError(error.message);
-      return Promise.resolve({} as TsInterface);
-    }
-  }, Promise.resolve({} as TsInterface));
+  await schemasNames.reduce(
+    async (prevPromise, schemaKey) => {
+      try {
+        await prevPromise;
+        return delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
+      } catch (error) {
+        logError(error.message);
+        return Promise.resolve({} as TsInterface);
+      }
+    },
+    Promise.resolve({} as TsInterface),
+  );
+}
+
+function ensureDirectoryExists(dirPath: string): void {
+  if (!existsSync(dirPath)) {
+    mkdirSync(dirPath, { recursive: true });
+  }
 }
 
 async function removeExistingInterfaces(interfacesPath: string): Promise<void[]> {
+  // Check if directory exists before trying to read it
+  if (!existsSync(interfacesPath)) {
+    return Promise.resolve([]);
+  }
   const files: string[] = await readDir(interfacesPath);
+  if (!files) {
+    return Promise.resolve([]);
+  }
   return Promise.all(Object.values(files).map((file) => removeFile(path.join(interfacesPath, file))));
 }
 
@@ -225,6 +242,8 @@ export async function generate(
   try {
     const swaggerSpec: OpenAPIObject = JSON.parse(await readFile(openApiFilePath));
     appendTitles(swaggerSpec);
+    // Ensure the interfaces directory exists before writing files
+    ensureDirectoryExists(interfacesDirPath);
     await removeExistingInterfaces(interfacesDirPath);
     await openApiToInterfaces(swaggerSpec, interfacesDirPath);
     logSuccess('Typescript interfaces generated');
