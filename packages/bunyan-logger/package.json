@@ -50,7 +50,7 @@
     "colors": "1.4.0",
     "ts-node": "10.9.2"
   },
-  "gitHead": "9e9c097f7d6a9513dac1c33e8c82fb5846b88054",
+  "gitHead": "faa0940fd249f678624b6694003ef6a2128165de",
   "devDependencies": {
     "@types/node": "24.0.3",
     "rimraf": "~6.0.1",

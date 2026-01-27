@@ -36,7 +36,7 @@
     "test": "jest --ci --config ../../jest.config.json ",
     "prepublishOnly": "npm run build"
   },
-  "gitHead": "9e9c097f7d6a9513dac1c33e8c82fb5846b88054",
+  "gitHead": "faa0940fd249f678624b6694003ef6a2128165de",
   "dependencies": {
     "rimraf": "6.0.1",
     "typeorm": "0.3.25"
