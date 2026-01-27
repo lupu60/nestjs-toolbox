@@ -47,7 +47,7 @@
     "build": "npm run cleanup && lerna run compile",
     "cleanup": "lerna run cleanup --stream --parallel",
     "lint": "lerna run lint",
-    "publish": "lerna publish",
+    "publish": "lerna publish from-package",
     "prepublishOnly": "npm run build",
     "hard-reset": "npm run cleanup && rimraf -rf node_modules && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
