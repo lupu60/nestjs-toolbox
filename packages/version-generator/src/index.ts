@@ -21,7 +21,7 @@ program
   .option('--commit-id-separator [commit-id-separator]', 'commit-id-separator', '.')
   .parse(process.argv);
 
-function exec<T>(command: string): Promise<T> {
+function exec(command: string): Promise<string> {
   return new Promise(function (resolve, reject) {
     callbackexec(command, (error: Error | null, stdout: string, stderr: string) => {
       if (error || stderr) {
@@ -33,13 +33,15 @@ function exec<T>(command: string): Promise<T> {
   });
 }
 
-function getCurrentBranchName(p = process.cwd()) {
+function getCurrentBranchName(p = process.cwd()): string {
   const gitHeadPath = `${p}/.git/HEAD`;
-  return fs.existsSync(p)
-    ? fs.existsSync(gitHeadPath)
-      ? fs.readFileSync(gitHeadPath, 'utf-8').trim().split('/')[2]
-      : getCurrentBranchName(path.resolve(p, '..'))
-    : false;
+  if (fs.existsSync(p)) {
+    if (fs.existsSync(gitHeadPath)) {
+      return fs.readFileSync(gitHeadPath, 'utf-8').trim().split('/')[2] || '';
+    }
+    return getCurrentBranchName(path.resolve(p, '..'));
+  }
+  return '';
 }
 
 async function main() {
@@ -47,7 +49,7 @@ async function main() {
   options.tag = options.tag == 'true';
   // console.log(JSON.stringify(options));
   if (options.packageJson) {
-    options.version = await exec<string>(`cat ${options.packageJson} |
+    options.version = await exec(`cat ${options.packageJson} |
       grep version |
       head -1 |
       awk -F: '{ print $2 }' |

@@ -4,10 +4,10 @@ import * as bunyanFormat from 'bunyan-format';
 import * as colors from 'colors';
 
 export interface FormatterOptions {
-  outputMode: string; // short|long|simple|json|bunyan
+  outputMode: 'short' | 'long' | 'simple' | 'json' | 'bunyan' | 'inspect';
   color?: boolean;
   levelInString?: boolean;
-  colorFromLevel?: Record<string, unknown>;
+  colorFromLevel?: Record<string, string>;
   src?: boolean;
 }
 
@@ -159,9 +159,13 @@ export class BunyanLoggerService implements LoggerService {
 
       if (optionalParams.length >= 1 && typeof optionalParams[0] === 'string') {
         trace = optionalParams[0];
-        context = optionalParams[1] as string | undefined;
-      } else if (optionalParams.length > 0 && typeof optionalParams[optionalParams.length - 1] === 'string') {
-        context = optionalParams[optionalParams.length - 1];
+        const secondParam = optionalParams[1];
+        context = typeof secondParam === 'string' ? secondParam : undefined;
+      } else if (optionalParams.length > 0) {
+        const lastParam = optionalParams[optionalParams.length - 1];
+        if (typeof lastParam === 'string') {
+          context = lastParam;
+        }
       }
 
       this.bunyanLogger.error({ context, trace }, ...message.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)));
@@ -197,8 +201,16 @@ export class BunyanLoggerService implements LoggerService {
 
     // Handle string interpolation
     if (typeof processedMessage === 'string') {
-      const interpolationObject = optionalParams.find(
-        (param) => param && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error) && param !== trace && param !== context,
+      // Filter out trace and context (strings) before finding interpolation object
+      const nonStringParams = optionalParams.filter(
+        (param) => param !== trace && param !== context,
+      );
+      const interpolationObject = nonStringParams.find(
+        (param): param is Record<string, unknown> => 
+          param !== null && 
+          typeof param === 'object' && 
+          !Array.isArray(param) && 
+          !(param instanceof Error),
       );
       if (interpolationObject) {
         processedMessage = this.interpolateString(processedMessage, interpolationObject);

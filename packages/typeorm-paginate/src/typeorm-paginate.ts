@@ -1,14 +1,15 @@
 import { ObjectLiteral, Repository, FindOptionsWhere } from 'typeorm';
-import { Merge } from 'type-fest';
 
 const DEFAULT_PAGINATION_LIMIT = 100;
+
+type PaginatedRow<T> = T & { index: number; progress: number };
 
 export async function* rows<T extends ObjectLiteral>(options: {
   repository: Repository<T>;
   where: FindOptionsWhere<T> | FindOptionsWhere<T>[];
   limit?: number;
   offset?: number;
-}): AsyncGenerator<Merge<T, { index: number; progress: number }>> {
+}): AsyncGenerator<PaginatedRow<T>> {
   const { repository, where, limit = DEFAULT_PAGINATION_LIMIT } = options;
   let { offset = 0 } = options;
   const total = await repository.count({ where });
@@ -22,7 +23,11 @@ export async function* rows<T extends ObjectLiteral>(options: {
     offset += limit;
     for (const row of rows) {
       index++;
-      yield { ...row, index, progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100 } as Merge<T, { index: number; progress: number }>;
+      const result: PaginatedRow<T> = Object.assign({}, row, { 
+        index, 
+        progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100 
+      });
+      yield result;
     }
   }
 }
