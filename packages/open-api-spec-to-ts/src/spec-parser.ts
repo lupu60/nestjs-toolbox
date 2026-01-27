@@ -5,6 +5,7 @@ import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
 import * as path from 'path';
+import { existsSync } from 'fs';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
 type TsInterface = { filePath: string; name: string; content: string };
@@ -203,7 +204,14 @@ async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath
 }
 
 async function removeExistingInterfaces(interfacesPath: string): Promise<void[]> {
+  // Check if directory exists before trying to read it
+  if (!existsSync(interfacesPath)) {
+    return Promise.resolve([]);
+  }
   const files: string[] = await readDir(interfacesPath);
+  if (!files) {
+    return Promise.resolve([]);
+  }
   return Promise.all(Object.values(files).map((file) => removeFile(path.join(interfacesPath, file))));
 }
 
