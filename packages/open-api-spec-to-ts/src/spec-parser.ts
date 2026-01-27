@@ -5,7 +5,7 @@ import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
 import * as path from 'path';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
 type TsInterface = { filePath: string; name: string; content: string };
@@ -203,6 +203,12 @@ async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath
   );
 }
 
+function ensureDirectoryExists(dirPath: string): void {
+  if (!existsSync(dirPath)) {
+    mkdirSync(dirPath, { recursive: true });
+  }
+}
+
 async function removeExistingInterfaces(interfacesPath: string): Promise<void[]> {
   // Check if directory exists before trying to read it
   if (!existsSync(interfacesPath)) {
@@ -236,6 +242,8 @@ export async function generate(
   try {
     const swaggerSpec: OpenAPIObject = JSON.parse(await readFile(openApiFilePath));
     appendTitles(swaggerSpec);
+    // Ensure the interfaces directory exists before writing files
+    ensureDirectoryExists(interfacesDirPath);
     await removeExistingInterfaces(interfacesDirPath);
     await openApiToInterfaces(swaggerSpec, interfacesDirPath);
     logSuccess('Typescript interfaces generated');
