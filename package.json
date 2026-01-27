@@ -1,5 +1,6 @@
 {
   "name": "nestjs-toolbox",
+  "version": "1.7.0",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "maintainers": [
@@ -15,7 +16,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "private": false,
+  "private": true,
   "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
   "repository": {
     "type": "git",
@@ -48,7 +49,6 @@
     "cleanup": "lerna run cleanup --stream --parallel",
     "lint": "lerna run lint",
     "publish": "lerna publish from-package",
-    "prepublishOnly": "npm run build",
     "hard-reset": "npm run cleanup && rimraf -rf node_modules && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
   "devDependencies": {
