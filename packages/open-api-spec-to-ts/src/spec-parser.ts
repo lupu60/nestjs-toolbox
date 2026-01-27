@@ -188,15 +188,18 @@ function delayedParsing(schemaKey: string, openApiSpec: OpenAPIObject, interface
 
 async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<void> {
   const schemasNames = Object.keys(openApiSpec.components.schemas).sort();
-  await schemasNames.reduce(async (prevPromise, schemaKey) => {
-    try {
-      await prevPromise;
-      return delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
-    } catch (error) {
-      logError(error.message);
-      return Promise.resolve({} as TsInterface);
-    }
-  }, Promise.resolve({} as TsInterface));
+  await schemasNames.reduce(
+    async (prevPromise, schemaKey) => {
+      try {
+        await prevPromise;
+        return delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
+      } catch (error) {
+        logError(error.message);
+        return Promise.resolve({} as TsInterface);
+      }
+    },
+    Promise.resolve({} as TsInterface),
+  );
 }
 
 async function removeExistingInterfaces(interfacesPath: string): Promise<void[]> {
