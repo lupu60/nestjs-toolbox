@@ -13,6 +13,7 @@ export interface FormatterOptions {
 
 export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
+  private readonly formatterOptions: FormatterOptions;
   private isEmpty = (obj) => [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 
   /**
@@ -39,6 +40,7 @@ export class BunyanLoggerService implements LoggerService {
     if (projectId == null || this.isEmpty(projectId)) {
       throw new Error(`projectId is required`);
     }
+    this.formatterOptions = formatterOptions;
     const defaultStream: Bunyan.Stream = { level: 'info', type: 'stream', stream: bunyanFormat(formatterOptions) };
     const streams: Bunyan.Stream[] = [defaultStream, ...(customStreams || [])];
 
@@ -48,6 +50,24 @@ export class BunyanLoggerService implements LoggerService {
       streams: [...streams],
       ...extraFields,
     });
+  }
+
+  /**
+   * Applies color to a message if colors are enabled
+   * @param message - The message to colorize
+   * @param colorFn - The color function to apply (e.g., colors.red, colors.yellow)
+   * @returns Colored or plain message based on formatterOptions.color
+   */
+  private applyColor(message: any, colorFn: (msg: string) => string): any {
+    // Check if colors are disabled
+    if (this.formatterOptions.color === false) {
+      return message;
+    }
+    // Apply color only to strings
+    if (typeof message === 'string') {
+      return colorFn(message);
+    }
+    return message;
   }
 
   /**
@@ -123,7 +143,7 @@ export class BunyanLoggerService implements LoggerService {
         context = optionalParams[optionalParams.length - 1];
       }
 
-      this.bunyanLogger.error({ context, trace }, ...message.map((msg) => colors.red(msg)));
+      this.bunyanLogger.error({ context, trace }, ...message.map((msg) => this.applyColor(msg, colors.red)));
       return;
     }
 
@@ -162,7 +182,7 @@ export class BunyanLoggerService implements LoggerService {
     }
 
     const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
-    this.bunyanLogger.error({ context, trace }, ...messages.map((msg) => colors.red(msg)));
+    this.bunyanLogger.error({ context, trace }, ...messages.map((msg) => this.applyColor(msg, colors.red)));
   }
 
   public warn(message: any, ...optionalParams: any[]): void {
@@ -170,12 +190,12 @@ export class BunyanLoggerService implements LoggerService {
     if (Array.isArray(message)) {
       const lastParam = optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;
       const context = typeof lastParam === 'string' ? lastParam : undefined;
-      this.bunyanLogger.warn({ context }, ...message.map((msg) => colors.yellow(msg)));
+      this.bunyanLogger.warn({ context }, ...message.map((msg) => this.applyColor(msg, colors.yellow)));
       return;
     }
 
     const { processedMessage, context } = this.processMessage(message, ...optionalParams);
     const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
-    this.bunyanLogger.warn({ context }, ...messages.map((msg) => (typeof msg === 'string' ? colors.yellow(msg) : msg)));
+    this.bunyanLogger.warn({ context }, ...messages.map((msg) => this.applyColor(msg, colors.yellow)));
   }
 }

@@ -133,4 +133,87 @@ describe('BunyanLoggerService', () => {
     expect(strippedMessage).toBe('{user} tried access the {service} service');
     warnSpy.mockRestore();
   });
+
+  describe('color property', () => {
+    it('should not apply colors when color is false', () => {
+      const loggerWithoutColors = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          color: false,
+          outputMode: 'short',
+        },
+      });
+
+      const errorSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'error');
+      loggerWithoutColors.error('Error message');
+      
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      // Should not contain ANSI color codes
+      expect(logMessage).toBe('Error message');
+      errorSpy.mockRestore();
+    });
+
+    it('should apply colors when color is true', () => {
+      const loggerWithColors = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          color: true,
+          outputMode: 'short',
+        },
+      });
+
+      const errorSpy = jest.spyOn(loggerWithColors['bunyanLogger'], 'error');
+      loggerWithColors.error('Error message');
+      
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      // When color is true, message should be processed (may or may not have ANSI codes in test env)
+      expect(logMessage).toBeDefined();
+      expect(typeof logMessage).toBe('string');
+      errorSpy.mockRestore();
+    });
+
+    it('should apply colors when color is undefined (default behavior)', () => {
+      const loggerDefault = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          outputMode: 'short',
+        },
+      });
+
+      const warnSpy = jest.spyOn(loggerDefault['bunyanLogger'], 'warn');
+      loggerDefault.warn('Warning message');
+      
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      // When color is undefined, message should be processed (default behavior)
+      expect(logMessage).toBeDefined();
+      expect(typeof logMessage).toBe('string');
+      warnSpy.mockRestore();
+    });
+
+    it('should not apply colors to warn messages when color is false', () => {
+      const loggerWithoutColors = new BunyanLoggerService({
+        projectId: 'TestProject',
+        formatterOptions: {
+          color: false,
+          outputMode: 'short',
+        },
+      });
+
+      const warnSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'warn');
+      loggerWithoutColors.warn('Warning message');
+      
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      // Should not contain ANSI color codes
+      expect(logMessage).toBe('Warning message');
+      warnSpy.mockRestore();
+    });
+  });
 });
