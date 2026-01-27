@@ -23,7 +23,7 @@ export interface AccessControlModuleAsyncOptions extends Pick<ModuleMetadata, 'i
 @Module({})
 export class AccessControlModule {
   public static forRules(rules: RulesBuilder, options?: ACOptions): DynamicModule {
-    let controllers = [];
+    let controllers: Type<any>[] = [];
 
     if (options) {
       Reflect.defineMetadata(PATH_METADATA, options.grantsEndpoint, GrantsController);
@@ -50,16 +50,24 @@ export class AccessControlModule {
 
   public static forRootAsync(options: AccessControlModuleAsyncOptions): DynamicModule {
     const { inject = [], imports = [], useFactory, useExisting, useClass } = options;
-    let provider: Provider<RulesBuilder | Promise<RulesBuilder>> = {
-      provide: RULES_BUILDER_TOKEN,
-      useFactory,
-      inject,
-    };
+    let provider: Provider<RulesBuilder | Promise<RulesBuilder>>;
 
     if (useExisting) {
-      provider = { ...provider, useExisting };
+      provider = {
+        provide: RULES_BUILDER_TOKEN,
+        useExisting,
+      };
     } else if (useClass) {
-      provider = { ...provider, useClass };
+      provider = {
+        provide: RULES_BUILDER_TOKEN,
+        useClass,
+      };
+    } else {
+      provider = {
+        provide: RULES_BUILDER_TOKEN,
+        useFactory: useFactory || (() => new RulesBuilder()),
+        inject,
+      };
     }
 
     return {

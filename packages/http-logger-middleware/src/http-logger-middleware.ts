@@ -1,13 +1,20 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 import * as chalk from 'chalk';
-const isEmpty = (obj) => JSON.stringify(obj) === '{}';
+
+const isEmpty = (obj: unknown): boolean => {
+  if (!obj || typeof obj !== 'object') return false;
+  return JSON.stringify(obj) === '{}';
+};
 
 @Injectable()
 export class HttpLoggerMiddleware implements NestMiddleware {
-  logger = new Logger('HTTP');
-  log = (...args) => this.logger.log(chalk.magenta(...args));
+  private readonly logger = new Logger('HTTP');
+  private readonly log = (...args: unknown[]): void => {
+    this.logger.log(chalk.magenta(...args.map(String)));
+  };
 
-  use(req: any, _res: any, next: () => void) {
+  use(req: Request, _res: Response, next: NextFunction): void {
     const { body, params, query } = req;
     const requestUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
     this.log('---------------------------------------------------------------------------------');

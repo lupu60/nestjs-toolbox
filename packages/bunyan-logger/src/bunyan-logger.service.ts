@@ -4,10 +4,10 @@ import * as bunyanFormat from 'bunyan-format';
 import * as colors from 'colors';
 
 export interface FormatterOptions {
-  outputMode: string; // short|long|simple|json|bunyan
+  outputMode: 'short' | 'long' | 'simple' | 'json' | 'bunyan' | 'inspect';
   color?: boolean;
   levelInString?: boolean;
-  colorFromLevel?: any;
+  colorFromLevel?: Record<string, string>;
   src?: boolean;
 }
 
@@ -15,7 +15,11 @@ export class BunyanLoggerService implements LoggerService {
   private readonly bunyanLogger: Bunyan;
   private readonly formatterOptions: FormatterOptions;
   private readonly maxLength?: number;
-  private isEmpty = (obj) => [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+  private isEmpty = (obj: unknown): boolean => {
+    if (!obj || typeof obj !== 'object') return false;
+    const constructorName = (obj as object).constructor?.name;
+    return (constructorName === 'Object' || constructorName === 'Array') && !Object.entries(obj).length;
+  };
 
   /**
    * Creates an instance of BunyanLoggerService.
@@ -40,7 +44,7 @@ export class BunyanLoggerService implements LoggerService {
     maxLength?: number;
   }) {
     const { projectId, formatterOptions, customStreams, extraFields, maxLength } = options;
-    if (projectId == null || this.isEmpty(projectId)) {
+    if (projectId == null || (typeof projectId === 'string' && projectId.trim() === '') || this.isEmpty(projectId)) {
       throw new Error(`projectId is required`);
     }
     this.formatterOptions = formatterOptions;
@@ -61,7 +65,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param message - The message to truncate
    * @returns Truncated message if maxLength is set and message exceeds it
    */
-  private truncateMessage(message: any): any {
+  private truncateMessage(message: unknown): unknown {
     if (this.maxLength != null && typeof message === 'string' && message.length > this.maxLength) {
       return message.slice(0, this.maxLength);
     }
@@ -74,7 +78,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param colorFn - The color function to apply (e.g., colors.red, colors.yellow)
    * @returns Colored or plain message based on formatterOptions.color
    */
-  private applyColor(message: any, colorFn: (msg: string) => string): any {
+  private applyColor(message: unknown, colorFn: (msg: string) => string): unknown {
     // Check if colors are disabled
     if (this.formatterOptions.color === false) {
       return message;
@@ -92,7 +96,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param params - Object with values to replace placeholders
    * @returns Interpolated string
    */
-  private interpolateString(message: string, params: Record<string, any>): string {
+  private interpolateString(message: string, params: Record<string, unknown>): string {
     if (!params || typeof params !== 'object') {
       return message;
     }
@@ -107,7 +111,7 @@ export class BunyanLoggerService implements LoggerService {
    * @param optionalParams - Additional parameters (may include interpolation object and/or context)
    * @returns Object with processed message and context
    */
-  private processMessage(message: any, ...optionalParams: any[]): { processedMessage: any; context?: string } {
+  private processMessage(message: unknown, ...optionalParams: unknown[]): { processedMessage: unknown; context?: string } {
     // Handle backward compatibility: if message is an array, treat it as before
     if (Array.isArray(message)) {
       const lastParam = optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;
@@ -130,7 +134,7 @@ export class BunyanLoggerService implements LoggerService {
     // Handle string interpolation if message is a string and we have an object parameter
     if (typeof processedMessage === 'string' && optionalParams.length > 0) {
       const interpolationObject = optionalParams.find(
-        (param) => param && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
+        (param): param is Record<string, unknown> => param !== null && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error),
       );
       if (interpolationObject) {
         processedMessage = this.interpolateString(processedMessage, interpolationObject);
@@ -140,14 +144,14 @@ export class BunyanLoggerService implements LoggerService {
     return { processedMessage, context };
   }
 
-  public log(message: any, ...optionalParams: any[]): void {
+  public log(message: unknown, ...optionalParams: unknown[]): void {
     const { processedMessage, context } = this.processMessage(message, ...optionalParams);
     const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
     const truncatedMessages = messages.map((msg) => this.truncateMessage(msg));
     this.bunyanLogger.info({ context }, ...truncatedMessages);
   }
 
-  public error(message: any, ...optionalParams: any[]): void {
+  public error(message: unknown, ...optionalParams: unknown[]): void {
     // Handle backward compatibility: if message is an array, treat it as before
     if (Array.isArray(message)) {
       let trace: string | undefined;
@@ -155,9 +159,13 @@ export class BunyanLoggerService implements LoggerService {
 
       if (optionalParams.length >= 1 && typeof optionalParams[0] === 'string') {
         trace = optionalParams[0];
-        context = optionalParams[1] as string | undefined;
-      } else if (optionalParams.length > 0 && typeof optionalParams[optionalParams.length - 1] === 'string') {
-        context = optionalParams[optionalParams.length - 1];
+        const secondParam = optionalParams[1];
+        context = typeof secondParam === 'string' ? secondParam : undefined;
+      } else if (optionalParams.length > 0) {
+        const lastParam = optionalParams[optionalParams.length - 1];
+        if (typeof lastParam === 'string') {
+          context = lastParam;
+        }
       }
 
       this.bunyanLogger.error({ context, trace }, ...message.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)));
@@ -176,7 +184,10 @@ export class BunyanLoggerService implements LoggerService {
         context = optionalParams[1] as string | undefined;
       } else {
         // Might be context
-        context = optionalParams[0];
+        const firstParam = optionalParams[0];
+        if (typeof firstParam === 'string') {
+          context = firstParam;
+        }
       }
     } else {
       // Extract context from last string parameter
@@ -190,8 +201,16 @@ export class BunyanLoggerService implements LoggerService {
 
     // Handle string interpolation
     if (typeof processedMessage === 'string') {
-      const interpolationObject = optionalParams.find(
-        (param) => param && typeof param === 'object' && !Array.isArray(param) && !(param instanceof Error) && param !== trace && param !== context,
+      // Filter out trace and context (strings) before finding interpolation object
+      const nonStringParams = optionalParams.filter(
+        (param) => param !== trace && param !== context,
+      );
+      const interpolationObject = nonStringParams.find(
+        (param): param is Record<string, unknown> => 
+          param !== null && 
+          typeof param === 'object' && 
+          !Array.isArray(param) && 
+          !(param instanceof Error),
       );
       if (interpolationObject) {
         processedMessage = this.interpolateString(processedMessage, interpolationObject);
@@ -202,7 +221,7 @@ export class BunyanLoggerService implements LoggerService {
     this.bunyanLogger.error({ context, trace }, ...messages.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)));
   }
 
-  public warn(message: any, ...optionalParams: any[]): void {
+  public warn(message: unknown, ...optionalParams: unknown[]): void {
     // Handle backward compatibility: if message is an array, treat it as before
     if (Array.isArray(message)) {
       const lastParam = optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;

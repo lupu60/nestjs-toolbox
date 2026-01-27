@@ -1,15 +1,18 @@
-import { Repository } from 'typeorm';
-import { Merge } from 'type-fest';
+import { ObjectLiteral, Repository, FindOptionsWhere } from 'typeorm';
 
-export async function* rows<T>(options: {
+const DEFAULT_PAGINATION_LIMIT = 100;
+
+type PaginatedRow<T> = T & { index: number; progress: number };
+
+export async function* rows<T extends ObjectLiteral>(options: {
   repository: Repository<T>;
-  where: any;
+  where: FindOptionsWhere<T> | FindOptionsWhere<T>[];
   limit?: number;
   offset?: number;
-}): AsyncGenerator<Merge<T, { index: number; progress: number }>> {
-  const { repository, where, limit = 100 } = options;
+}): AsyncGenerator<PaginatedRow<T>> {
+  const { repository, where, limit = DEFAULT_PAGINATION_LIMIT } = options;
   let { offset = 0 } = options;
-  const total = await repository.count(where);
+  const total = await repository.count({ where });
   let index = 0;
   while (offset < total) {
     const rows = await repository.find({
@@ -20,14 +23,18 @@ export async function* rows<T>(options: {
     offset += limit;
     for (const row of rows) {
       index++;
-      yield { ...row, index, progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100 } as any;
+      const result: PaginatedRow<T> = Object.assign({}, row, { 
+        index, 
+        progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100 
+      });
+      yield result;
     }
   }
 }
 
-export async function* set<T>(options: { repository: Repository<T>; where: any; limit?: number }): AsyncGenerator<T[]> {
-  const { repository, where, limit = 100 } = options;
-  const total = await repository.count(where);
+export async function* set<T extends ObjectLiteral>(options: { repository: Repository<T>; where: FindOptionsWhere<T> | FindOptionsWhere<T>[]; limit?: number }): AsyncGenerator<T[]> {
+  const { repository, where, limit = DEFAULT_PAGINATION_LIMIT } = options;
+  const total = await repository.count({ where });
   let offset = 0;
   while (offset < total) {
     const rows = await repository.find({

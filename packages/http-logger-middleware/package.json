@@ -33,7 +33,7 @@
     "clean": "rimraf -rf ./dist",
     "cleanup": "rimraf -rf dist coverage",
     "compile": "tsc -p tsconfig.build.json",
-    "lint": "tslint -p tsconfig.build.json -c ../../tslint.json",
+    "lint": "eslint src --ext .ts",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest --ci --config ../../jest.config.json ",
     "prepublishOnly": "npm run build"
   },
@@ -42,6 +42,7 @@
     "chalk": "4.1.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "rimraf": "6.0.1",
     "typescript": "5.8.3"
   },

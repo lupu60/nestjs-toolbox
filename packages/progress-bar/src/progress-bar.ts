@@ -6,7 +6,7 @@ export class ProgressBar {
   private logger: Logger;
   private identifier: string;
   private previousProgress = 0;
-  public progress: number;
+  public progress = 0;
 
   constructor(options: { identifier: string; total: number }) {
     this.total = options.total;

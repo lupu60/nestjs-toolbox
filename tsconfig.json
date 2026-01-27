@@ -11,6 +11,15 @@
       "baseUrl": "./packages",
       "skipLibCheck": true,
       "incremental": true,
+      /* Strict Type-Checking Options */
+      "strict": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "strictBindCallApply": true,
+      "strictPropertyInitialization": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
       /* Additional Checks */
       "noUnusedLocals": true /* Report errors on unused locals. */,
       "noUnusedParameters": true /* Report errors on unused parameters. */,
