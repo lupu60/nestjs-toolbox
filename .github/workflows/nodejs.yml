@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x, 21.x, 20.x, 18.x]
+        node-version: [24.x, 22.x, 20.x, 18.x]
 
     steps:
       - name: Checkout code
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x, 21.x, 20.x, 18.x]
+        node-version: [24.x, 22.x, 20.x, 18.x]
 
     steps:
       - name: Checkout code
