@@ -75,7 +75,17 @@
     "typescript-eslint": "^8.54.0"
   },
   "dependencies": {
-    "reflect-metadata": "0.2.2"
+    "ansis": "^4.2.0",
+    "buffer": "^6.0.3",
+    "dayjs": "^1.11.19",
+    "dedent": "^1.7.1",
+    "dotenv": "^17.2.3",
+    "glob": "^13.0.0",
+    "reflect-metadata": "0.2.2",
+    "sha.js": "^2.4.12",
+    "to-buffer": "^1.2.2",
+    "typeorm": "^0.3.28",
+    "uuid": "^13.0.0"
   },
   "volta": {
     "node": "22.16.0"
