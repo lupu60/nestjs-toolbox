@@ -43,16 +43,18 @@
     "npm": "<=11"
   },
   "scripts": {
-    "format": "prettier --write \"packages/**/*.{ts,json}\"",
+    "format": "biome format --write packages/**/*.{ts,json}",
+    "lint": "biome lint packages/**/*.{ts,json}",
+    "lint:fix": "biome lint --fix packages/**/*.{ts,json}",
     "reset": "npm run cleanup && rimraf -rf node_modules",
     "test": "lerna run test",
     "build": "npm run cleanup && lerna run compile",
     "cleanup": "lerna run cleanup --stream --parallel",
-    "lint": "lerna run lint",
     "publish": "lerna publish from-package",
     "hard-reset": "npm run cleanup && rimraf -rf node_modules && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
     "@types/jest": "30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
@@ -65,7 +67,6 @@
     "jest-junit": "16.0.0",
     "lerna": "^9.0.3",
     "npm-run-all": "^4.1.5",
-    "prettier": "3.6.0",
     "rimraf": "^6.0.1",
     "standard-version": "9.5.0",
     "ts-jest": "^29.4.0",
