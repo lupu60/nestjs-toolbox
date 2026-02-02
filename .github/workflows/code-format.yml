@@ -1,0 +1,72 @@
+name: Code Formatting
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install Biome
+      run: npm install -g @biomejs/biome
+
+    - name: Format code
+      run: |
+        find packages -type f \( -name "*.ts" -o -name "*.json" \) ! -path "*/node_modules/*" -print0 | xargs -0 biome format --write
+
+    - name: Check for changes
+      id: check_changes
+      run: |
+        git diff --exit-code
+        echo "changes=$(git diff --exit-code && echo 'false' || echo 'true')" >> $GITHUB_OUTPUT
+
+    - name: Commit formatted files
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        git add .
+        git commit -m "Format code using Biome [automated]"
+        git push
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install Biome
+      run: npm install -g @biomejs/biome
+
+    - name: Lint code
+      run: |
+        find packages -type f \( -name "*.ts" -o -name "*.json" \) ! -path "*/node_modules/*" -print0 | xargs -0 biome lint
