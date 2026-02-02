@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BunyanLoggerService } from '../bunyan-logger.service';
 
 describe('BunyanLoggerService', () => {
@@ -368,6 +368,102 @@ describe('BunyanLoggerService', () => {
       const strippedMessage = logMessage.replace(ansiColorRegex, '');
       expect(strippedMessage).toBe('This is a ve');
       expect(strippedMessage.length).toBe(12);
+      warnSpy.mockRestore();
+    });
+  });
+
+  describe('applyColor with non-string messages', () => {
+    it('should return non-string messages unchanged when color is true', () => {
+      const logSpy = vi.spyOn(logger.bunyanLogger, 'info');
+      const objectMessage = { key: 'value' };
+      logger.log(objectMessage);
+
+      expect(logSpy).toHaveBeenCalled();
+      const callArgs = logSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      expect(logMessage).toEqual(objectMessage);
+      logSpy.mockRestore();
+    });
+
+    it('should return number messages unchanged', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      const numberMessage = 12345;
+      logger.error(numberMessage);
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      expect(logMessage).toBe(numberMessage);
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe('error method edge cases', () => {
+    it('should handle error with trace as first param and context as second param', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      const stackTrace = '    at someFunction (file.ts:10:5)\n    at anotherFunction (file.ts:20:10)';
+      logger.error('Error occurred', stackTrace, 'AppContext');
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      expect(callArgs[0].trace).toBe(stackTrace);
+      expect(callArgs[0].context).toBe('AppContext');
+      errorSpy.mockRestore();
+    });
+
+    it('should handle error with only context parameter', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      logger.error('Error message', 'ContextOnly');
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      expect(callArgs[0].context).toBe('ContextOnly');
+      expect(callArgs[0].trace).toBeUndefined();
+      errorSpy.mockRestore();
+    });
+
+    it('should extract context from last string parameter when no trace', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      logger.error('Error message', { data: 'some data' }, 'LastContext');
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      expect(callArgs[0].context).toBe('LastContext');
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe('warn with array messages (backward compatibility)', () => {
+    it('should handle array messages with context', () => {
+      const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
+      logger.warn(['Warning 1', 'Warning 2'], 'ArrayContext');
+
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      expect(callArgs[0].context).toBe('ArrayContext');
+      // Messages should be truncated and colored
+      expect(callArgs.slice(1).length).toBe(2);
+      warnSpy.mockRestore();
+    });
+
+    it('should handle array messages without context', () => {
+      const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
+      logger.warn(['Warning message 1', 'Warning message 2']);
+
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      expect(callArgs[0].context).toBeUndefined();
+      expect(callArgs.slice(1).length).toBe(2);
+      warnSpy.mockRestore();
+    });
+
+    it('should handle array messages with non-string optional params', () => {
+      const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
+      logger.warn(['Warning message'], { data: 'ignored' });
+
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      expect(callArgs[0].context).toBeUndefined();
       warnSpy.mockRestore();
     });
   });
