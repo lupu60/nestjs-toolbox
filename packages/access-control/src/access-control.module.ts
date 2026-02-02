@@ -5,7 +5,7 @@ import { RULES_BUILDER_TOKEN } from './constants';
 import { GrantsController } from './controller/grants.controller';
 import { RulesBuilder } from './rules-builder.class';
 
-export type Injection = (Type<any> | string | symbol | Abstract<any> | Function)[];
+export type Injection = (Type<unknown> | string | symbol | Abstract<unknown> | ((...args: unknown[]) => unknown))[];
 
 export interface AccessControlOptionsFactory {
   createAccessControlOptions(rules: RulesBuilder, options?: ACOptions): Promise<RulesBuilder> | RulesBuilder;
@@ -21,6 +21,7 @@ export interface AccessControlModuleAsyncOptions extends Pick<ModuleMetadata, 'i
 
 @Global()
 @Module({})
+// biome-ignore lint/complexity/noStaticOnlyClass: NestJS modules use static factory methods
 export class AccessControlModule {
   public static forRules(rules: RulesBuilder, options?: ACOptions): DynamicModule {
     let controllers: Type<any>[] = [];

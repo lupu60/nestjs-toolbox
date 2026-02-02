@@ -41,19 +41,19 @@ let baseOptions: Options = {
   $refOptions: {},
 };
 
-function logInfo(message: any) {
+function logInfo(message: string) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
     console.log(chalk.cyan.bold(message), 'SpecParser');
   }
 }
 
-function logSuccess(message: any) {
+function logSuccess(message: string) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
     console.log(chalk.green.bold(message), 'SpecParser');
   }
 }
 
-function logError(message: any) {
+function logError(message: string) {
   if (baseOptions.verbosity >= LogLevel.ERROR) {
     console.log(chalk.red.bold(message), 'SpecParser');
   }
@@ -98,13 +98,19 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
 
 function preprocessProperties(inputProperties: { [key: string]: SchemaObject | ReferenceObject }) {
   if (inputProperties) {
-    return Object.entries(inputProperties).reduce((acc, [name, value]) => ({ ...acc, [name]: extractRefsFromSchema(value) }), {});
+    return Object.entries(inputProperties).reduce(
+      (acc, [name, value]) => {
+        acc[name] = extractRefsFromSchema(value);
+        return acc;
+      },
+      {} as Record<string, string | string[] | undefined>,
+    );
   }
   return {};
 }
 
 async function createImport(name: string, schema: SchemaObject | ReferenceObject, filePath: string) {
-  const references: any = extractRefsFromSchema(schema);
+  const references: string | string[] | undefined = extractRefsFromSchema(schema);
   if (!references || !references.length) {
     return [];
   }
@@ -247,7 +253,7 @@ function appendTitles(openApiSpec: OpenAPIObject): void {
     return;
   }
   Object.entries(openApiSpec.components.schemas).forEach(([name, schema]) => {
-    const objectSchema: any = schema;
+    const objectSchema = schema as SchemaObject;
     if (objectSchema.type) {
       objectSchema.title = objectSchema.title || name;
       if (objectSchema.type === 'string' && objectSchema.enum && !objectSchema.tsEnumNames) {
