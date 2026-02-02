@@ -1,47 +1,47 @@
 {
-  "name": "@nest-toolbox/typeorm-upsert",
-  "description": "upsert function for typeorm",
-  "version": "1.7.0",
-  "author": "bogdanlupu <lupu60@gmail.com>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
-  "license": "MIT",
-  "keywords": [
-    "typeorm",
-    "postgres"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
-    "access": "public"
-  },
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rimraf -rf ./dist",
-    "cleanup": "rimraf -rf dist coverage ",
-    "compile": "tsc -p tsconfig.build.json",
-    "lint": "eslint src --ext .ts",
-    "test": "jest --ci --config ../../jest.config.json ",
-    "prepublishOnly": "npm run build"
-  },
-  "gitHead": "cc4a6899ce809f5cb33825baf5bce97e0a339b46",
-  "dependencies": {
-    "rimraf": "6.0.1",
-    "typeorm": "0.3.25"
-  },
-  "devDependencies": {
-    "typescript": "5.9.3"
-  }
+	"name": "@nest-toolbox/typeorm-upsert",
+	"description": "upsert function for typeorm",
+	"version": "1.7.0",
+	"author": "bogdanlupu <lupu60@gmail.com>",
+	"homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert#readme",
+	"license": "MIT",
+	"keywords": [
+		"typeorm",
+		"postgres"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+	},
+	"bugs": {
+		"url": "https://github.com/lupu60/nestjs-toolbox/issues"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
+	"publicConfig": {
+		"access": "public"
+	},
+	"main": "dist/index",
+	"types": "dist/index",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "npm run clean && npm run compile",
+		"clean": "rimraf -rf ./dist",
+		"cleanup": "rimraf -rf dist coverage ",
+		"compile": "tsc -p tsconfig.build.json",
+		"lint": "eslint src --ext .ts",
+		"test": "jest --ci --config ../../jest.config.json ",
+		"prepublishOnly": "npm run build"
+	},
+	"gitHead": "cc4a6899ce809f5cb33825baf5bce97e0a339b46",
+	"dependencies": {
+		"rimraf": "6.0.1",
+		"typeorm": "0.3.25"
+	},
+	"devDependencies": {
+		"typescript": "5.9.3"
+	}
 }

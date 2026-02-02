@@ -1,1 +1,1 @@
-export { TypeOrmUpsert, UpsertResult, UpsertStatus } from './typeorm-upsert';
+export { TypeOrmUpsert, UpsertResult, UpsertStatus } from "./typeorm-upsert";

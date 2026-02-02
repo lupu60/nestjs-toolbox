@@ -1,58 +1,58 @@
 {
-  "name": "@nest-toolbox/typeorm-paginate",
-  "version": "1.7.0",
-  "description": "paginate typeorm table",
-  "author": "bogdanlupu <lupu60@gmail.com>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/typeorm-paginate#readme",
-  "license": "MIT",
-  "keywords": [
-    "nestjs",
-    "toolbox",
-    "progress"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "publicConfig": {
-    "access": "public"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "private": false,
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">=18 <=22",
-    "npm": "<=11"
-  },
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rimraf -rf ./dist",
-    "cleanup": "rimraf -rf dist coverage",
-    "compile": "tsc -p tsconfig.build.json",
-    "lint": "eslint src --ext .ts",
-    "test": "jest --ci --config ../../jest.config.json ",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "reflect-metadata": "0.2.2",
-    "ts-node": "10.9.2",
-    "type-fest": "5.4.3",
-    "typeorm": "0.3.25"
-  },
-  "devDependencies": {
-    "@types/node": "24.0.3",
-    "rimraf": "~6.0.1",
-    "typescript": "5.9.3"
-  },
-  "gitHead": "cc4a6899ce809f5cb33825baf5bce97e0a339b46"
+	"name": "@nest-toolbox/typeorm-paginate",
+	"version": "1.7.0",
+	"description": "paginate typeorm table",
+	"author": "bogdanlupu <lupu60@gmail.com>",
+	"homepage": "https://github.com/lupu60/nestjs-toolbox/tree/main/packages/typeorm-paginate#readme",
+	"license": "MIT",
+	"keywords": [
+		"nestjs",
+		"toolbox",
+		"progress"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+	},
+	"bugs": {
+		"url": "https://github.com/lupu60/nestjs-toolbox/issues"
+	},
+	"publicConfig": {
+		"access": "public"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
+	"private": false,
+	"main": "dist/index",
+	"types": "dist/index",
+	"files": [
+		"dist"
+	],
+	"engines": {
+		"node": ">=18 <=22",
+		"npm": "<=11"
+	},
+	"scripts": {
+		"build": "npm run clean && npm run compile",
+		"clean": "rimraf -rf ./dist",
+		"cleanup": "rimraf -rf dist coverage",
+		"compile": "tsc -p tsconfig.build.json",
+		"lint": "eslint src --ext .ts",
+		"test": "jest --ci --config ../../jest.config.json ",
+		"prepublishOnly": "npm run build"
+	},
+	"dependencies": {
+		"reflect-metadata": "0.2.2",
+		"ts-node": "10.9.2",
+		"type-fest": "5.4.3",
+		"typeorm": "0.3.25"
+	},
+	"devDependencies": {
+		"@types/node": "24.0.3",
+		"rimraf": "~6.0.1",
+		"typescript": "5.9.3"
+	},
+	"gitHead": "cc4a6899ce809f5cb33825baf5bce97e0a339b46"
 }

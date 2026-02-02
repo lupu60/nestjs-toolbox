@@ -1,1 +1,1 @@
-export { generate, LogLevel } from './spec-parser';
+export { generate, LogLevel } from "./spec-parser";

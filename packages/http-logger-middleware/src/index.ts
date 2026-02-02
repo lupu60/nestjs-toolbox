@@ -1,1 +1,1 @@
-export { HttpLoggerMiddleware } from './http-logger-middleware';
+export { HttpLoggerMiddleware } from "./http-logger-middleware";

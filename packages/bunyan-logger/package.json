@@ -1,60 +1,60 @@
 {
-  "name": "@nest-toolbox/bunyan-logger",
-  "description": "nestjs toolbox",
-  "version": "1.7.0",
-  "author": "bogdanlupu <lupu60@gmail.com>",
-  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme",
-  "license": "MIT",
-  "keywords": [
-    "nestjs",
-    "toolbox",
-    "logger",
-    "bunyan"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
-    "access": "public"
-  },
-  "main": "dist/index",
-  "types": "dist/index",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">=18 <=22",
-    "npm": "<=11"
-  },
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rimraf -rf ./dist",
-    "cleanup": "rimraf -rf dist coverage",
-    "compile": "tsc -p tsconfig.build.json",
-    "lint": "eslint src --ext .ts",
-    "test": "jest --ci --config ../../jest.config.json ",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "@nestjs/common": "11.1.3",
-    "@types/bunyan": "1.8.11",
-    "bunyan": "1.8.15",
-    "bunyan-format": "0.2.1",
-    "colors": "1.4.0",
-    "ts-node": "10.9.2"
-  },
-  "gitHead": "cc4a6899ce809f5cb33825baf5bce97e0a339b46",
-  "devDependencies": {
-    "@types/bunyan-format": "^0.2.4",
-    "@types/node": "24.0.3",
-    "rimraf": "~6.0.1",
-    "typescript": "5.9.3"
-  }
+	"name": "@nest-toolbox/bunyan-logger",
+	"description": "nestjs toolbox",
+	"version": "1.7.0",
+	"author": "bogdanlupu <lupu60@gmail.com>",
+	"homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger#readme",
+	"license": "MIT",
+	"keywords": [
+		"nestjs",
+		"toolbox",
+		"logger",
+		"bunyan"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+	},
+	"bugs": {
+		"url": "https://github.com/lupu60/nestjs-toolbox/issues"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
+	"publicConfig": {
+		"access": "public"
+	},
+	"main": "dist/index",
+	"types": "dist/index",
+	"files": [
+		"dist"
+	],
+	"engines": {
+		"node": ">=18 <=22",
+		"npm": "<=11"
+	},
+	"scripts": {
+		"build": "npm run clean && npm run compile",
+		"clean": "rimraf -rf ./dist",
+		"cleanup": "rimraf -rf dist coverage",
+		"compile": "tsc -p tsconfig.build.json",
+		"lint": "eslint src --ext .ts",
+		"test": "jest --ci --config ../../jest.config.json ",
+		"prepublishOnly": "npm run build"
+	},
+	"dependencies": {
+		"@nestjs/common": "11.1.3",
+		"@types/bunyan": "1.8.11",
+		"bunyan": "1.8.15",
+		"bunyan-format": "0.2.1",
+		"colors": "1.4.0",
+		"ts-node": "10.9.2"
+	},
+	"gitHead": "cc4a6899ce809f5cb33825baf5bce97e0a339b46",
+	"devDependencies": {
+		"@types/bunyan-format": "^0.2.4",
+		"@types/node": "24.0.3",
+		"rimraf": "~6.0.1",
+		"typescript": "5.9.3"
+	}
 }

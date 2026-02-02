@@ -1,1 +1,1 @@
-export * from './typeorm-paginate';
+export * from "./typeorm-paginate";

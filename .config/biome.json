@@ -1,5 +1,18 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": ["packages/**"],
+    "ignore": [
+      "**/node_modules/**",
+      "**/packages/access-control/src/controller/grants.controller.ts"
+    ],
+    "ignoreUnknown": true
+  },
   "organizeImports": {
     "enabled": true
   },
@@ -9,77 +22,34 @@
     "indentStyle": "space", 
     "indentWidth": 2,
     "lineWidth": 120,
-    "ignore": [
-      "**/node_modules/**",
-      "**/.git/**",
-      "**/.next/**",
-      "**/.turbo/**"
-    ]
+    "lineEnding": "lf"
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
-      "complexity": {
-        "noExcessiveCognitiveComplexity": ["error", { "max": 15 }]
-      },
-      "correctness": {
-        "noConstAssign": "error",
-        "noInvalidUseBeforeDeclaration": "error",
-        "noUnusedVariables": "error"
-      },
-      "security": {
-        "noGlobalEval": "error"
-      },
-      "style": {
-        "useConsistentArrayType": "error",
-        "useNamingConvention": "error"
-      },
-      "suspicious": {
-        "noShadowRestrictedNames": "error"
-      }
+      "recommended": true
     }
   },
   "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "trailingComma": "all",
-      "semicolons": "always"
-    },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always"
     }
   },
   "typescript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "trailingComma": "all",
-      "semicolons": "always"
-    },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
-    }
-  },
-  "overrides": [
-    {
-      "include": ["*.spec.ts", "*.test.ts"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noUnusedVariables": "off"
-          }
-        }
-      }
     },
-    {
-      "include": ["src/**/*.ts"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noNonNullAssertation": "error"
-          }
-        }
-      }
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always"
     }
-  ]
+  }
 }

@@ -1,1 +1,1 @@
-export { BunyanLoggerService } from './bunyan-logger.service';
+export { BunyanLoggerService } from "./bunyan-logger.service";
