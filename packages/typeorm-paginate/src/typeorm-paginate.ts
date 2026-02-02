@@ -1,4 +1,4 @@
-import { ObjectLiteral, Repository, FindOptionsWhere } from "typeorm";
+import type { FindOptionsWhere, ObjectLiteral, Repository } from "typeorm";
 
 const DEFAULT_PAGINATION_LIMIT = 100;
 
@@ -25,8 +25,7 @@ export async function* rows<T extends ObjectLiteral>(options: {
 			index++;
 			const result: PaginatedRow<T> = Object.assign({}, row, {
 				index,
-				progress:
-					index === total ? 100 : Number((index / total).toFixed(2)) * 100,
+				progress: index === total ? 100 : Number((index / total).toFixed(2)) * 100,
 			});
 			yield result;
 		}

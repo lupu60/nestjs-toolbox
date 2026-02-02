@@ -1,9 +1,9 @@
 import {
-	_generateSetterString,
-	TypeOrmUpsert,
-	_keys,
 	_chunkValues,
-	UpsertResult,
+	_generateSetterString,
+	_keys,
+	TypeOrmUpsert,
+	type UpsertResult,
 } from "../typeorm-upsert";
 
 describe("Dummy Test", () => {
@@ -34,11 +34,8 @@ describe("Dummy Test", () => {
 	it("should generate setter string", () => {
 		const keys = ["id", "name"];
 		const keyNamingTransform = (k: string) => k;
-		const expectedStatement =
-			'id=EXCLUDED.id , name=EXCLUDED.name , "updatedAt"=CURRENT_TIMESTAMP';
-		expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(
-			expectedStatement,
-		);
+		const expectedStatement = 'id=EXCLUDED.id , name=EXCLUDED.name , "updatedAt"=CURRENT_TIMESTAMP';
+		expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
 	});
 
 	it("should generate setter string", () => {
@@ -46,9 +43,7 @@ describe("Dummy Test", () => {
 		const keyNamingTransform = (k: string) => k;
 		const expectedStatement =
 			'id=EXCLUDED.id , name=EXCLUDED.name , "firstName"=EXCLUDED."firstName" , "updatedAt"=CURRENT_TIMESTAMP';
-		expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(
-			expectedStatement,
-		);
+		expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
 	});
 
 	it("should generate setter string with right key transform", () => {
@@ -56,24 +51,16 @@ describe("Dummy Test", () => {
 		const keyNamingTransform = (k: string) => k.toUpperCase();
 		const expectedStatement =
 			'ID=EXCLUDED.id , NAME=EXCLUDED.name , FIRST_NAME=EXCLUDED.first_name , "updatedAt"=CURRENT_TIMESTAMP';
-		expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(
-			expectedStatement,
-		);
+		expect(_generateSetterString({ keys, keyNamingTransform })).toEqual(expectedStatement);
 	});
 
 	it("should generate the right keys", () => {
 		const data = { id: 1, name: "" };
-		expect(_keys({ sampleObject: data, doNotUpsert: [] })).toEqual([
-			"id",
-			"name",
-		]);
+		expect(_keys({ sampleObject: data, doNotUpsert: [] })).toEqual(["id", "name"]);
 	});
 	it("should generate the right keys", () => {
 		const data = { id: 1, name: "", status: "active" };
-		expect(_keys({ sampleObject: data, doNotUpsert: ["status"] })).toEqual([
-			"id",
-			"name",
-		]);
+		expect(_keys({ sampleObject: data, doNotUpsert: ["status"] })).toEqual(["id", "name"]);
 	});
 
 	it("should chunk huge arrays", () => {

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { program } from "commander";
-import { generate_version, Options } from "./lib/lib";
-const { exec: callbackexec } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+import { generate_version, type Options } from "./lib/lib";
+
+const { exec: callbackexec } = require("node:child_process");
+const fs = require("node:fs");
+const path = require("node:path");
 
 program
 	.name("version-generator")
@@ -18,25 +19,18 @@ program
 	.option("--develop-label [develop-label]", "develop-label identifier", "beta")
 	.option("--alpha-label [alpha-label]", "alpha-label identifier", "alpha")
 	.option("--label-separator [label-separator]", "label-separator", "-")
-	.option(
-		"--commit-id-separator [commit-id-separator]",
-		"commit-id-separator",
-		".",
-	)
+	.option("--commit-id-separator [commit-id-separator]", "commit-id-separator", ".")
 	.parse(process.argv);
 
 function exec(command: string): Promise<string> {
 	return new Promise((resolve, reject) => {
-		callbackexec(
-			command,
-			(error: Error | null, stdout: string, stderr: string) => {
-				if (error || stderr) {
-					reject(error || stderr);
-					return;
-				}
-				resolve(stdout.trim());
-			},
-		);
+		callbackexec(command, (error: Error | null, stdout: string, stderr: string) => {
+			if (error || stderr) {
+				reject(error || stderr);
+				return;
+			}
+			resolve(stdout.trim());
+		});
 	});
 }
 

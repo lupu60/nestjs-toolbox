@@ -1,6 +1,6 @@
-import { Injectable, Logger, NestMiddleware } from "@nestjs/common";
+import { Injectable, Logger, type NestMiddleware } from "@nestjs/common";
 import * as chalk from "chalk";
-import { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 const isEmpty = (obj: unknown): boolean => {
 	if (!obj || typeof obj !== "object") {
@@ -19,9 +19,7 @@ export class HttpLoggerMiddleware implements NestMiddleware {
 	use(req: Request, _res: Response, next: NextFunction): void {
 		const { body, params, query } = req;
 		const requestUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
-		this.log(
-			"---------------------------------------------------------------------------------",
-		);
+		this.log("---------------------------------------------------------------------------------");
 		this.log("request method:", req.method);
 		this.log("request url: ", requestUrl);
 		if (query && !isEmpty(query)) {
@@ -33,9 +31,7 @@ export class HttpLoggerMiddleware implements NestMiddleware {
 		if (body && !isEmpty(body)) {
 			this.log("request body: ", JSON.stringify(body));
 		}
-		this.log(
-			"---------------------------------------------------------------------------------",
-		);
+		this.log("---------------------------------------------------------------------------------");
 		next();
 	}
 }

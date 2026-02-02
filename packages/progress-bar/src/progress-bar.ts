@@ -16,12 +16,9 @@ export class ProgressBar {
 	tick() {
 		this.current++;
 		this.progress =
-			this.current === this.total
-				? 1
-				: Number((this.current / this.total).toFixed(2));
+			this.current === this.total ? 1 : Number((this.current / this.total).toFixed(2));
 		const shouldLog =
-			Math.abs(this.progress - this.previousProgress) > 0.05 ||
-			this.current === this.total;
+			Math.abs(this.progress - this.previousProgress) > 0.05 || this.current === this.total;
 		if (shouldLog) {
 			this.previousProgress = this.progress;
 			const dots = "=".repeat(this.progress * 100);
@@ -29,9 +26,7 @@ export class ProgressBar {
 			const empty = " ".repeat(left);
 			const color = this.progress < 0.7 ? colors.yellow : colors.green;
 			this.logger.log(
-				color.bold(
-					`\r${this.identifier} [${dots}${empty}] ${(this.progress * 100).toFixed()}%`,
-				),
+				color.bold(`\r${this.identifier} [${dots}${empty}] ${(this.progress * 100).toFixed()}%`),
 			);
 		}
 	}

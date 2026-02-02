@@ -1,4 +1,4 @@
-import { LoggerService } from "@nestjs/common";
+import type { LoggerService } from "@nestjs/common";
 import * as winston from "winston";
 
 export class WinstonLoggerService implements LoggerService {
@@ -9,8 +9,7 @@ export class WinstonLoggerService implements LoggerService {
 		}
 		const constructorName = (obj as object).constructor?.name;
 		return (
-			(constructorName === "Object" || constructorName === "Array") &&
-			!Object.entries(obj).length
+			(constructorName === "Object" || constructorName === "Array") && !Object.entries(obj).length
 		);
 	};
 
@@ -37,17 +36,11 @@ export class WinstonLoggerService implements LoggerService {
 		const timestamp = timeFormatStr
 			? winston.format.timestamp({ format: timeFormatStr })
 			: winston.format.timestamp();
-		const formatter = customFormatter
-			? customFormatter
-			: this.getDefaultFormat();
+		const formatter = customFormatter ? customFormatter : this.getDefaultFormat();
 
 		this.winstonLogger = winston.createLogger({
 			level: "info",
-			format: winston.format.combine(
-				timestamp,
-				winston.format.simple(),
-				formatter,
-			),
+			format: winston.format.combine(timestamp, winston.format.simple(), formatter),
 			defaultMeta: { service: projectName },
 			transports: [new winston.transports.Console(), ...(transports || [])],
 		});
@@ -55,14 +48,9 @@ export class WinstonLoggerService implements LoggerService {
 
 	private getDefaultFormat() {
 		const colorizer = winston.format.colorize();
-		return winston.format.printf(
-			({ level, message, timestamp, context, trace }) => {
-				return colorizer.colorize(
-					level,
-					`${timestamp} ${context || ""}: ${message} ${trace || ""}`,
-				);
-			},
-		);
+		return winston.format.printf(({ level, message, timestamp, context, trace }) => {
+			return colorizer.colorize(level, `${timestamp} ${context || ""}: ${message} ${trace || ""}`);
+		});
 	}
 
 	public log(message: unknown, context?: string | undefined): void {

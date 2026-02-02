@@ -29,9 +29,7 @@ export function BootstrapLog(options: { config: AppConfig }) {
 	} = config;
 	const logger: Logger = new Logger("Bootstrap");
 	logger.log(
-		colors.green.bold(
-			`🎉 Bootstrapping ${package_json_body.name}:${package_json_body.version}`,
-		),
+		colors.green.bold(`🎉 Bootstrapping ${package_json_body.name}:${package_json_body.version}`),
 	);
 	logger.log(colors.red.bold(`🚀 Server is using ${environment} environment`));
 	logger.log(colors.blue.bold(`✅ Server running on 👉 ${hostname}`));
@@ -48,8 +46,6 @@ export function BootstrapLog(options: { config: AppConfig }) {
 		logger.log(colors.magenta.bold(`📮 Connected to ${redis_url}`));
 	}
 	if (sentry) {
-		logger.log(
-			colors.blue.bold(`📶 Setting up Sentry for ${environment} environment`),
-		);
+		logger.log(colors.blue.bold(`📶 Setting up Sentry for ${environment} environment`));
 	}
 }

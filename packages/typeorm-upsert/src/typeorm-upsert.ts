@@ -1,4 +1,4 @@
-import { ObjectLiteral, Repository } from "typeorm";
+import type { ObjectLiteral, Repository } from "typeorm";
 
 export type UpsertStatus = "inserted" | "updated";
 
@@ -61,15 +61,13 @@ export async function TypeOrmUpsert<T extends ObjectLiteral>(
 
 	if (returnStatus) {
 		// Return results with status
-		const resultsWithStatus: UpsertResult<T>[] = results.map(
-			(result: Record<string, unknown>) => {
-				const { _upsert_status, ...entity } = result;
-				return {
-					entity: entity as T,
-					status: _upsert_status as UpsertStatus,
-				};
-			},
-		);
+		const resultsWithStatus: UpsertResult<T>[] = results.map((result: Record<string, unknown>) => {
+			const { _upsert_status, ...entity } = result;
+			return {
+				entity: entity as T,
+				status: _upsert_status as UpsertStatus,
+			};
+		});
 		return Array.isArray(object) ? resultsWithStatus : resultsWithStatus[0];
 	}
 
@@ -116,8 +114,7 @@ export async function _chunkPromises<T extends ObjectLiteral>({
 					.getRawMany();
 				existingKeys = new Set(
 					existingRecords.map(
-						(record: Record<string, unknown>) =>
-							record[conflictKey] as string | number,
+						(record: Record<string, unknown>) => record[conflictKey] as string | number,
 					),
 				);
 			}
@@ -138,9 +135,7 @@ export async function _chunkPromises<T extends ObjectLiteral>({
 						// Add status to each result
 						result.raw = result.raw.map((row: Record<string, unknown>) => {
 							const keyValue = row[conflictKey] as string | number;
-							const status: UpsertStatus = existingKeys.has(keyValue)
-								? "updated"
-								: "inserted";
+							const status: UpsertStatus = existingKeys.has(keyValue) ? "updated" : "inserted";
 							return {
 								...row,
 								_upsert_status: status,
@@ -150,22 +145,14 @@ export async function _chunkPromises<T extends ObjectLiteral>({
 					return result;
 				})
 				.catch((e: unknown) => {
-					throw new Error(
-						`Failed to upsert chunk: ${e instanceof Error ? e.message : String(e)}`,
-					);
+					throw new Error(`Failed to upsert chunk: ${e instanceof Error ? e.message : String(e)}`);
 				}),
 		);
 	}
 	return await Promise.all(promises);
 }
 
-export function _chunkValues<T>({
-	values,
-	chunk,
-}: {
-	values: T[];
-	chunk: number;
-}): T[][] {
+export function _chunkValues<T>({ values, chunk }: { values: T[]; chunk: number }): T[][] {
 	const chunked_arr: T[][] = [];
 	// Ensure values is an array
 	const valuesArray = Array.isArray(values) ? values : [values];
@@ -184,9 +171,7 @@ export function _keys({
 	sampleObject: Record<string, unknown>;
 	doNotUpsert: string[];
 }): string[] {
-	return [Object.keys(sampleObject), doNotUpsert].reduce((a, b) =>
-		a.filter((c) => !b.includes(c)),
-	);
+	return [Object.keys(sampleObject), doNotUpsert].reduce((a, b) => a.filter((c) => !b.includes(c)));
 }
 
 export function _generateSetterString({

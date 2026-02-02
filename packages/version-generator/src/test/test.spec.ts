@@ -44,30 +44,20 @@ describe("version-generator", () => {
 	});
 
 	it("isMaster", () => {
-		expect(
-			isMaster({ options: { ...options, tag: true }, branch: "master" }),
-		).toEqual(true);
+		expect(isMaster({ options: { ...options, tag: true }, branch: "master" })).toEqual(true);
 		expect(isMaster({ options, branch: "master" })).toEqual(true);
-		expect(
-			isMaster({ options: { ...options, tag: true }, branch: "develop" }),
-		).toEqual(true);
+		expect(isMaster({ options: { ...options, tag: true }, branch: "develop" })).toEqual(true);
 		expect(isMaster({ options: {}, branch: "develop" })).toEqual(false);
 	});
 
 	it("isDevelop", () => {
-		expect(isDevelop({ options: { tag: true }, branch: "develop" })).toEqual(
-			false,
-		);
-		expect(
-			isDevelop({ options: { develop: "develop" }, branch: "develop" }),
-		).toEqual(true);
+		expect(isDevelop({ options: { tag: true }, branch: "develop" })).toEqual(false);
+		expect(isDevelop({ options: { develop: "develop" }, branch: "develop" })).toEqual(true);
 		expect(isDevelop({ options: {}, branch: "master" })).toEqual(false);
 	});
 
 	it("isFeature", () => {
-		expect(isFeature({ options: { tag: true }, branch: "develop" })).toEqual(
-			false,
-		);
+		expect(isFeature({ options: { tag: true }, branch: "develop" })).toEqual(false);
 		expect(
 			isFeature({
 				options: { feature: "feature" },
@@ -91,12 +81,8 @@ describe("version-generator", () => {
 		};
 
 		expect(generate_version(options, "master")).toEqual("1.0.0.ebffb63");
-		expect(generate_version({ ...options, tag: true }, "develop")).toEqual(
-			"1.0.0.ebffb63",
-		);
+		expect(generate_version({ ...options, tag: true }, "develop")).toEqual("1.0.0.ebffb63");
 		expect(generate_version(options, "develop")).toEqual("1.0.0-beta.ebffb63");
-		expect(generate_version(options, "feature/cool-feature")).toEqual(
-			"1.0.0-alpha.ebffb63",
-		);
+		expect(generate_version(options, "feature/cool-feature")).toEqual("1.0.0-alpha.ebffb63");
 	});
 });

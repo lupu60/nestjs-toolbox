@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 type ErrnoException = NodeJS.ErrnoException;
 
@@ -11,16 +11,12 @@ export const readFile = (path: string): Promise<string> =>
 
 export const writeFile = (path: string, data: string): Promise<void> =>
 	new Promise((resolve, reject) =>
-		fs.writeFile(path, data, (err: ErrnoException | null) =>
-			err ? reject(err) : resolve(),
-		),
+		fs.writeFile(path, data, (err: ErrnoException | null) => (err ? reject(err) : resolve())),
 	);
 
 export const appendFile = (path: string, data: string): Promise<void> =>
 	new Promise((resolve, reject) =>
-		fs.appendFile(path, data, (err: ErrnoException | null) =>
-			err ? reject(err) : resolve(),
-		),
+		fs.appendFile(path, data, (err: ErrnoException | null) => (err ? reject(err) : resolve())),
 	);
 
 export const removeFile = (path: string): Promise<void> =>

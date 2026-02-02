@@ -1,13 +1,13 @@
-import { existsSync, mkdirSync } from "fs";
-import * as path from "path";
-import { OpenAPIObject } from "@nestjs/swagger";
-import {
+import { existsSync, mkdirSync } from "node:fs";
+import * as path from "node:path";
+import type { OpenAPIObject } from "@nestjs/swagger";
+import type {
 	ReferenceObject,
 	SchemaObject,
 } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
 import * as chalk from "chalk";
-import { compile, Options as JSONToTSOptions } from "json-schema-to-typescript";
-import { NormalizedJSONSchema } from "json-schema-to-typescript/dist/src/types/JSONSchema";
+import { compile, type Options as JSONToTSOptions } from "json-schema-to-typescript";
+import type { NormalizedJSONSchema } from "json-schema-to-typescript/dist/src/types/JSONSchema";
 import { flatten, snakeCase } from "lodash";
 import { appendFile, readDir, readFile, removeFile, writeFile } from "./files";
 
@@ -101,9 +101,7 @@ function extractRefsFromSchema(
 	}
 }
 
-function preprocessProperties(inputProperties: {
-	[key: string]: SchemaObject | ReferenceObject;
-}) {
+function preprocessProperties(inputProperties: { [key: string]: SchemaObject | ReferenceObject }) {
 	if (inputProperties) {
 		return Object.entries(inputProperties).reduce(
 			(acc, [name, value]) => ({
@@ -125,28 +123,19 @@ async function createImport(
 	if (!references || !references.length) {
 		return [];
 	}
-	const refsArray: string[] =
-		typeof references === "string" ? [references] : references.flat();
+	const refsArray: string[] = typeof references === "string" ? [references] : references.flat();
 	const $refs = refsArray
-		.filter(
-			(val, index) => val !== undefined && refsArray.indexOf(val) === index,
-		)
+		.filter((val, index) => val !== undefined && refsArray.indexOf(val) === index)
 		.map((val) => val.split("/")[3]);
 
 	const imports = $refs.filter((val) => !val.includes(name));
 	if ($refs.length && imports.length) {
-		await appendFile(
-			filePath,
-			`import { ${imports.join(", ")} } from './'; \n\n`,
-		);
+		await appendFile(filePath, `import { ${imports.join(", ")} } from './'; \n\n`);
 	}
 	return $refs;
 }
 
-async function createInterfaceFile(
-	name: string,
-	interfacesDirPath: string,
-): Promise<string> {
+async function createInterfaceFile(name: string, interfacesDirPath: string): Promise<string> {
 	const bannerComment =
 		"/* tslint:disable */\n/**\n* This file was automatically generated.\n* DO NOT MODIFY IT BY HAND.\n*/\n\n";
 	const filePath = `${interfacesDirPath}/${name}.ts`;
@@ -159,8 +148,7 @@ function removeEnum(content: string): string {
 	const interfaceStartPosition = content.search("export interface");
 	if (enumStartPosition > -1 && interfaceStartPosition > -1) {
 		const enumEndPosition =
-			content.slice(enumStartPosition, content.length).indexOf("}") +
-			enumStartPosition;
+			content.slice(enumStartPosition, content.length).indexOf("}") + enumStartPosition;
 		const enumParts = content.slice(enumStartPosition, enumEndPosition + 1);
 		content = content.replace(enumParts, "").trim();
 		return removeEnum(content);
@@ -171,17 +159,11 @@ function removeEnum(content: string): string {
 function checkSelfReference(name: string, content: string): string {
 	const interfaceStartPosition = content.search("export interface");
 	const interfaceEndPosition =
-		content.slice(interfaceStartPosition, content.length).indexOf("}") +
-		interfaceStartPosition;
-	const interfaceParts = content
-		.slice(interfaceStartPosition, interfaceEndPosition + 1)
-		.split("{");
+		content.slice(interfaceStartPosition, content.length).indexOf("}") + interfaceStartPosition;
+	const interfaceParts = content.slice(interfaceStartPosition, interfaceEndPosition + 1).split("{");
 	const selfRefIndex = interfaceParts[1].indexOf(name);
 	if (selfRefIndex > -1) {
-		const selfRef = interfaceParts[1].slice(
-			selfRefIndex,
-			selfRefIndex + name.length + 1,
-		);
+		const selfRef = interfaceParts[1].slice(selfRefIndex, selfRefIndex + name.length + 1);
 		const regex = new RegExp(selfRef, "g");
 		content = content.replace(regex, name);
 	}
@@ -223,10 +205,7 @@ async function createInterface(
 	openApiSpec: OpenAPIObject,
 	interfacesDirPath: string,
 ): Promise<TsInterface> {
-	await appendFile(
-		`${interfacesDirPath}/index.ts`,
-		`export * from './${name}';\n`,
-	);
+	await appendFile(`${interfacesDirPath}/index.ts`, `export * from './${name}';\n`);
 	const filePath = await createInterfaceFile(name, interfacesDirPath);
 	const content = await createInterfaceContent(name, openApiSpec, filePath);
 	logInfo(`${name} interface generated`);
@@ -239,11 +218,7 @@ async function parseSchema(
 	interfacesDirPath: string,
 ): Promise<TsInterface | null> {
 	const components = openApiSpec?.components;
-	if (
-		!components ||
-		!components.schemas ||
-		!components.schemas.hasOwnProperty(name)
-	) {
+	if (!components || !components.schemas || !Object.hasOwn(components.schemas, name)) {
 		return null;
 	}
 	const schema = components.schemas[name];
@@ -279,15 +254,9 @@ async function openApiToInterfaces(
 	for (const schemaKey of schemasNames) {
 		try {
 			await prevPromise;
-			prevPromise = delayedParsing(
-				schemaKey,
-				openApiSpec,
-				interfacesDirPath,
-				0,
-			);
+			prevPromise = delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
 		} catch (error) {
-			const errorMessage =
-				error instanceof Error ? error.message : String(error);
+			const errorMessage = error instanceof Error ? error.message : String(error);
 			logError(errorMessage);
 			prevPromise = Promise.resolve(null);
 		}
@@ -301,9 +270,7 @@ function ensureDirectoryExists(dirPath: string): void {
 	}
 }
 
-async function removeExistingInterfaces(
-	interfacesPath: string,
-): Promise<void[]> {
+async function removeExistingInterfaces(interfacesPath: string): Promise<undefined[]> {
 	// Check if directory exists before trying to read it
 	if (!existsSync(interfacesPath)) {
 		return Promise.resolve([]);
@@ -312,9 +279,7 @@ async function removeExistingInterfaces(
 	if (!files || files.length === 0) {
 		return Promise.resolve([]);
 	}
-	return Promise.all(
-		files.map((file) => removeFile(path.join(interfacesPath, file))),
-	);
+	return Promise.all(files.map((file) => removeFile(path.join(interfacesPath, file))));
 }
 
 function appendTitles(openApiSpec: OpenAPIObject): void {
@@ -325,14 +290,8 @@ function appendTitles(openApiSpec: OpenAPIObject): void {
 		const objectSchema: any = schema;
 		if (objectSchema.type) {
 			objectSchema.title = objectSchema.title || name;
-			if (
-				objectSchema.type === "string" &&
-				objectSchema.enum &&
-				!objectSchema.tsEnumNames
-			) {
-				objectSchema.tsEnumNames = objectSchema.enum.map((e: string) =>
-					snakeCase(e).toUpperCase(),
-				);
+			if (objectSchema.type === "string" && objectSchema.enum && !objectSchema.tsEnumNames) {
+				objectSchema.tsEnumNames = objectSchema.enum.map((e: string) => snakeCase(e).toUpperCase());
 			}
 		}
 	});
@@ -345,9 +304,7 @@ export async function generate(
 ): Promise<void> {
 	baseOptions = { ...baseOptions, ...options };
 	try {
-		const swaggerSpec: OpenAPIObject = JSON.parse(
-			await readFile(openApiFilePath),
-		);
+		const swaggerSpec: OpenAPIObject = JSON.parse(await readFile(openApiFilePath));
 		appendTitles(swaggerSpec);
 		// Ensure the interfaces directory exists before writing files
 		ensureDirectoryExists(interfacesDirPath);

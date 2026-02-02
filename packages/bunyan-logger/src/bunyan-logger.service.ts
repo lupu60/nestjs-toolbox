@@ -1,4 +1,4 @@
-import { LoggerService } from "@nestjs/common";
+import type { LoggerService } from "@nestjs/common";
 import * as Bunyan from "bunyan";
 import * as bunyanFormat from "bunyan-format";
 import * as colors from "colors";
@@ -21,8 +21,7 @@ export class BunyanLoggerService implements LoggerService {
 		}
 		const constructorName = (obj as object).constructor?.name;
 		return (
-			(constructorName === "Object" || constructorName === "Array") &&
-			!Object.entries(obj).length
+			(constructorName === "Object" || constructorName === "Array") && !Object.entries(obj).length
 		);
 	};
 
@@ -48,13 +47,7 @@ export class BunyanLoggerService implements LoggerService {
 		};
 		maxLength?: number;
 	}) {
-		const {
-			projectId,
-			formatterOptions,
-			customStreams,
-			extraFields,
-			maxLength,
-		} = options;
+		const { projectId, formatterOptions, customStreams, extraFields, maxLength } = options;
 		if (
 			projectId === null ||
 			projectId === undefined ||
@@ -103,10 +96,7 @@ export class BunyanLoggerService implements LoggerService {
 	 * @param colorFn - The color function to apply (e.g., colors.red, colors.yellow)
 	 * @returns Colored or plain message based on formatterOptions.color
 	 */
-	private applyColor(
-		message: unknown,
-		colorFn: (msg: string) => string,
-	): unknown {
+	private applyColor(message: unknown, colorFn: (msg: string) => string): unknown {
 		// Check if colors are disabled
 		if (this.formatterOptions.color === false) {
 			return message;
@@ -124,10 +114,7 @@ export class BunyanLoggerService implements LoggerService {
 	 * @param params - Object with values to replace placeholders
 	 * @returns Interpolated string
 	 */
-	private interpolateString(
-		message: string,
-		params: Record<string, unknown>,
-	): string {
+	private interpolateString(message: string, params: Record<string, unknown>): string {
 		if (!params || typeof params !== "object") {
 			return message;
 		}
@@ -149,9 +136,7 @@ export class BunyanLoggerService implements LoggerService {
 		// Handle backward compatibility: if message is an array, treat it as before
 		if (Array.isArray(message)) {
 			const lastParam =
-				optionalParams.length > 0
-					? optionalParams[optionalParams.length - 1]
-					: undefined;
+				optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;
 			const context = typeof lastParam === "string" ? lastParam : undefined;
 			return { processedMessage: message, context };
 		}
@@ -178,10 +163,7 @@ export class BunyanLoggerService implements LoggerService {
 					!(param instanceof Error),
 			);
 			if (interpolationObject) {
-				processedMessage = this.interpolateString(
-					processedMessage,
-					interpolationObject,
-				);
+				processedMessage = this.interpolateString(processedMessage, interpolationObject);
 			}
 		}
 
@@ -189,13 +171,8 @@ export class BunyanLoggerService implements LoggerService {
 	}
 
 	public log(message: unknown, ...optionalParams: unknown[]): void {
-		const { processedMessage, context } = this.processMessage(
-			message,
-			...optionalParams,
-		);
-		const messages = Array.isArray(processedMessage)
-			? processedMessage
-			: [processedMessage];
+		const { processedMessage, context } = this.processMessage(message, ...optionalParams);
+		const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
 		const truncatedMessages = messages.map((msg) => this.truncateMessage(msg));
 		this.bunyanLogger.info({ context }, ...truncatedMessages);
 	}
@@ -219,9 +196,7 @@ export class BunyanLoggerService implements LoggerService {
 
 			this.bunyanLogger.error(
 				{ context, trace },
-				...message.map((msg) =>
-					this.applyColor(this.truncateMessage(msg), colors.red),
-				),
+				...message.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)),
 			);
 			return;
 		}
@@ -233,10 +208,7 @@ export class BunyanLoggerService implements LoggerService {
 		// Handle error signature: error(message, stack?, context?)
 		if (optionalParams.length >= 1 && typeof optionalParams[0] === "string") {
 			// Check if it's a stack trace (contains 'at' pattern)
-			if (
-				/^\s+at\s/.test(optionalParams[0]) ||
-				optionalParams[0].includes("\n")
-			) {
+			if (/^\s+at\s/.test(optionalParams[0]) || optionalParams[0].includes("\n")) {
 				trace = optionalParams[0];
 				context = optionalParams[1] as string | undefined;
 			} else {
@@ -270,21 +242,14 @@ export class BunyanLoggerService implements LoggerService {
 					!(param instanceof Error),
 			);
 			if (interpolationObject) {
-				processedMessage = this.interpolateString(
-					processedMessage,
-					interpolationObject,
-				);
+				processedMessage = this.interpolateString(processedMessage, interpolationObject);
 			}
 		}
 
-		const messages = Array.isArray(processedMessage)
-			? processedMessage
-			: [processedMessage];
+		const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
 		this.bunyanLogger.error(
 			{ context, trace },
-			...messages.map((msg) =>
-				this.applyColor(this.truncateMessage(msg), colors.red),
-			),
+			...messages.map((msg) => this.applyColor(this.truncateMessage(msg), colors.red)),
 		);
 	}
 
@@ -292,31 +257,20 @@ export class BunyanLoggerService implements LoggerService {
 		// Handle backward compatibility: if message is an array, treat it as before
 		if (Array.isArray(message)) {
 			const lastParam =
-				optionalParams.length > 0
-					? optionalParams[optionalParams.length - 1]
-					: undefined;
+				optionalParams.length > 0 ? optionalParams[optionalParams.length - 1] : undefined;
 			const context = typeof lastParam === "string" ? lastParam : undefined;
 			this.bunyanLogger.warn(
 				{ context },
-				...message.map((msg) =>
-					this.applyColor(this.truncateMessage(msg), colors.yellow),
-				),
+				...message.map((msg) => this.applyColor(this.truncateMessage(msg), colors.yellow)),
 			);
 			return;
 		}
 
-		const { processedMessage, context } = this.processMessage(
-			message,
-			...optionalParams,
-		);
-		const messages = Array.isArray(processedMessage)
-			? processedMessage
-			: [processedMessage];
+		const { processedMessage, context } = this.processMessage(message, ...optionalParams);
+		const messages = Array.isArray(processedMessage) ? processedMessage : [processedMessage];
 		this.bunyanLogger.warn(
 			{ context },
-			...messages.map((msg) =>
-				this.applyColor(this.truncateMessage(msg), colors.yellow),
-			),
+			...messages.map((msg) => this.applyColor(this.truncateMessage(msg), colors.yellow)),
 		);
 	}
 }
