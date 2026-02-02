@@ -15,7 +15,7 @@ export interface AccessControlModuleAsyncOptions extends Pick<ModuleMetadata, 'i
   name?: string;
   useExisting?: Type<AccessControlOptionsFactory>;
   useClass?: Type<RulesBuilder>;
-  useFactory?: (...args: any[]) => Promise<RulesBuilder> | RulesBuilder;
+  useFactory?: (...args: unknown[]) => Promise<RulesBuilder> | RulesBuilder;
   inject?: Injection;
 }
 
@@ -24,7 +24,7 @@ export interface AccessControlModuleAsyncOptions extends Pick<ModuleMetadata, 'i
 // biome-ignore lint/complexity/noStaticOnlyClass: NestJS modules use static factory methods
 export class AccessControlModule {
   public static forRules(rules: RulesBuilder, options?: ACOptions): DynamicModule {
-    let controllers: Type<any>[] = [];
+    let controllers: Type<unknown>[] = [];
 
     if (options) {
       Reflect.defineMetadata(PATH_METADATA, options.grantsEndpoint, GrantsController);
