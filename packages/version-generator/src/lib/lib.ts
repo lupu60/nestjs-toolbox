@@ -10,31 +10,37 @@ export interface Options {
   labelSeparator: string;
   commitIdSeparator: string;
   version: string;
+  branch?: string;
 }
 
-export function generate_feature_version(options: Partial<Options>): string {
-  const { version, alphaLabel, labelSeparator, commitIdSeparator, commitSha } = options;
+export function _generate_feature_version(options: Partial<Options>): string {
+  const { version, alphaLabel = 'alpha', labelSeparator = '-', commitIdSeparator = '.', commitSha } = options;
   if (!commitSha) {
     throw new Error('commitSha is required');
   }
   return `${version}${labelSeparator}${alphaLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
 }
 
-export function generate_develop_version(options: Partial<Options>): string {
-  const { version, developLabel, labelSeparator, commitIdSeparator, commitSha } = options;
+export function _generate_develop_version(options: Partial<Options>): string {
+  const { version, developLabel = 'beta', labelSeparator = '-', commitIdSeparator = '.', commitSha } = options;
   if (!commitSha) {
     throw new Error('commitSha is required');
   }
   return `${version}${labelSeparator}${developLabel}${commitIdSeparator}${commitSha.slice(0, 7)}`;
 }
 
-export function generate_master_version(options: Partial<Options>): string {
-  const { version, commitIdSeparator, commitSha } = options;
+export function _generate_master_version(options: Partial<Options>): string {
+  const { version, commitIdSeparator = '.', commitSha } = options;
   if (!commitSha) {
     throw new Error('commitSha is required');
   }
   return `${version}${commitIdSeparator}${commitSha.slice(0, 7)}`;
 }
+
+// Keep existing names for backwards compatibility
+export const generate_feature_version = _generate_feature_version;
+export const generate_develop_version = _generate_develop_version;
+export const generate_master_version = _generate_master_version;
 
 export function isMaster(options: { options: Partial<Options>; branch: string }): boolean {
   const { options: voption, branch } = options;
@@ -63,18 +69,22 @@ export function isFeature(options: { options: Partial<Options>; branch: string }
   return branch.includes(voption.feature) && !voption.tag;
 }
 
-export function generate_version(options: Partial<Options>, branch: string) {
+export function generate_version(options: Partial<Options>, branch?: string): string {
+  const fullOptions = { ...options, branch };
+  
   try {
-    if (isMaster({ options, branch })) {
-      return generate_master_version(options);
+    const effectiveBranch = branch || fullOptions.branch || 'unknown';
+
+    if (isMaster({ options: fullOptions, branch: effectiveBranch })) {
+      return _generate_master_version(fullOptions);
     }
 
-    if (isDevelop({ options, branch })) {
-      return generate_develop_version(options);
+    if (isDevelop({ options: fullOptions, branch: effectiveBranch })) {
+      return _generate_develop_version(fullOptions);
     }
 
-    if (isFeature({ options, branch })) {
-      return generate_feature_version(options);
+    if (isFeature({ options: fullOptions, branch: effectiveBranch })) {
+      return _generate_feature_version(fullOptions);
     }
 
     return 'latest';
