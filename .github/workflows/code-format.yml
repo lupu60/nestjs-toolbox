@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  format:
+  format-and-lint:
     runs-on: ubuntu-latest
     
     permissions:
@@ -29,12 +29,26 @@ jobs:
         node-version: '20'
         cache: 'npm'
 
+    - name: Install dependencies
+      run: npm ci
+
     - name: Install Biome
       run: npm install -g @biomejs/biome
 
     - name: Format code
       run: |
+        # First check files without formatting
+        biome ci --diagnostic-level=warn packages
+        
+        # If that passes, do actual formatting
         find packages -type f \( -name "*.ts" -o -name "*.json" \) ! -path "*/node_modules/*" -print0 | xargs -0 biome format --write
+      continue-on-error: true
+
+    - name: Lint code
+      run: |
+        # Check linting without fixing
+        biome ci --diagnostic-level=warn packages
+      continue-on-error: true
 
     - name: Check for changes
       id: check_changes
@@ -48,25 +62,9 @@ jobs:
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         git add .
-        git commit -m "Format code using Biome [automated]"
+        git commit -m "Format and lint code using Biome [automated]"
         git push
 
-  lint:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-
-    - name: Install Biome
-      run: npm install -g @biomejs/biome
-
-    - name: Lint code
+    - name: Final linting check
       run: |
-        find packages -type f \( -name "*.ts" -o -name "*.json" \) ! -path "*/node_modules/*" -print0 | xargs -0 biome lint
+        biome ci packages
