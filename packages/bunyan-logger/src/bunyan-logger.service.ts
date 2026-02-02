@@ -1,7 +1,7 @@
 import { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
-import bunyanFormat from 'bunyan-format';
-import colors from 'colors';
+import * as bunyanFormat from 'bunyan-format';
+import * as colors from 'colors';
 
 export interface FormatterOptions {
   outputMode: 'short' | 'long' | 'simple' | 'json' | 'bunyan' | 'inspect';

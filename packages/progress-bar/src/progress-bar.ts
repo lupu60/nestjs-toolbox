@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import colors from 'colors';
+import * as colors from 'colors';
 export class ProgressBar {
   private total: number;
   private current = 0;
