@@ -23,9 +23,6 @@ export default defineConfig({
     // Test timeout
     testTimeout: 10000,
 
-    // Watch mode exclude patterns
-    watchExclude: ['**/node_modules/**', '**/dist/**'],
-
     // Pass when no tests are found
     passWithNoTests: true,
 
