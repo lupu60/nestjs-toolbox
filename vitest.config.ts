@@ -25,5 +25,12 @@ export default defineConfig({
 
     // Watch mode exclude patterns
     watchExclude: ['**/node_modules/**', '**/dist/**'],
+
+    // Server configuration for better CommonJS handling
+    server: {
+      deps: {
+        inline: ['bunyan-format', 'colors'],
+      },
+    },
   },
 });
