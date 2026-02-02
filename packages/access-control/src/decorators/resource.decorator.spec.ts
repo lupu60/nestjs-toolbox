@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { Resource, getResource } from './resource.decorator';
+import { describe, expect, it } from 'vitest';
 import { RESOURCE_NAME_METADATA } from '../constants';
+import { getResource, Resource } from './resource.decorator';
 
 describe('Resource Decorator', () => {
   it('should set resource metadata on class', () => {

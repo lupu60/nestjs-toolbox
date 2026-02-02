@@ -63,11 +63,13 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
   const objectSchema = inputSchema as SchemaObject;
   const refSchema = inputSchema as ReferenceObject;
   switch (objectSchema.type) {
-    case 'object':
+    case 'object': {
       if (!objectSchema.properties) {
         return undefined;
       }
-      return Object.values(preprocessProperties(objectSchema.properties));
+      const refs = flatten(Object.values(preprocessProperties(objectSchema.properties)));
+      return refs.filter((ref): ref is string => ref !== undefined);
+    }
     case 'array':
       if (!objectSchema.items) {
         return undefined;
@@ -236,16 +238,16 @@ function ensureDirectoryExists(dirPath: string): void {
   }
 }
 
-async function removeExistingInterfaces(interfacesPath: string): Promise<undefined[]> {
+async function removeExistingInterfaces(interfacesPath: string): Promise<void> {
   // Check if directory exists before trying to read it
   if (!existsSync(interfacesPath)) {
-    return Promise.resolve([]);
+    return;
   }
   const files = await readDir(interfacesPath);
   if (!files || files.length === 0) {
-    return Promise.resolve([]);
+    return;
   }
-  return Promise.all(files.map((file) => removeFile(path.join(interfacesPath, file))));
+  await Promise.all(files.map((file) => removeFile(path.join(interfacesPath, file))));
 }
 
 function appendTitles(openApiSpec: OpenAPIObject): void {
@@ -253,7 +255,7 @@ function appendTitles(openApiSpec: OpenAPIObject): void {
     return;
   }
   Object.entries(openApiSpec.components.schemas).forEach(([name, schema]) => {
-    const objectSchema = schema as SchemaObject;
+    const objectSchema = schema as SchemaObject & { tsEnumNames?: string[] };
     if (objectSchema.type) {
       objectSchema.title = objectSchema.title || name;
       if (objectSchema.type === 'string' && objectSchema.enum && !objectSchema.tsEnumNames) {

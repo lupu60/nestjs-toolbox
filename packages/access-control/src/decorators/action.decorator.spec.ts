@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { Action, getAction } from './action.decorator';
+import { describe, expect, it } from 'vitest';
 import { ACTION_NAME_METADATA } from '../constants';
+import { Action, getAction } from './action.decorator';
 
 describe('Action Decorator', () => {
   it('should set action metadata on target', () => {
