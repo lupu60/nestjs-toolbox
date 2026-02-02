@@ -66,7 +66,7 @@ export function isFeature(options: { options: Partial<Options>; branch: string }
 
 export function generate_version(options: Partial<Options>, branch?: string): string {
   const fullOptions = { ...options, branch };
-  
+
   try {
     const effectiveBranch = branch || fullOptions.branch || 'unknown';
 

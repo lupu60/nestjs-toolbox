@@ -1,16 +1,16 @@
-import { 
-  generate_version, 
-  generate_feature_version, 
-  generate_develop_version, 
+import {
+  generate_version,
+  generate_feature_version,
+  generate_develop_version,
   generate_master_version,
   isDevelop,
   isFeature,
-  isMaster
+  isMaster,
 } from '../lib/lib';
 
 describe('Version Generator', () => {
-  const baseOptions = { 
-    version: '1.2.3', 
+  const baseOptions = {
+    version: '1.2.3',
     commitSha: 'abc123',
     master: 'master',
     develop: 'develop',
@@ -18,7 +18,7 @@ describe('Version Generator', () => {
     labelSeparator: '-',
     commitIdSeparator: '.',
     developLabel: 'beta',
-    alphaLabel: 'alpha'
+    alphaLabel: 'alpha',
   };
 
   it('should generate correct version string', () => {
@@ -36,7 +36,7 @@ describe('Version Generator', () => {
     const branches = [
       { branch: 'master', expectedVersion: '1.2.3.abc123' },
       { branch: 'develop', expectedVersion: '1.2.3-beta.abc123' },
-      { branch: 'feature/new-feature', expectedVersion: '1.2.3-alpha.abc123' }
+      { branch: 'feature/new-feature', expectedVersion: '1.2.3-alpha.abc123' },
     ];
 
     branches.forEach(({ branch, expectedVersion }) => {
