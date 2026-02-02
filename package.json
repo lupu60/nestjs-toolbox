@@ -60,12 +60,6 @@
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",
     "@types/jest": "30.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.54.0",
-    "@typescript-eslint/parser": "^8.54.0",
-    "eslint": "9.29.0",
-    "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-n": "17.20.0",
-    "eslint-plugin-promise": "7.2.1",
     "jest": "^30.0.2",
     "jest-junit": "16.0.0",
     "lerna": "^9.0.3",

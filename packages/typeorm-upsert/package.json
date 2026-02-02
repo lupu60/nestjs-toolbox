@@ -32,7 +32,7 @@
     "clean": "rimraf -rf ./dist",
     "cleanup": "rimraf -rf dist coverage ",
     "compile": "tsc -p tsconfig.build.json",
-    "lint": "eslint src --ext .ts",
+    "lint": "biome check src",
     "test": "jest --ci --config ../../jest.config.json ",
     "prepublishOnly": "npm run build"
   },

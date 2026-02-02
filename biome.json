@@ -19,7 +19,29 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "noVar": "error",
+        "useConst": "error",
+        "useTemplate": "error",
+        "useExponentiationOperator": "error",
+        "useBlockStatements": "error"
+      },
+      "correctness": {
+        "noUnusedVariables": "error",
+        "useHookAtTopLevel": "error"
+      },
+      "suspicious": {
+        "noDoubleEquals": "error",
+        "noExplicitAny": "warn",
+        "noThenProperty": "error",
+        "useAwait": "error"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "useLiteralKeys": "error",
+        "useOptionalChain": "error"
+      }
     }
   },
   "javascript": {

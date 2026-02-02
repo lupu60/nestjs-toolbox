@@ -7,25 +7,6 @@ on:
     branches: [ master ]
 
 jobs:
-  lint:
-    name: ESLint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run ESLint
-        run: npm run lint
-
   biome:
     name: Biome Lint and Format Check
     runs-on: ubuntu-latest
@@ -42,8 +23,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Biome check
+      - name: Run Biome check on root
         run: npm run check
+
+      - name: Run Biome check on all packages
+        run: npm run lint
 
       - name: Annotate Biome issues
         if: failure()
