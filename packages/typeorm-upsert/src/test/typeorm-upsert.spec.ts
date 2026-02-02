@@ -1,4 +1,10 @@
+import type { Repository } from 'typeorm';
 import { _chunkValues, _generateSetterString, _keys, TypeOrmUpsert, type UpsertResult } from '../typeorm-upsert';
+
+interface TestEntity {
+  id: number;
+  name: string;
+}
 
 describe('Dummy Test', () => {
   const array = [
@@ -15,7 +21,7 @@ describe('Dummy Test', () => {
         }),
       }),
     }),
-  } as any;
+  } as unknown as Repository<TestEntity>;
 
   it('should be defined', () => {
     expect(TypeOrmUpsert).toBeDefined();
@@ -58,12 +64,12 @@ describe('Dummy Test', () => {
 
   it('should save', async () => {
     const data = [{ id: 1, name: '' }];
-    const saved = await TypeOrmUpsert(repository as any, data, 'id');
+    const saved = await TypeOrmUpsert(repository, data, 'id');
     expect(saved).toBeDefined();
   });
 
   it('should save', async () => {
-    const saved = await TypeOrmUpsert(repository as any, array, 'id', { chunk: 3 });
+    const saved = await TypeOrmUpsert(repository, array, 'id', { chunk: 3 });
     expect(saved).toBeDefined();
   });
 
@@ -89,22 +95,22 @@ describe('Dummy Test', () => {
           where: jest.fn().mockReturnThis(),
           getRawMany: jest.fn().mockResolvedValue([{ id: 1 }]), // id: 1 exists, id: 2 doesn't
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = [
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' },
       ];
 
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
+      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: true });
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
-      expect((result as UpsertResult<any>[]).length).toBe(2);
-      expect((result as UpsertResult<any>[])[0].status).toBe('updated');
-      expect((result as UpsertResult<any>[])[0].entity.id).toBe(1);
-      expect((result as UpsertResult<any>[])[1].status).toBe('inserted');
-      expect((result as UpsertResult<any>[])[1].entity.id).toBe(2);
+      expect((result as UpsertResult<TestEntity>[]).length).toBe(2);
+      expect((result as UpsertResult<TestEntity>[])[0].status).toBe('updated');
+      expect((result as UpsertResult<TestEntity>[])[0].entity.id).toBe(1);
+      expect((result as UpsertResult<TestEntity>[])[1].status).toBe('inserted');
+      expect((result as UpsertResult<TestEntity>[])[1].entity.id).toBe(2);
     });
 
     it('should return single result with status when object is not an array', async () => {
@@ -125,15 +131,15 @@ describe('Dummy Test', () => {
           where: jest.fn().mockReturnThis(),
           getRawMany: jest.fn().mockResolvedValue([]), // doesn't exist, so it will be inserted
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = { id: 1, name: 'foo' };
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
+      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: true });
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(false);
-      expect((result as UpsertResult<any>).status).toBe('inserted');
-      expect((result as UpsertResult<any>).entity.id).toBe(1);
+      expect((result as UpsertResult<TestEntity>).status).toBe('inserted');
+      expect((result as UpsertResult<TestEntity>).entity.id).toBe(1);
     });
 
     it('should not return status when returnStatus is false (backward compatibility)', async () => {
@@ -151,10 +157,10 @@ describe('Dummy Test', () => {
             }),
           }),
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = [{ id: 1, name: 'foo' }];
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: false });
+      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: false });
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
@@ -179,10 +185,10 @@ describe('Dummy Test', () => {
             }),
           }),
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = [{ id: 1, name: 'foo' }];
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id');
+      const result = await TypeOrmUpsert(mockRepository, data, 'id');
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
