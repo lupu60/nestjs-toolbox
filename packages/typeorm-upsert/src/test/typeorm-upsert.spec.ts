@@ -1,5 +1,5 @@
-import { vi } from 'vitest';
 import type { Repository } from 'typeorm';
+import { vi } from 'vitest';
 import { _chunkValues, _generateSetterString, _keys, TypeOrmUpsert, type UpsertResult } from '../typeorm-upsert';
 
 interface TestEntity {
