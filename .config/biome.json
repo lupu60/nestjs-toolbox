@@ -5,32 +5,81 @@
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "space",
+    "formatWithErrors": true,
+    "indentStyle": "space", 
     "indentWidth": 2,
-    "lineWidth": 100
+    "lineWidth": 120,
+    "ignore": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/.next/**",
+      "**/.turbo/**"
+    ]
   },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": ["error", { "max": 15 }]
+      },
       "correctness": {
+        "noConstAssign": "error",
+        "noInvalidUseBeforeDeclaration": "error",
         "noUnusedVariables": "error"
       },
+      "security": {
+        "noGlobalEval": "error"
+      },
       "style": {
-        "noNonNullAssertation": "error"
+        "useConsistentArrayType": "error",
+        "useNamingConvention": "error"
+      },
+      "suspicious": {
+        "noShadowRestrictedNames": "error"
       }
     }
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
-      "trailingComma": "all"
+      "trailingComma": "all",
+      "semicolons": "always"
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
   },
   "typescript": {
     "formatter": {
       "quoteStyle": "single",
-      "trailingComma": "all"
+      "trailingComma": "all",
+      "semicolons": "always"
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["*.spec.ts", "*.test.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/**/*.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertation": "error"
+          }
+        }
+      }
+    }
+  ]
 }
