@@ -1,5 +1,5 @@
 import { PATH_METADATA } from '@nestjs/common/constants';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
 import { RULES_BUILDER_TOKEN } from '../constants';
 import { RulesBuilder } from '../rules-builder.class';
 import { GrantsController } from './grants.controller';

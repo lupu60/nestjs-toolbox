@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import type { LoggerService } from '@nestjs/common';
 import * as Bunyan from 'bunyan';
 import * as bunyanFormat from 'bunyan-format';
 import * as colors from 'colors';

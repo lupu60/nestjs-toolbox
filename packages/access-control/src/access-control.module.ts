@@ -1,6 +1,6 @@
-import { Abstract, DynamicModule, Global, Module, Type, ModuleMetadata, Provider } from '@nestjs/common';
+import { type Abstract, type DynamicModule, Global, Module, type ModuleMetadata, type Provider, type Type } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
-import { ACOptions } from './ac-options.interface';
+import type { ACOptions } from './ac-options.interface';
 import { RULES_BUILDER_TOKEN } from './constants';
 import { GrantsController } from './controller/grants.controller';
 import { RulesBuilder } from './rules-builder.class';

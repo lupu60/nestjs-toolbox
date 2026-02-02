@@ -1,4 +1,4 @@
-import { _generateSetterString, TypeOrmUpsert, _keys, _chunkValues, UpsertResult } from '../typeorm-upsert';
+import { _chunkValues, _generateSetterString, _keys, TypeOrmUpsert, type UpsertResult } from '../typeorm-upsert';
 
 describe('Dummy Test', () => {
   const array = [

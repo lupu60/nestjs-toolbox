@@ -1,5 +1,5 @@
-import { existsSync } from 'fs';
-import { join, resolve, dirname } from 'path';
+import { existsSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import { readDir, removeFile } from '../files';
 import { generate } from '../spec-parser';
 

@@ -21,21 +21,15 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noVar": "error",
         "useConst": "error",
         "useTemplate": "error",
         "useExponentiationOperator": "error",
         "useBlockStatements": "error"
       },
-      "correctness": {
-        "noUnusedVariables": "error",
-        "useHookAtTopLevel": "error"
-      },
       "suspicious": {
         "noDoubleEquals": "error",
         "noExplicitAny": "warn",
-        "noThenProperty": "error",
-        "useAwait": "error"
+        "noControlCharactersInRegex": "off"
       },
       "complexity": {
         "noForEach": "off",

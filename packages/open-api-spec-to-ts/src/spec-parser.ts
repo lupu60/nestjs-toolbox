@@ -1,10 +1,10 @@
-import { existsSync, mkdirSync } from 'fs';
-import * as path from 'path';
-import { OpenAPIObject } from '@nestjs/swagger';
-import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { existsSync, mkdirSync } from 'node:fs';
+import * as path from 'node:path';
+import type { OpenAPIObject } from '@nestjs/swagger';
+import type { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import * as chalk from 'chalk';
-import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
-import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
+import { compile, type Options as JSONToTSOptions } from 'json-schema-to-typescript';
+import type { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
@@ -186,7 +186,7 @@ async function createInterface(name: string, openApiSpec: OpenAPIObject, interfa
 
 async function parseSchema(name: string, openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<TsInterface | null> {
   const components = openApiSpec?.components;
-  if (!components || !components.schemas || !components.schemas.hasOwnProperty(name)) {
+  if (!components || !components.schemas || !Object.hasOwn(components.schemas, name)) {
     return null;
   }
   const schema = components.schemas[name];
@@ -230,7 +230,7 @@ function ensureDirectoryExists(dirPath: string): void {
   }
 }
 
-async function removeExistingInterfaces(interfacesPath: string): Promise<void[]> {
+async function removeExistingInterfaces(interfacesPath: string): Promise<undefined[]> {
   // Check if directory exists before trying to read it
   if (!existsSync(interfacesPath)) {
     return Promise.resolve([]);

@@ -1,4 +1,4 @@
-import { ObjectLiteral, Repository } from 'typeorm';
+import type { ObjectLiteral, Repository } from 'typeorm';
 
 export type UpsertStatus = 'inserted' | 'updated';
 
