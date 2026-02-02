@@ -1,8 +1,8 @@
 import { 
   generate_version, 
-  _generate_feature_version, 
-  _generate_develop_version, 
-  _generate_master_version,
+  generate_feature_version, 
+  generate_develop_version, 
+  generate_master_version,
   isDevelop,
   isFeature,
   isMaster
@@ -20,17 +20,6 @@ describe('Version Generator', () => {
     developLabel: 'beta',
     alphaLabel: 'alpha'
   };
-
-  // Verify those generator functions are still working even though not directly used in tests
-  it('should have working internal generator functions', () => {
-    const featureVersion = _generate_feature_version(baseOptions);
-    const developVersion = _generate_develop_version(baseOptions);
-    const masterVersion = _generate_master_version(baseOptions);
-
-    expect(featureVersion).toMatch(/^1\.2\.3-alpha\.\w+$/);
-    expect(developVersion).toMatch(/^1\.2\.3-beta\.\w+$/);
-    expect(masterVersion).toMatch(/^1\.2\.3\.\w+$/);
-  });
 
   it('should generate correct version string', () => {
     const version = generate_version(baseOptions, 'master');
@@ -59,5 +48,15 @@ describe('Version Generator', () => {
   it('should generate version for non-standard branch types', () => {
     const version = generate_version(baseOptions, 'some-random-branch');
     expect(version).toBe('latest');
+  });
+
+  it('should have working generator functions', () => {
+    const featureVersion = generate_feature_version(baseOptions);
+    const developVersion = generate_develop_version(baseOptions);
+    const masterVersion = generate_master_version(baseOptions);
+
+    expect(featureVersion).toBe('1.2.3-alpha.abc123');
+    expect(developVersion).toBe('1.2.3-beta.abc123');
+    expect(masterVersion).toBe('1.2.3.abc123');
   });
 });
