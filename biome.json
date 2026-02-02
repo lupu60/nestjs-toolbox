@@ -28,8 +28,7 @@
       },
       "suspicious": {
         "noDoubleEquals": "error",
-        "noExplicitAny": "warn",
-        "noControlCharactersInRegex": "off"
+        "noExplicitAny": "warn"
       },
       "complexity": {
         "noForEach": "off",

@@ -2,6 +2,9 @@ import { BunyanLoggerService } from '../bunyan-logger.service';
 
 describe('BunyanLoggerService', () => {
   let logger: BunyanLoggerService;
+  // ANSI color code regex pattern - using RegExp constructor to avoid control characters in source
+  // biome-ignore lint/complexity/useRegexLiterals: Avoid control characters in regex literal
+  const ansiColorRegex = new RegExp('\u001b\\[\\d+m', 'g');
   beforeEach(() => {
     logger = new BunyanLoggerService({
       projectId: 'ProjectName',
@@ -80,7 +83,7 @@ describe('BunyanLoggerService', () => {
     const callArgs = warnSpy.mock.calls[0];
     const logMessage = callArgs[1];
     // Strip ANSI color codes for comparison (colors.yellow adds them)
-    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    const strippedMessage = logMessage.replace(ansiColorRegex, '');
     expect(strippedMessage).toBe('E73882 tried access the PurchaseOrder service with an expired key!');
     warnSpy.mockRestore();
   });
@@ -116,7 +119,7 @@ describe('BunyanLoggerService', () => {
     expect(callArgs[0].context).toBe('AppController');
     const logMessage = callArgs[1];
     // Strip ANSI color codes for comparison (colors.yellow adds them)
-    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    const strippedMessage = logMessage.replace(ansiColorRegex, '');
     expect(strippedMessage).toBe('E73882 tried access the PurchaseOrder service');
     warnSpy.mockRestore();
   });
@@ -129,7 +132,7 @@ describe('BunyanLoggerService', () => {
     const callArgs = warnSpy.mock.calls[0];
     const logMessage = callArgs[1];
     // Strip ANSI color codes for comparison (colors.yellow adds them)
-    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    const strippedMessage = logMessage.replace(ansiColorRegex, '');
     expect(strippedMessage).toBe('{user} tried access the {service} service');
     warnSpy.mockRestore();
   });
@@ -254,7 +257,7 @@ describe('BunyanLoggerService', () => {
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
       // Strip ANSI color codes for comparison
-      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      const strippedMessage = logMessage.replace(ansiColorRegex, '');
       expect(strippedMessage.length).toBe(15);
       expect(strippedMessage).toBe('This is a warni');
       warnSpy.mockRestore();
@@ -276,7 +279,7 @@ describe('BunyanLoggerService', () => {
       const callArgs = errorSpy.mock.calls[0];
       const logMessage = callArgs[1];
       // Strip ANSI color codes for comparison
-      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      const strippedMessage = logMessage.replace(ansiColorRegex, '');
       expect(strippedMessage).toBe('This is an error mes');
       expect(strippedMessage.length).toBe(20);
       errorSpy.mockRestore();
@@ -361,7 +364,7 @@ describe('BunyanLoggerService', () => {
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
       // Strip ANSI color codes for comparison
-      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      const strippedMessage = logMessage.replace(ansiColorRegex, '');
       expect(strippedMessage).toBe('This is a ve');
       expect(strippedMessage.length).toBe(12);
       warnSpy.mockRestore();
