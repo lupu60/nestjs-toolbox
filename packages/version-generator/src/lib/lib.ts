@@ -10,11 +10,10 @@ export interface Options {
   labelSeparator: string;
   commitIdSeparator: string;
   version: string;
-  branch?: string;
 }
 
 export function generate_feature_version(options: Partial<Options>): string {
-  const { version, alphaLabel = 'alpha', labelSeparator = '-', commitIdSeparator = '.', commitSha } = options;
+  const { version, alphaLabel, labelSeparator, commitIdSeparator, commitSha } = options;
   if (!commitSha) {
     throw new Error('commitSha is required');
   }
@@ -22,7 +21,7 @@ export function generate_feature_version(options: Partial<Options>): string {
 }
 
 export function generate_develop_version(options: Partial<Options>): string {
-  const { version, developLabel = 'beta', labelSeparator = '-', commitIdSeparator = '.', commitSha } = options;
+  const { version, developLabel, labelSeparator, commitIdSeparator, commitSha } = options;
   if (!commitSha) {
     throw new Error('commitSha is required');
   }
@@ -30,7 +29,7 @@ export function generate_develop_version(options: Partial<Options>): string {
 }
 
 export function generate_master_version(options: Partial<Options>): string {
-  const { version, commitIdSeparator = '.', commitSha } = options;
+  const { version, commitIdSeparator, commitSha } = options;
   if (!commitSha) {
     throw new Error('commitSha is required');
   }
@@ -64,22 +63,18 @@ export function isFeature(options: { options: Partial<Options>; branch: string }
   return branch.includes(voption.feature) && !voption.tag;
 }
 
-export function generate_version(options: Partial<Options>, branch?: string): string {
-  const fullOptions = { ...options, branch };
-
+export function generate_version(options: Partial<Options>, branch: string) {
   try {
-    const effectiveBranch = branch || fullOptions.branch || 'unknown';
-
-    if (isMaster({ options: fullOptions, branch: effectiveBranch })) {
-      return generate_master_version(fullOptions);
+    if (isMaster({ options, branch })) {
+      return generate_master_version(options);
     }
 
-    if (isDevelop({ options: fullOptions, branch: effectiveBranch })) {
-      return generate_develop_version(fullOptions);
+    if (isDevelop({ options, branch })) {
+      return generate_develop_version(options);
     }
 
-    if (isFeature({ options: fullOptions, branch: effectiveBranch })) {
-      return generate_feature_version(fullOptions);
+    if (isFeature({ options, branch })) {
+      return generate_feature_version(options);
     }
 
     return 'latest';
