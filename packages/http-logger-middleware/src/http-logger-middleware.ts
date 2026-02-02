@@ -1,5 +1,5 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { Request, Response, NextFunction } from 'express';
 
 const isEmpty = (obj: unknown): boolean => {
@@ -13,7 +13,7 @@ const isEmpty = (obj: unknown): boolean => {
 export class HttpLoggerMiddleware implements NestMiddleware {
   private readonly logger = new Logger('HTTP');
   private readonly log = (...args: unknown[]): void => {
-    this.logger.log(chalk.magenta(...args.map(String)));
+    this.logger.log(process.stdout.isTTY ? chalk.magenta : (x => x)(...args.map(String)));
   };
 
   use(req: Request, _res: Response, next: NextFunction): void {

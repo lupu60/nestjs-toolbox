@@ -2,7 +2,7 @@ import { existsSync, mkdirSync } from 'fs';
 import * as path from 'path';
 import { OpenAPIObject } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
