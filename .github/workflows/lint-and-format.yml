@@ -25,3 +25,27 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
+
+  biome:
+    name: Biome Lint and Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Biome check
+        run: npm run check
+
+      - name: Annotate Biome issues
+        if: failure()
+        run: |
+          echo "::error::Code linting or formatting issues detected. Run 'npm run check:fix' to fix."
