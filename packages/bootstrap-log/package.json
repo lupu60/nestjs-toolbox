@@ -40,7 +40,7 @@
     "cleanup": "rimraf -rf dist coverage",
     "compile": "tsc -p tsconfig.build.json",
     "lint": "biome check src",
-    "test": "jest --ci --config ../../jest.config.json ",
+    "test": "vitest run --config ../../vitest.config.ts",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
