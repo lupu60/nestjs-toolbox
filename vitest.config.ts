@@ -26,6 +26,9 @@ export default defineConfig({
     // Watch mode exclude patterns
     watchExclude: ['**/node_modules/**', '**/dist/**'],
 
+    // Pass when no tests are found
+    passWithNoTests: true,
+
     // Server configuration for better CommonJS handling
     server: {
       deps: {

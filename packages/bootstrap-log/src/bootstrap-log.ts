@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import * as colors from 'colors';
+import colors from 'colors';
 
 export interface AppConfig {
   environment: string;
