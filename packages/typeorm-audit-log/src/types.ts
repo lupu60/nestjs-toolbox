@@ -16,7 +16,9 @@ export enum AuditAction {
  */
 export interface AuditDiff {
   field: string;
+  // biome-ignore lint/suspicious/noExplicitAny: values can be any type
   oldValue: any;
+  // biome-ignore lint/suspicious/noExplicitAny: values can be any type
   newValue: any;
 }
 
@@ -28,6 +30,7 @@ export interface AuditContextData {
   userName?: string;
   ip?: string;
   userAgent?: string;
+  // biome-ignore lint/suspicious/noExplicitAny: metadata can contain any value
   metadata?: Record<string, any>;
 }
 
@@ -55,6 +58,7 @@ export interface AuditMaskOptions {
    * @param value - The original value
    * @returns The masked value
    */
+  // biome-ignore lint/suspicious/noExplicitAny: mask function accepts any value type
   maskFn?: (value: any) => string;
 }
 
@@ -63,8 +67,10 @@ export interface AuditMaskOptions {
  */
 export interface LogParams {
   action: AuditAction;
+  // biome-ignore lint/suspicious/noExplicitAny: entity can be any TypeORM entity
   entity: any;
   entityName: string;
+  // biome-ignore lint/suspicious/noExplicitAny: old values can be any type
   oldValues?: any;
 }
 
@@ -173,9 +179,14 @@ export interface AuditLogModuleOptions {
  * Async module options for forRootAsync
  */
 export interface AuditLogModuleAsyncOptions {
+  // biome-ignore lint/suspicious/noExplicitAny: NestJS module imports
   imports?: any[];
+  // biome-ignore lint/suspicious/noExplicitAny: NestJS factory pattern
   useFactory?: (...args: any[]) => Promise<AuditLogModuleOptions> | AuditLogModuleOptions;
+  // biome-ignore lint/suspicious/noExplicitAny: NestJS inject tokens
   inject?: any[];
+  // biome-ignore lint/suspicious/noExplicitAny: NestJS class provider
   useClass?: any;
+  // biome-ignore lint/suspicious/noExplicitAny: NestJS existing provider
   useExisting?: any;
 }

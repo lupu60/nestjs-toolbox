@@ -36,6 +36,7 @@ export const DEFAULT_TABLE_NAME = 'audit_logs';
  * Default mask function - masks middle characters
  * Example: "john@email.com" -> "jo***ail.com"
  */
+// biome-ignore lint/suspicious/noExplicitAny: mask function accepts any value type
 export const DEFAULT_MASK_FN = (value: any): string => {
   if (value === null || value === undefined) {
     return String(value);
@@ -49,9 +50,5 @@ export const DEFAULT_MASK_FN = (value: any): string => {
   const visibleStart = Math.ceil(str.length * 0.2);
   const visibleEnd = Math.ceil(str.length * 0.2);
 
-  return (
-    str.slice(0, visibleStart) +
-    '***' +
-    str.slice(str.length - visibleEnd)
-  );
+  return `${str.slice(0, visibleStart)}***${str.slice(str.length - visibleEnd)}`;
 };
