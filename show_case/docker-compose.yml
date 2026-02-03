@@ -30,7 +30,7 @@ services:
       DATABASE_USERNAME: showcase
       DATABASE_PASSWORD: showcase123
       DATABASE_NAME: nestjs_toolbox_showcase
-      NODE_ENV: production
+      NODE_ENV: development
       PORT: 3000
       LOG_LEVEL: info
     ports:
