@@ -68,3 +68,26 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+---
+
+## ✅ Quick Test Results (2026-02-03)
+
+**Docker Application Status:** WORKING ✅
+
+All core functionality verified and working:
+- ✅ Docker Compose starts PostgreSQL + Application
+- ✅ TypeORM upsert: Inserts new users, updates on email conflict
+- ✅ Soft delete: Marks users as deleted (preserves data)
+- ✅ Pagination: Returns paginated results with meta information  
+- ✅ Access control: Protects admin endpoints
+- ✅ Swagger UI: Full API documentation at `/api`
+
+**Quick Start:**
+```bash
+npm run docker:up
+# Access: http://localhost:3000/api
+npm run docker:down
+```
+
+See [STATUS.md](./STATUS.md) for complete test results and implementation details.
