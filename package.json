@@ -74,6 +74,14 @@
   "dependencies": {
     "reflect-metadata": "0.2.2"
   },
+  "overrides": {
+    "lodash": "4.17.23",
+    "js-yaml": "4.1.1",
+    "tar": "7.5.7",
+    "glob": "11.1.0",
+    "diff": "4.0.4",
+    "sha.js": "2.4.12"
+  },
   "volta": {
     "node": "21.7.3"
   }

@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "reflect-metadata": "0.2.2",
-    "typeorm": "0.3.25"
+    "typeorm": "0.3.26"
   },
   "devDependencies": {
     "@types/node": "24.0.3",
