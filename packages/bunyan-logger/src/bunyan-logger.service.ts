@@ -196,7 +196,7 @@ export class BunyanLoggerService implements LoggerService {
       // Extract context from last string parameter
       if (optionalParams.length > 0) {
         const lastParam = optionalParams[optionalParams.length - 1];
-        if (typeof lastParam === 'string' && !trace) {
+        if (typeof lastParam === 'string') {
           context = lastParam;
         }
       }
