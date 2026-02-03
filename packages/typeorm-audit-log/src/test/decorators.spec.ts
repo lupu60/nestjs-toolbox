@@ -1,5 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { Auditable, getAuditableOptions, getAuditEntityName, getExcludedFields, isAuditable } from '../decorators';
+import {
+  Auditable,
+  AuditIgnore,
+  AuditMask,
+  getAuditableOptions,
+  getAuditEntityName,
+  getExcludedFields,
+  getFieldMaskFn,
+  getIgnoredFields,
+  getMaskedFields,
+  isAuditable,
+  isFieldIgnored,
+} from '../decorators';
 
 describe('Decorators', () => {
   describe('@Auditable()', () => {
@@ -63,6 +75,126 @@ describe('Decorators', () => {
       class TestEntity {}
 
       expect(getAuditableOptions(TestEntity)).toBeUndefined();
+    });
+  });
+
+  describe('@AuditIgnore()', () => {
+    it('should mark a field as ignored', () => {
+      @Auditable()
+      class TestEntity {
+        @AuditIgnore()
+        password: string = '';
+      }
+
+      expect(getIgnoredFields(TestEntity)).toContain('password');
+    });
+
+    it('should support multiple ignored fields', () => {
+      @Auditable()
+      class TestEntity {
+        @AuditIgnore()
+        password: string = '';
+
+        @AuditIgnore()
+        secret: string = '';
+
+        name: string = '';
+      }
+
+      const ignored = getIgnoredFields(TestEntity);
+      expect(ignored).toContain('password');
+      expect(ignored).toContain('secret');
+      expect(ignored).not.toContain('name');
+    });
+
+    it('should return empty array for entities without ignored fields', () => {
+      @Auditable()
+      class TestEntity {
+        name: string = '';
+      }
+
+      expect(getIgnoredFields(TestEntity)).toEqual([]);
+    });
+
+    it('should correctly check if field is ignored', () => {
+      @Auditable()
+      class TestEntity {
+        @AuditIgnore()
+        password: string = '';
+
+        name: string = '';
+      }
+
+      expect(isFieldIgnored(TestEntity, 'password')).toBe(true);
+      expect(isFieldIgnored(TestEntity, 'name')).toBe(false);
+    });
+  });
+
+  describe('@AuditMask()', () => {
+    it('should mark a field for masking with default function', () => {
+      @Auditable()
+      class TestEntity {
+        @AuditMask()
+        email: string = '';
+      }
+
+      const masked = getMaskedFields(TestEntity);
+      expect(masked).toHaveProperty('email');
+      expect(typeof masked.email).toBe('function');
+    });
+
+    it('should use default mask function', () => {
+      @Auditable()
+      class TestEntity {
+        @AuditMask()
+        email: string = '';
+      }
+
+      const maskFn = getFieldMaskFn(TestEntity, 'email');
+      expect(maskFn).toBeDefined();
+      expect(maskFn?.('john@email.com')).toContain('***');
+    });
+
+    it('should support custom mask function', () => {
+      const customMask = () => '[REDACTED]';
+
+      @Auditable()
+      class TestEntity {
+        @AuditMask({ maskFn: customMask })
+        ssn: string = '';
+      }
+
+      const maskFn = getFieldMaskFn(TestEntity, 'ssn');
+      expect(maskFn?.('123-45-6789')).toBe('[REDACTED]');
+    });
+
+    it('should support multiple masked fields', () => {
+      @Auditable()
+      class TestEntity {
+        @AuditMask()
+        email: string = '';
+
+        @AuditMask({ maskFn: () => '****' })
+        phone: string = '';
+      }
+
+      const masked = getMaskedFields(TestEntity);
+      expect(Object.keys(masked)).toHaveLength(2);
+      expect(masked.email).toBeDefined();
+      expect(masked.phone).toBeDefined();
+    });
+
+    it('should return undefined for non-masked fields', () => {
+      @Auditable()
+      class TestEntity {
+        @AuditMask()
+        email: string = '';
+
+        name: string = '';
+      }
+
+      expect(getFieldMaskFn(TestEntity, 'email')).toBeDefined();
+      expect(getFieldMaskFn(TestEntity, 'name')).toBeUndefined();
     });
   });
 });
