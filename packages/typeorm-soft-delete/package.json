@@ -59,5 +59,6 @@
     "@nest-toolbox/typeorm-paginate": {
       "optional": true
     }
-  }
+  },
+  "gitHead": "0fc1fa0385b70239bb084ebfc6597e540c06f2de"
 }
