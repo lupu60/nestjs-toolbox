@@ -2,7 +2,6 @@
 import { program } from 'commander';
 import { generate_version, type Options } from './lib/lib';
 
-const { exec: callbackexec } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -22,18 +21,6 @@ program
   .option('--commit-id-separator [commit-id-separator]', 'commit-id-separator', '.')
   .parse(process.argv);
 
-function exec(command: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    callbackexec(command, (error: Error | null, stdout: string, stderr: string) => {
-      if (error || stderr) {
-        reject(error || stderr);
-        return;
-      }
-      resolve(stdout.trim());
-    });
-  });
-}
-
 function getCurrentBranchName(p = process.cwd()): string {
   const gitHeadPath = `${p}/.git/HEAD`;
   if (fs.existsSync(p)) {
@@ -50,11 +37,12 @@ async function main() {
   options.tag = options.tag === 'true';
   // console.log(JSON.stringify(options));
   if (options.packageJson) {
-    options.version = await exec(`cat ${options.packageJson} |
-      grep version |
-      head -1 |
-      awk -F: '{ print $2 }' |
-      sed 's/[",]//g'`);
+    const packageJsonPath = options.packageJson;
+    const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf-8');
+    const packageJson = JSON.parse(packageJsonContent);
+    if (packageJson && typeof packageJson.version !== 'undefined') {
+      options.version = String(packageJson.version).trim();
+    }
   }
 
   if (!options.version) {
