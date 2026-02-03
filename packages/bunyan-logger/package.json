@@ -50,7 +50,7 @@
     "colors": "1.4.0",
     "ts-node": "10.9.2"
   },
-  "gitHead": "cc45a11f31983aebc82d3c6fc509a5c282b880c2",
+  "gitHead": "3c621bf1b496ad66512a22436f2c392d80f05289",
   "devDependencies": {
     "@types/bunyan-format": "^0.2.4",
     "@types/node": "24.0.3",
