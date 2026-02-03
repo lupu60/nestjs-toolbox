@@ -41,6 +41,7 @@
     "formatter": {
       "quoteStyle": "single",
       "trailingCommas": "all",
+      "semicolons": "always",
       "bracketSpacing": true,
       "arrowParentheses": "always"
     },
