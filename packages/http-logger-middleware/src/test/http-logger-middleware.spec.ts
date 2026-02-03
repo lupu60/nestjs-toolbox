@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { HttpLoggerMiddleware } from '../http-logger-middleware';
 
 describe('HttpLoggerMiddleware', () => {
@@ -17,7 +17,7 @@ describe('HttpLoggerMiddleware', () => {
       query: {
         page: 1,
       },
-    } as any as Request;
+    } as unknown as Request;
     const res = {} as Response;
     const http = new HttpLoggerMiddleware();
     http.use(req, res, () => {});
@@ -29,7 +29,7 @@ describe('HttpLoggerMiddleware', () => {
       get: () => 'localhost',
       originalUrl: '/api/v1/users',
       method: 'GET',
-    } as any as Request;
+    } as unknown as Request;
     const res = {} as Response;
     const http = new HttpLoggerMiddleware();
     http.use(req, res, () => {});

@@ -1,4 +1,5 @@
 import { WinstonLoggerService } from '../winston-logger.service';
+
 describe('WinstonLoggerService', () => {
   let logger: WinstonLoggerService;
   beforeEach(() => {

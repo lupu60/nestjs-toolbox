@@ -1,7 +1,11 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BunyanLoggerService } from '../bunyan-logger.service';
 
 describe('BunyanLoggerService', () => {
   let logger: BunyanLoggerService;
+  // ANSI color code regex pattern - using RegExp constructor to avoid control characters in source
+  // biome-ignore lint/complexity/useRegexLiterals: Avoid control characters in regex literal
+  const ansiColorRegex = new RegExp('\u001b\\[\\d+m', 'g');
   beforeEach(() => {
     logger = new BunyanLoggerService({
       projectId: 'ProjectName',
@@ -73,20 +77,20 @@ describe('BunyanLoggerService', () => {
   });
 
   it('should interpolate string placeholders in warn message', () => {
-    const warnSpy = jest.spyOn(logger['bunyanLogger'], 'warn');
+    const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
     logger.warn('{user} tried access the {service} service with an expired key!', { user: 'E73882', service: 'PurchaseOrder' });
 
     expect(warnSpy).toHaveBeenCalled();
     const callArgs = warnSpy.mock.calls[0];
     const logMessage = callArgs[1];
     // Strip ANSI color codes for comparison (colors.yellow adds them)
-    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    const strippedMessage = logMessage.replace(ansiColorRegex, '');
     expect(strippedMessage).toBe('E73882 tried access the PurchaseOrder service with an expired key!');
     warnSpy.mockRestore();
   });
 
   it('should interpolate string placeholders in log message', () => {
-    const logSpy = jest.spyOn(logger['bunyanLogger'], 'info');
+    const logSpy = vi.spyOn(logger.bunyanLogger, 'info');
     logger.log('Hello {name}, welcome to {app}!', { name: 'John', app: 'MyApp' });
 
     expect(logSpy).toHaveBeenCalled();
@@ -97,7 +101,7 @@ describe('BunyanLoggerService', () => {
   });
 
   it('should interpolate string placeholders in error message', () => {
-    const errorSpy = jest.spyOn(logger['bunyanLogger'], 'error');
+    const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
     logger.error('Error occurred for user {userId} in module {module}', { userId: '12345', module: 'Auth' });
 
     expect(errorSpy).toHaveBeenCalled();
@@ -108,7 +112,7 @@ describe('BunyanLoggerService', () => {
   });
 
   it('should handle string interpolation with context', () => {
-    const warnSpy = jest.spyOn(logger['bunyanLogger'], 'warn');
+    const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
     logger.warn('{user} tried access the {service} service', { user: 'E73882', service: 'PurchaseOrder' }, 'AppController');
 
     expect(warnSpy).toHaveBeenCalled();
@@ -116,20 +120,20 @@ describe('BunyanLoggerService', () => {
     expect(callArgs[0].context).toBe('AppController');
     const logMessage = callArgs[1];
     // Strip ANSI color codes for comparison (colors.yellow adds them)
-    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    const strippedMessage = logMessage.replace(ansiColorRegex, '');
     expect(strippedMessage).toBe('E73882 tried access the PurchaseOrder service');
     warnSpy.mockRestore();
   });
 
   it('should not interpolate if no object parameter provided', () => {
-    const warnSpy = jest.spyOn(logger['bunyanLogger'], 'warn');
+    const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
     logger.warn('{user} tried access the {service} service');
 
     expect(warnSpy).toHaveBeenCalled();
     const callArgs = warnSpy.mock.calls[0];
     const logMessage = callArgs[1];
     // Strip ANSI color codes for comparison (colors.yellow adds them)
-    const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+    const strippedMessage = logMessage.replace(ansiColorRegex, '');
     expect(strippedMessage).toBe('{user} tried access the {service} service');
     warnSpy.mockRestore();
   });
@@ -144,7 +148,7 @@ describe('BunyanLoggerService', () => {
         },
       });
 
-      const errorSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'error');
+      const errorSpy = vi.spyOn(loggerWithoutColors.bunyanLogger, 'error');
       loggerWithoutColors.error('Error message');
 
       expect(errorSpy).toHaveBeenCalled();
@@ -164,7 +168,7 @@ describe('BunyanLoggerService', () => {
         },
       });
 
-      const errorSpy = jest.spyOn(loggerWithColors['bunyanLogger'], 'error');
+      const errorSpy = vi.spyOn(loggerWithColors.bunyanLogger, 'error');
       loggerWithColors.error('Error message');
 
       expect(errorSpy).toHaveBeenCalled();
@@ -184,7 +188,7 @@ describe('BunyanLoggerService', () => {
         },
       });
 
-      const warnSpy = jest.spyOn(loggerDefault['bunyanLogger'], 'warn');
+      const warnSpy = vi.spyOn(loggerDefault.bunyanLogger, 'warn');
       loggerDefault.warn('Warning message');
 
       expect(warnSpy).toHaveBeenCalled();
@@ -205,7 +209,7 @@ describe('BunyanLoggerService', () => {
         },
       });
 
-      const warnSpy = jest.spyOn(loggerWithoutColors['bunyanLogger'], 'warn');
+      const warnSpy = vi.spyOn(loggerWithoutColors.bunyanLogger, 'warn');
       loggerWithoutColors.warn('Warning message');
 
       expect(warnSpy).toHaveBeenCalled();
@@ -227,7 +231,7 @@ describe('BunyanLoggerService', () => {
         maxLength: 10,
       });
 
-      const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
+      const logSpy = vi.spyOn(loggerWithMaxLength.bunyanLogger, 'info');
       loggerWithMaxLength.log('This is a very long message that should be truncated');
 
       expect(logSpy).toHaveBeenCalled();
@@ -247,14 +251,14 @@ describe('BunyanLoggerService', () => {
         maxLength: 15,
       });
 
-      const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');
+      const warnSpy = vi.spyOn(loggerWithMaxLength.bunyanLogger, 'warn');
       loggerWithMaxLength.warn('This is a warning message that exceeds the limit');
 
       expect(warnSpy).toHaveBeenCalled();
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
       // Strip ANSI color codes for comparison
-      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      const strippedMessage = logMessage.replace(ansiColorRegex, '');
       expect(strippedMessage.length).toBe(15);
       expect(strippedMessage).toBe('This is a warni');
       warnSpy.mockRestore();
@@ -269,14 +273,14 @@ describe('BunyanLoggerService', () => {
         maxLength: 20,
       });
 
-      const errorSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'error');
+      const errorSpy = vi.spyOn(loggerWithMaxLength.bunyanLogger, 'error');
       loggerWithMaxLength.error('This is an error message that is too long');
 
       expect(errorSpy).toHaveBeenCalled();
       const callArgs = errorSpy.mock.calls[0];
       const logMessage = callArgs[1];
       // Strip ANSI color codes for comparison
-      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      const strippedMessage = logMessage.replace(ansiColorRegex, '');
       expect(strippedMessage).toBe('This is an error mes');
       expect(strippedMessage.length).toBe(20);
       errorSpy.mockRestore();
@@ -290,7 +294,7 @@ describe('BunyanLoggerService', () => {
         },
       });
 
-      const logSpy = jest.spyOn(loggerWithoutMaxLength['bunyanLogger'], 'info');
+      const logSpy = vi.spyOn(loggerWithoutMaxLength.bunyanLogger, 'info');
       const longMessage = 'This is a very long message that should not be truncated because maxLength is not set';
       loggerWithoutMaxLength.log(longMessage);
 
@@ -310,7 +314,7 @@ describe('BunyanLoggerService', () => {
         maxLength: 100,
       });
 
-      const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
+      const logSpy = vi.spyOn(loggerWithMaxLength.bunyanLogger, 'info');
       const shortMessage = 'Short message';
       loggerWithMaxLength.log(shortMessage);
 
@@ -330,7 +334,7 @@ describe('BunyanLoggerService', () => {
         maxLength: 8,
       });
 
-      const logSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'info');
+      const logSpy = vi.spyOn(loggerWithMaxLength.bunyanLogger, 'info');
       loggerWithMaxLength.log(['First message', 'Second very long message', 'Third']);
 
       expect(logSpy).toHaveBeenCalled();
@@ -354,16 +358,112 @@ describe('BunyanLoggerService', () => {
         maxLength: 12,
       });
 
-      const warnSpy = jest.spyOn(loggerWithMaxLength['bunyanLogger'], 'warn');
+      const warnSpy = vi.spyOn(loggerWithMaxLength.bunyanLogger, 'warn');
       loggerWithMaxLength.warn('This is a very long warning message');
 
       expect(warnSpy).toHaveBeenCalled();
       const callArgs = warnSpy.mock.calls[0];
       const logMessage = callArgs[1];
       // Strip ANSI color codes for comparison
-      const strippedMessage = logMessage.replace(/\u001b\[\d+m/g, '');
+      const strippedMessage = logMessage.replace(ansiColorRegex, '');
       expect(strippedMessage).toBe('This is a ve');
       expect(strippedMessage.length).toBe(12);
+      warnSpy.mockRestore();
+    });
+  });
+
+  describe('applyColor with non-string messages', () => {
+    it('should return non-string messages unchanged when color is true', () => {
+      const logSpy = vi.spyOn(logger.bunyanLogger, 'info');
+      const objectMessage = { key: 'value' };
+      logger.log(objectMessage);
+
+      expect(logSpy).toHaveBeenCalled();
+      const callArgs = logSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      expect(logMessage).toEqual(objectMessage);
+      logSpy.mockRestore();
+    });
+
+    it('should return number messages unchanged', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      const numberMessage = 12345;
+      logger.error(numberMessage);
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      const logMessage = callArgs[1];
+      expect(logMessage).toBe(numberMessage);
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe('error method edge cases', () => {
+    it('should handle error with trace as first param and context as second param', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      const stackTrace = '    at someFunction (file.ts:10:5)\n    at anotherFunction (file.ts:20:10)';
+      logger.error('Error occurred', stackTrace, 'AppContext');
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      expect(callArgs[0].trace).toBe(stackTrace);
+      expect(callArgs[0].context).toBe('AppContext');
+      errorSpy.mockRestore();
+    });
+
+    it('should handle error with only context parameter', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      logger.error('Error message', 'ContextOnly');
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      expect(callArgs[0].context).toBe('ContextOnly');
+      expect(callArgs[0].trace).toBeUndefined();
+      errorSpy.mockRestore();
+    });
+
+    it('should extract context from last string parameter when no trace', () => {
+      const errorSpy = vi.spyOn(logger.bunyanLogger, 'error');
+      logger.error('Error message', { data: 'some data' }, 'LastContext');
+
+      expect(errorSpy).toHaveBeenCalled();
+      const callArgs = errorSpy.mock.calls[0];
+      expect(callArgs[0].context).toBe('LastContext');
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe('warn with array messages (backward compatibility)', () => {
+    it('should handle array messages with context', () => {
+      const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
+      logger.warn(['Warning 1', 'Warning 2'], 'ArrayContext');
+
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      expect(callArgs[0].context).toBe('ArrayContext');
+      // Messages should be truncated and colored
+      expect(callArgs.slice(1).length).toBe(2);
+      warnSpy.mockRestore();
+    });
+
+    it('should handle array messages without context', () => {
+      const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
+      logger.warn(['Warning message 1', 'Warning message 2']);
+
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      expect(callArgs[0].context).toBeUndefined();
+      expect(callArgs.slice(1).length).toBe(2);
+      warnSpy.mockRestore();
+    });
+
+    it('should handle array messages with non-string optional params', () => {
+      const warnSpy = vi.spyOn(logger.bunyanLogger, 'warn');
+      logger.warn(['Warning message'], { data: 'ignored' });
+
+      expect(warnSpy).toHaveBeenCalled();
+      const callArgs = warnSpy.mock.calls[0];
+      expect(callArgs[0].context).toBeUndefined();
       warnSpy.mockRestore();
     });
   });

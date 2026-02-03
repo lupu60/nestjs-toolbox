@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { generate_version, Options } from './lib/lib';
-const { exec: callbackexec } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { generate_version, type Options } from './lib/lib';
+
+const { exec: callbackexec } = require('node:child_process');
+const fs = require('node:fs');
+const path = require('node:path');
 
 program
   .name('version-generator')

@@ -1,4 +1,4 @@
-import { AppConfig, BootstrapLog } from '..';
+import { type AppConfig, BootstrapLog } from '..';
 
 describe('BootstrapLog', () => {
   it('should log', () => {

@@ -1,6 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
 import { delay } from 'rxjs/operators';
-import { ACOptions } from './ac-options.interface';
+import type { ACOptions } from './ac-options.interface';
 import { AccessControlModule } from './access-control.module';
 import { RULES_BUILDER_TOKEN } from './constants';
 import { GrantsController } from './controller/grants.controller';

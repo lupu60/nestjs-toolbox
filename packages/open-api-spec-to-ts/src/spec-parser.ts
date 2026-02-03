@@ -1,10 +1,10 @@
-import { existsSync, mkdirSync } from 'fs';
-import * as path from 'path';
-import { OpenAPIObject } from '@nestjs/swagger';
-import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { existsSync, mkdirSync } from 'node:fs';
+import * as path from 'node:path';
+import type { OpenAPIObject } from '@nestjs/swagger';
+import type { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import * as chalk from 'chalk';
-import { compile, Options as JSONToTSOptions } from 'json-schema-to-typescript';
-import { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
+import { compile, type Options as JSONToTSOptions } from 'json-schema-to-typescript';
+import type { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
 import { flatten, snakeCase } from 'lodash';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
@@ -41,19 +41,19 @@ let baseOptions: Options = {
   $refOptions: {},
 };
 
-function logInfo(message: any) {
+function logInfo(message: string) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
     console.log(chalk.cyan.bold(message), 'SpecParser');
   }
 }
 
-function logSuccess(message: any) {
+function logSuccess(message: string) {
   if (baseOptions.verbosity >= LogLevel.INFO) {
     console.log(chalk.green.bold(message), 'SpecParser');
   }
 }
 
-function logError(message: any) {
+function logError(message: string) {
   if (baseOptions.verbosity >= LogLevel.ERROR) {
     console.log(chalk.red.bold(message), 'SpecParser');
   }
@@ -63,11 +63,13 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
   const objectSchema = inputSchema as SchemaObject;
   const refSchema = inputSchema as ReferenceObject;
   switch (objectSchema.type) {
-    case 'object':
+    case 'object': {
       if (!objectSchema.properties) {
         return undefined;
       }
-      return Object.values(preprocessProperties(objectSchema.properties));
+      const refs = flatten(Object.values(preprocessProperties(objectSchema.properties)));
+      return refs.filter((ref): ref is string => ref !== undefined);
+    }
     case 'array':
       if (!objectSchema.items) {
         return undefined;
@@ -98,13 +100,19 @@ function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): str
 
 function preprocessProperties(inputProperties: { [key: string]: SchemaObject | ReferenceObject }) {
   if (inputProperties) {
-    return Object.entries(inputProperties).reduce((acc, [name, value]) => ({ ...acc, [name]: extractRefsFromSchema(value) }), {});
+    return Object.entries(inputProperties).reduce(
+      (acc, [name, value]) => {
+        acc[name] = extractRefsFromSchema(value);
+        return acc;
+      },
+      {} as Record<string, string | string[] | undefined>,
+    );
   }
   return {};
 }
 
 async function createImport(name: string, schema: SchemaObject | ReferenceObject, filePath: string) {
-  const references: any = extractRefsFromSchema(schema);
+  const references: string | string[] | undefined = extractRefsFromSchema(schema);
   if (!references || !references.length) {
     return [];
   }
@@ -186,7 +194,7 @@ async function createInterface(name: string, openApiSpec: OpenAPIObject, interfa
 
 async function parseSchema(name: string, openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<TsInterface | null> {
   const components = openApiSpec?.components;
-  if (!components || !components.schemas || !components.schemas.hasOwnProperty(name)) {
+  if (!components || !components.schemas || !Object.hasOwn(components.schemas, name)) {
     return null;
   }
   const schema = components.schemas[name];
@@ -230,16 +238,16 @@ function ensureDirectoryExists(dirPath: string): void {
   }
 }
 
-async function removeExistingInterfaces(interfacesPath: string): Promise<void[]> {
+async function removeExistingInterfaces(interfacesPath: string): Promise<void> {
   // Check if directory exists before trying to read it
   if (!existsSync(interfacesPath)) {
-    return Promise.resolve([]);
+    return;
   }
   const files = await readDir(interfacesPath);
   if (!files || files.length === 0) {
-    return Promise.resolve([]);
+    return;
   }
-  return Promise.all(files.map((file) => removeFile(path.join(interfacesPath, file))));
+  await Promise.all(files.map((file) => removeFile(path.join(interfacesPath, file))));
 }
 
 function appendTitles(openApiSpec: OpenAPIObject): void {
@@ -247,7 +255,7 @@ function appendTitles(openApiSpec: OpenAPIObject): void {
     return;
   }
   Object.entries(openApiSpec.components.schemas).forEach(([name, schema]) => {
-    const objectSchema: any = schema;
+    const objectSchema = schema as SchemaObject & { tsEnumNames?: string[] };
     if (objectSchema.type) {
       objectSchema.title = objectSchema.title || name;
       if (objectSchema.type === 'string' && objectSchema.enum && !objectSchema.tsEnumNames) {

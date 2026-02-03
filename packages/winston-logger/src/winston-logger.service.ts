@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import type { LoggerService } from '@nestjs/common';
 import * as winston from 'winston';
 
 export class WinstonLoggerService implements LoggerService {

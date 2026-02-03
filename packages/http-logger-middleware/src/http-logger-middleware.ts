@@ -1,6 +1,6 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Injectable, Logger, type NestMiddleware } from '@nestjs/common';
 import * as chalk from 'chalk';
-import { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 const isEmpty = (obj: unknown): boolean => {
   if (!obj || typeof obj !== 'object') {

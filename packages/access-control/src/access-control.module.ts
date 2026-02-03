@@ -1,11 +1,11 @@
-import { Abstract, DynamicModule, Global, Module, Type, ModuleMetadata, Provider } from '@nestjs/common';
+import { type Abstract, type DynamicModule, Global, Module, type ModuleMetadata, type Provider, type Type } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
-import { ACOptions } from './ac-options.interface';
+import type { ACOptions } from './ac-options.interface';
 import { RULES_BUILDER_TOKEN } from './constants';
 import { GrantsController } from './controller/grants.controller';
 import { RulesBuilder } from './rules-builder.class';
 
-export type Injection = (Type<any> | string | symbol | Abstract<any> | Function)[];
+export type Injection = (Type<unknown> | string | symbol | Abstract<unknown> | ((...args: unknown[]) => unknown))[];
 
 export interface AccessControlOptionsFactory {
   createAccessControlOptions(rules: RulesBuilder, options?: ACOptions): Promise<RulesBuilder> | RulesBuilder;
@@ -15,15 +15,16 @@ export interface AccessControlModuleAsyncOptions extends Pick<ModuleMetadata, 'i
   name?: string;
   useExisting?: Type<AccessControlOptionsFactory>;
   useClass?: Type<RulesBuilder>;
-  useFactory?: (...args: any[]) => Promise<RulesBuilder> | RulesBuilder;
+  useFactory?: (...args: unknown[]) => Promise<RulesBuilder> | RulesBuilder;
   inject?: Injection;
 }
 
 @Global()
 @Module({})
+// biome-ignore lint/complexity/noStaticOnlyClass: NestJS modules use static factory methods
 export class AccessControlModule {
   public static forRules(rules: RulesBuilder, options?: ACOptions): DynamicModule {
-    let controllers: Type<any>[] = [];
+    let controllers: Type<unknown>[] = [];
 
     if (options) {
       Reflect.defineMetadata(PATH_METADATA, options.grantsEndpoint, GrantsController);

@@ -1,4 +1,11 @@
-import { _generateSetterString, TypeOrmUpsert, _keys, _chunkValues, UpsertResult } from '../typeorm-upsert';
+import type { Repository } from 'typeorm';
+import { vi } from 'vitest';
+import { _chunkValues, _generateSetterString, _keys, TypeOrmUpsert, type UpsertResult } from '../typeorm-upsert';
+
+interface TestEntity {
+  id: number;
+  name: string;
+}
 
 describe('Dummy Test', () => {
   const array = [
@@ -8,14 +15,14 @@ describe('Dummy Test', () => {
     { id: 4, name: 'bar' },
   ];
   const repository = {
-    createQueryBuilder: jest.fn().mockReturnValue({
-      insert: jest.fn().mockReturnValue({
-        values: jest.fn().mockReturnValue({
-          onConflict: jest.fn().mockReturnValue({ returning: jest.fn().mockReturnValue({ execute: jest.fn().mockResolvedValue({ raw: [] }) }) }),
+    createQueryBuilder: vi.fn().mockReturnValue({
+      insert: vi.fn().mockReturnValue({
+        values: vi.fn().mockReturnValue({
+          onConflict: vi.fn().mockReturnValue({ returning: vi.fn().mockReturnValue({ execute: vi.fn().mockResolvedValue({ raw: [] }) }) }),
         }),
       }),
     }),
-  } as any;
+  } as unknown as Repository<TestEntity>;
 
   it('should be defined', () => {
     expect(TypeOrmUpsert).toBeDefined();
@@ -58,24 +65,24 @@ describe('Dummy Test', () => {
 
   it('should save', async () => {
     const data = [{ id: 1, name: '' }];
-    const saved = await TypeOrmUpsert(repository as any, data, 'id');
+    const saved = await TypeOrmUpsert(repository, data, 'id');
     expect(saved).toBeDefined();
   });
 
   it('should save', async () => {
-    const saved = await TypeOrmUpsert(repository as any, array, 'id', { chunk: 3 });
+    const saved = await TypeOrmUpsert(repository, array, 'id', { chunk: 3 });
     expect(saved).toBeDefined();
   });
 
   describe('returnStatus option', () => {
     it('should return status when returnStatus is true', async () => {
       const mockRepository = {
-        createQueryBuilder: jest.fn().mockReturnValue({
-          insert: jest.fn().mockReturnValue({
-            values: jest.fn().mockReturnValue({
-              onConflict: jest.fn().mockReturnValue({
-                returning: jest.fn().mockReturnValue({
-                  execute: jest.fn().mockResolvedValue({
+        createQueryBuilder: vi.fn().mockReturnValue({
+          insert: vi.fn().mockReturnValue({
+            values: vi.fn().mockReturnValue({
+              onConflict: vi.fn().mockReturnValue({
+                returning: vi.fn().mockReturnValue({
+                  execute: vi.fn().mockResolvedValue({
                     raw: [
                       { id: 1, name: 'foo' },
                       { id: 2, name: 'bar' },
@@ -85,65 +92,65 @@ describe('Dummy Test', () => {
               }),
             }),
           }),
-          select: jest.fn().mockReturnThis(),
-          where: jest.fn().mockReturnThis(),
-          getRawMany: jest.fn().mockResolvedValue([{ id: 1 }]), // id: 1 exists, id: 2 doesn't
+          select: vi.fn().mockReturnThis(),
+          where: vi.fn().mockReturnThis(),
+          getRawMany: vi.fn().mockResolvedValue([{ id: 1 }]), // id: 1 exists, id: 2 doesn't
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = [
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' },
       ];
 
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
+      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: true });
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
-      expect((result as UpsertResult<any>[]).length).toBe(2);
-      expect((result as UpsertResult<any>[])[0].status).toBe('updated');
-      expect((result as UpsertResult<any>[])[0].entity.id).toBe(1);
-      expect((result as UpsertResult<any>[])[1].status).toBe('inserted');
-      expect((result as UpsertResult<any>[])[1].entity.id).toBe(2);
+      expect((result as UpsertResult<TestEntity>[]).length).toBe(2);
+      expect((result as UpsertResult<TestEntity>[])[0].status).toBe('updated');
+      expect((result as UpsertResult<TestEntity>[])[0].entity.id).toBe(1);
+      expect((result as UpsertResult<TestEntity>[])[1].status).toBe('inserted');
+      expect((result as UpsertResult<TestEntity>[])[1].entity.id).toBe(2);
     });
 
     it('should return single result with status when object is not an array', async () => {
       const mockRepository = {
-        createQueryBuilder: jest.fn().mockReturnValue({
-          insert: jest.fn().mockReturnValue({
-            values: jest.fn().mockReturnValue({
-              onConflict: jest.fn().mockReturnValue({
-                returning: jest.fn().mockReturnValue({
-                  execute: jest.fn().mockResolvedValue({
+        createQueryBuilder: vi.fn().mockReturnValue({
+          insert: vi.fn().mockReturnValue({
+            values: vi.fn().mockReturnValue({
+              onConflict: vi.fn().mockReturnValue({
+                returning: vi.fn().mockReturnValue({
+                  execute: vi.fn().mockResolvedValue({
                     raw: [{ id: 1, name: 'foo' }],
                   }),
                 }),
               }),
             }),
           }),
-          select: jest.fn().mockReturnThis(),
-          where: jest.fn().mockReturnThis(),
-          getRawMany: jest.fn().mockResolvedValue([]), // doesn't exist, so it will be inserted
+          select: vi.fn().mockReturnThis(),
+          where: vi.fn().mockReturnThis(),
+          getRawMany: vi.fn().mockResolvedValue([]), // doesn't exist, so it will be inserted
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = { id: 1, name: 'foo' };
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: true });
+      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: true });
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(false);
-      expect((result as UpsertResult<any>).status).toBe('inserted');
-      expect((result as UpsertResult<any>).entity.id).toBe(1);
+      expect((result as UpsertResult<TestEntity>).status).toBe('inserted');
+      expect((result as UpsertResult<TestEntity>).entity.id).toBe(1);
     });
 
     it('should not return status when returnStatus is false (backward compatibility)', async () => {
       const mockRepository = {
-        createQueryBuilder: jest.fn().mockReturnValue({
-          insert: jest.fn().mockReturnValue({
-            values: jest.fn().mockReturnValue({
-              onConflict: jest.fn().mockReturnValue({
-                returning: jest.fn().mockReturnValue({
-                  execute: jest.fn().mockResolvedValue({
+        createQueryBuilder: vi.fn().mockReturnValue({
+          insert: vi.fn().mockReturnValue({
+            values: vi.fn().mockReturnValue({
+              onConflict: vi.fn().mockReturnValue({
+                returning: vi.fn().mockReturnValue({
+                  execute: vi.fn().mockResolvedValue({
                     raw: [{ id: 1, name: 'foo' }],
                   }),
                 }),
@@ -151,10 +158,10 @@ describe('Dummy Test', () => {
             }),
           }),
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = [{ id: 1, name: 'foo' }];
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id', { returnStatus: false });
+      const result = await TypeOrmUpsert(mockRepository, data, 'id', { returnStatus: false });
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
@@ -166,12 +173,12 @@ describe('Dummy Test', () => {
 
     it('should not return status when returnStatus is not specified (backward compatibility)', async () => {
       const mockRepository = {
-        createQueryBuilder: jest.fn().mockReturnValue({
-          insert: jest.fn().mockReturnValue({
-            values: jest.fn().mockReturnValue({
-              onConflict: jest.fn().mockReturnValue({
-                returning: jest.fn().mockReturnValue({
-                  execute: jest.fn().mockResolvedValue({
+        createQueryBuilder: vi.fn().mockReturnValue({
+          insert: vi.fn().mockReturnValue({
+            values: vi.fn().mockReturnValue({
+              onConflict: vi.fn().mockReturnValue({
+                returning: vi.fn().mockReturnValue({
+                  execute: vi.fn().mockResolvedValue({
                     raw: [{ id: 1, name: 'foo' }],
                   }),
                 }),
@@ -179,10 +186,10 @@ describe('Dummy Test', () => {
             }),
           }),
         }),
-      };
+      } as unknown as Repository<TestEntity>;
 
       const data = [{ id: 1, name: 'foo' }];
-      const result = await TypeOrmUpsert(mockRepository as any, data, 'id');
+      const result = await TypeOrmUpsert(mockRepository, data, 'id');
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);

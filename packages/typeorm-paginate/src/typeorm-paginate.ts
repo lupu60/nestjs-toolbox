@@ -1,4 +1,4 @@
-import { ObjectLiteral, Repository, FindOptionsWhere } from 'typeorm';
+import type { FindOptionsWhere, ObjectLiteral, Repository } from 'typeorm';
 
 const DEFAULT_PAGINATION_LIMIT = 100;
 
