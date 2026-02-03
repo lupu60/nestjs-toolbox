@@ -215,6 +215,7 @@ describe('findOnlyDeleted', () => {
         name: 'TestEntity',
         deleteDateColumn: undefined,
         primaryColumns: [{ propertyName: 'id' }],
+        // biome-ignore lint/suspicious/noExplicitAny: Test mock requires any
       } as any,
     });
 

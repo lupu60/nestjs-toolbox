@@ -82,6 +82,7 @@ export async function* rowsWithDeleted<T extends ObjectLiteral>(options: Paginat
     finalWhere = Array.isArray(where) ? where.map((w) => ({ ...w, [deleteColumn]: IsNull() })) : { ...where, [deleteColumn]: IsNull() };
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: TypeORM where requires any for dynamic types
   const total = await repository.count({ where: finalWhere as any, withDeleted: includeDeleted });
   let currentOffset = offset;
   let index = 0;
