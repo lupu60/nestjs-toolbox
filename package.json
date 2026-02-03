@@ -39,7 +39,7 @@
   ],
   "type": "module",
   "engines": {
-    "node": ">=18 <=24",
+    "node": ">=19 <=24",
     "npm": "<=11"
   },
   "scripts": {
