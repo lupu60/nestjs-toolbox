@@ -1,0 +1,55 @@
+{
+	"name": "@nest-toolbox/typeorm-soft-delete",
+	"description": "Soft delete utilities for TypeORM with enhanced DX",
+	"version": "1.0.0",
+	"author": "bogdanlupu <lupu60@gmail.com>",
+	"homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-soft-delete#readme",
+	"license": "MIT",
+	"keywords": ["typeorm", "soft-delete", "nestjs", "orm", "toolbox"],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+	},
+	"bugs": {
+		"url": "https://github.com/lupu60/nestjs-toolbox/issues"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
+	"publicConfig": {
+		"access": "public"
+	},
+	"main": "dist/index",
+	"types": "dist/index",
+	"files": ["dist"],
+	"engines": {
+		"node": ">=19 <=22",
+		"npm": "<=11"
+	},
+	"scripts": {
+		"build": "npm run clean && npm run compile",
+		"clean": "rimraf -rf ./dist",
+		"cleanup": "rimraf -rf dist coverage",
+		"compile": "tsc -p tsconfig.build.json",
+		"lint": "biome check src",
+		"test": "vitest run --config ../../vitest.config.ts",
+		"prepublishOnly": "npm run build"
+	},
+	"dependencies": {
+		"reflect-metadata": "0.2.2",
+		"typeorm": "0.3.25"
+	},
+	"devDependencies": {
+		"@types/node": "24.0.3",
+		"rimraf": "6.0.1",
+		"typescript": "5.9.3"
+	},
+	"peerDependencies": {
+		"@nest-toolbox/typeorm-paginate": "^1.7.0"
+	},
+	"peerDependenciesMeta": {
+		"@nest-toolbox/typeorm-paginate": {
+			"optional": true
+		}
+	}
+}
