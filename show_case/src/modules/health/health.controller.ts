@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { getVersion } from '@nest-toolbox/version-generator';
 
 @ApiTags('health')
 @Controller('health')
@@ -19,12 +18,12 @@ export class HealthController {
   @Get('version')
   @ApiOperation({
     summary: 'Get application version',
-    description: 'Demonstrates @nest-toolbox/version-generator package',
   })
   @ApiResponse({ status: 200, description: 'Version retrieved successfully' })
   version() {
     return {
-      version: getVersion(),
+      version: '1.0.0',
+      name: 'NestJS Toolbox Showcase',
       node: process.version,
       platform: process.platform,
     };

@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { bootstrapLog } from '@nest-toolbox/bootstrap-log';
+import { BootstrapLog } from '@nest-toolbox/bootstrap-log';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -36,10 +36,23 @@ async function bootstrap() {
   await app.listen(port);
 
   // Bootstrap log from @nest-toolbox/bootstrap-log
-  bootstrapLog(
-    `NestJS Toolbox Showcase API`,
-    `http://localhost:${port}`,
-    `http://localhost:${port}/api`,
-  );
+  BootstrapLog({
+    config: {
+      environment: process.env.NODE_ENV || 'development',
+      hostname: `http://localhost:${port}`,
+      package_json_body: {
+        name: 'NestJS Toolbox Showcase',
+        version: '1.0.0',
+      },
+      swagger: true,
+      database_url: process.env.DATABASE_HOST
+        ? `postgresql://${process.env.DATABASE_USERNAME}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`
+        : undefined,
+    },
+  });
+
+  const logger = new Logger('Main');
+  logger.log(`🚀 Application is running on: http://localhost:${port}`);
+  logger.log(`📚 Swagger documentation: http://localhost:${port}/api`);
 }
 bootstrap();

@@ -9,9 +9,13 @@ import { ConfigService } from '@nestjs/config';
       provide: 'LOGGER',
       useFactory: (configService: ConfigService) => {
         return new BunyanLoggerService({
-          name: 'nestjs-toolbox-showcase',
-          level: (configService.get('LOG_LEVEL') || 'info') as any,
-          src: configService.get('NODE_ENV') === 'development',
+          projectId: 'nestjs-toolbox-showcase',
+          formatterOptions: {
+            outputMode: 'short',
+            color: true,
+            levelInString: false,
+          },
+          maxLength: 5000,
         });
       },
       inject: [ConfigService],

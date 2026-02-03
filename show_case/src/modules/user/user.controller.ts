@@ -19,12 +19,11 @@ import {
   ApiQuery,
   ApiHeader,
 } from '@nestjs/swagger';
-import { UserService } from './user.service';
+import { UserService, PaginationResult } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginateUserDto } from './dto/paginate-user.dto';
 import { User } from '../../entities/user.entity';
-import { PaginationResult } from '@nest-toolbox/typeorm-paginate';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 

@@ -2,12 +2,25 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeOrmUpsert } from '@nest-toolbox/typeorm-upsert';
-import { rows } from '@nest-toolbox/typeorm-paginate';
-import { SoftDelete } from '@nest-toolbox/typeorm-soft-delete';
+import { softDelete, restore, forceDelete, findOnlyDeleted } from '@nest-toolbox/typeorm-soft-delete';
 import { User } from '../../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginateUserDto } from './dto/paginate-user.dto';
+
+export interface PaginationMeta {
+  page: number;
+  take: number;
+  itemCount: number;
+  pageCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface PaginationResult<T> {
+  data: T[];
+  meta: PaginationMeta;
+}
 
 @Injectable()
 export class UserService {
@@ -22,26 +35,49 @@ export class UserService {
   }
 
   async upsert(createUserDto: CreateUserDto): Promise<User> {
-    const result = await upsert(
+    const result = await TypeOrmUpsert<User>(
       this.userRepository,
-      createUserDto,
-      ['email'],
-      ['firstName', 'lastName', 'role', 'isActive'],
+      createUserDto as User,
+      'email',
     );
-    return result.raw[0];
+    
+    // TypeOrmUpsert returns T | T[] | UpsertResult<T> | UpsertResult<T>[]
+    // We need to extract the User entity
+    if (Array.isArray(result)) {
+      return result[0] as User;
+    }
+    return result as User;
   }
 
   async findAll(paginateDto: PaginateUserDto): Promise<PaginationResult<User>> {
+    const page = paginateDto.page || 1;
+    const limit = paginateDto.limit || 10;
+    const skip = (page - 1) * limit;
+
     const queryBuilder = this.userRepository.createQueryBuilder('user');
 
     if (paginateDto.sortBy) {
       queryBuilder.orderBy(`user.${paginateDto.sortBy}`, paginateDto.sortOrder);
     }
 
-    return paginate<User>(queryBuilder, {
-      page: paginateDto.page,
-      limit: paginateDto.limit,
-    });
+    const [data, total] = await queryBuilder
+      .skip(skip)
+      .take(limit)
+      .getManyAndCount();
+
+    const pageCount = Math.ceil(total / limit);
+
+    return {
+      data,
+      meta: {
+        page,
+        take: limit,
+        itemCount: data.length,
+        pageCount,
+        hasPreviousPage: page > 1,
+        hasNextPage: page < pageCount,
+      },
+    };
   }
 
   async findOne(id: string): Promise<User> {
@@ -59,13 +95,21 @@ export class UserService {
   }
 
   async softDelete(id: string): Promise<void> {
-    const user = await this.findOne(id);
-    await softDelete(this.userRepository, user.id);
+    await this.findOne(id); // Verify user exists
+    await softDelete(this.userRepository, id);
   }
 
   async restore(id: string): Promise<User> {
     await restore(this.userRepository, id);
-    return this.findOne(id);
+    // After restore, query with withDeleted to get the restored entity
+    const user = await this.userRepository.findOne({
+      where: { id },
+      withDeleted: true,
+    });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 
   async forceDelete(id: string): Promise<void> {
@@ -73,10 +117,6 @@ export class UserService {
   }
 
   async findDeleted(): Promise<User[]> {
-    return this.userRepository
-      .createQueryBuilder('user')
-      .where('user.deletedAt IS NOT NULL')
-      .withDeleted()
-      .getMany();
+    return findOnlyDeleted(this.userRepository, {});
   }
 }
