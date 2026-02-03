@@ -16,7 +16,6 @@ import {
   ApiOperation,
   ApiResponse,
   ApiParam,
-  ApiQuery,
   ApiHeader,
 } from '@nestjs/swagger';
 import { UserService, PaginationResult } from './user.service';
