@@ -70,6 +70,7 @@ export interface LogParams {
   // biome-ignore lint/suspicious/noExplicitAny: entity can be any TypeORM entity
   entity: any;
   entityName: string;
+  entityId: string;
   // biome-ignore lint/suspicious/noExplicitAny: old values can be any type
   oldValues?: any;
 }
