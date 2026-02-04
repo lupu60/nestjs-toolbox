@@ -33,6 +33,7 @@
     "@nest-toolbox/progress-bar": "^1.8.1",
     "@nest-toolbox/typeorm-paginate": "^1.8.1",
     "@nest-toolbox/typeorm-soft-delete": "^1.8.1",
+    "@nest-toolbox/typeorm-audit-log": "^1.0.0",
     "@nest-toolbox/typeorm-upsert": "^1.8.1",
     "@nest-toolbox/version-generator": "^1.8.1",
     "@nest-toolbox/winston-logger": "^1.8.1",

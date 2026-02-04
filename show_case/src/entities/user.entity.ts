@@ -1,11 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Auditable, AuditMask } from '@nest-toolbox/typeorm-audit-log';
 
 @Entity('users')
+@Auditable()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ unique: true })
+  @AuditMask() // Mask email in audit logs
   email: string;
 
   @Column()

@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { AuditLogModule, AuditContextMiddleware } from '@nest-toolbox/typeorm-audit-log';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
@@ -26,6 +27,12 @@ import databaseConfig from './config/database.config';
       },
       inject: [ConfigService],
     }),
+    // Audit logging for entity changes
+    AuditLogModule.forRoot({
+      retentionDays: 90,
+      excludeFields: ['password', 'refreshToken'],
+      async: false,
+    }),
     LoggerModule,
     UserModule,
     HealthModule,
@@ -33,6 +40,9 @@ import databaseConfig from './config/database.config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
-// NOTE: HTTP Logger Middleware from @nest-toolbox/http-logger-middleware has chalk v5 compatibility issues
-// Disabled temporarily for showcase. The package works but requires chalk v4.
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // Apply audit context middleware to capture user info
+    consumer.apply(AuditContextMiddleware).forRoutes('*');
+  }
+}
