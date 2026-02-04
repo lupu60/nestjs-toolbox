@@ -2,7 +2,7 @@
    <h1>Nestjs Toolbox 🧰</h1>
 </div>
 <div align="center">
-   <strong>The repository contains a suite of components and modules for Nest.js</strong>
+   <strong>A growing collection of practical NestJS components — TypeORM utilities, logging, access control, and more.</strong>
 </div>
 <br />
 <div align="center">
@@ -30,19 +30,131 @@
      <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome" />
 </div>
 
-### List of packages
+---
 
-- [BunyanLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bunyan-logger)
-- [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger)
-- [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert)
-- [Typeorm-Soft-Delete](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-soft-delete)
-- [Typeorm-audit-log](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-audit-log)
-- [Open-API-Spec-to-TS](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts)
-- [HttpLoggerMiddleware](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware)
-- [Access-Control](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control)
-- [BootstrapLog](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/bootstrap-log)
-- [ProgressBar](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/progress-bar)
-- [Typeorm-Paginate](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-paginate)
+## Packages
+
+### 🗄️ TypeORM Utilities
+
+| Package | Description |
+|---------|-------------|
+| [typeorm-audit-log](./packages/typeorm-audit-log) | Automatic audit logging with user attribution, diff tracking, and queryable trails |
+| [typeorm-paginate](./packages/typeorm-paginate) | Simple, efficient pagination for TypeORM queries |
+| [typeorm-soft-delete](./packages/typeorm-soft-delete) | Soft delete utilities with enhanced DX |
+| [typeorm-upsert](./packages/typeorm-upsert) | Upsert (insert or update) operations for TypeORM |
+
+### 📝 Logging
+
+| Package | Description |
+|---------|-------------|
+| [bunyan-logger](./packages/bunyan-logger) | NestJS LoggerService backed by Bunyan |
+| [winston-logger](./packages/winston-logger) | NestJS LoggerService backed by Winston |
+| [http-logger-middleware](./packages/http-logger-middleware) | HTTP request/response logging middleware |
+| [bootstrap-log](./packages/bootstrap-log) | Pretty bootstrap log with your app configs |
+
+### 🔧 Utilities
+
+| Package | Description |
+|---------|-------------|
+| [access-control](./packages/access-control) | Flexible role-based access control using role-acl |
+| [open-api-spec-to-ts](./packages/open-api-spec-to-ts) | Generate TypeScript interfaces from OpenAPI specs |
+| [version-generator](./packages/version-generator) | Generate version info from git metadata |
+| [progress-bar](./packages/progress-bar) | Simple CLI progress bar for long-running tasks |
+
+---
+
+## Quick Examples
+
+### Audit Log — Track every entity change automatically
+
+```typescript
+import { AuditLogModule, AuditContextMiddleware, Auditable } from '@nest-toolbox/typeorm-audit-log';
+
+// 1. Register the module
+@Module({
+  imports: [
+    AuditLogModule.forRoot({
+      retentionDays: 90,
+      excludeFields: ['password', 'refreshToken'],
+    }),
+  ],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuditContextMiddleware).forRoutes('*');
+  }
+}
+
+// 2. Decorate your entity
+@Entity()
+@Auditable()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  @AuditIgnore() // skip sensitive fields
+  password: string;
+}
+// That's it — all User changes are now logged with who, what, and when.
+```
+
+### Pagination — One-liner paginated queries
+
+```typescript
+import { paginate } from '@nest-toolbox/typeorm-paginate';
+
+const result = await paginate(userRepository, { page: 1, limit: 25 });
+// → { items: [...], meta: { totalItems, itemCount, itemsPerPage, totalPages, currentPage } }
+```
+
+### Soft Delete — Never lose data
+
+```typescript
+import { SoftDeleteEntity } from '@nest-toolbox/typeorm-soft-delete';
+
+@Entity()
+export class Post extends SoftDeleteEntity {
+  @Column()
+  title: string;
+}
+// Posts are soft-deleted by default — easily restore or permanently remove.
+```
+
+### Access Control — Role-based permissions
+
+```typescript
+import { UseRoles } from '@nest-toolbox/access-control';
+
+@Controller('documents')
+export class DocumentController {
+  @Get()
+  @UseRoles({
+    resource: 'document',
+    action: 'read',
+    possession: 'any',
+  })
+  findAll() { ... }
+}
+```
+
+---
+
+## Installation
+
+Each package is published independently on npm under the `@nest-toolbox` scope:
+
+```bash
+npm install @nest-toolbox/typeorm-audit-log
+npm install @nest-toolbox/typeorm-paginate
+npm install @nest-toolbox/typeorm-soft-delete
+# ... etc
+```
+
+See each package's README for full documentation and API reference.
 
 ## Sponsors
 
