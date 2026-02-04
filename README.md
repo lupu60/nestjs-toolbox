@@ -36,6 +36,7 @@
 - [WinstonLoggerService](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/winston-logger)
 - [Typeorm-Upsert](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-upsert)
 - [Typeorm-Soft-Delete](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-soft-delete)
+- [Typeorm-audit-log](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-audit-log)
 - [Open-API-Spec-to-TS](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/open-api-spec-to-ts)
 - [HttpLoggerMiddleware](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware)
 - [Access-Control](https://github.com/lupu60/nestjs-toolbox/tree/master/packages/access-control)

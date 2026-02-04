@@ -1,7 +1,7 @@
 {
   "name": "@nest-toolbox/typeorm-audit-log",
   "description": "Automatic audit logging for TypeORM entities with user attribution and diff tracking",
-  "version": "1.0.0",
+  "version": "1.8.1",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/typeorm-audit-log#readme",
   "license": "MIT",
