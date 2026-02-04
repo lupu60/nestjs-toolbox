@@ -1,6 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Auditable } from '@nest-toolbox/typeorm-audit-log';
 
 @Entity('products')
+@Auditable()
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
