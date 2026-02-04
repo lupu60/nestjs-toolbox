@@ -40,13 +40,6 @@ function createMockEvent(entity: unknown, primaryColumns = [{ propertyName: 'id'
 }
 
 describe('AuditLogSubscriber', () => {
-  describe('listenTo()', () => {
-    it('should return undefined to listen to all entities', () => {
-      const subscriber = new AuditLogSubscriber();
-      expect(subscriber.listenTo()).toBeUndefined();
-    });
-  });
-
   describe('setAuditLogService()', () => {
     it('should set the audit log service', () => {
       const subscriber = new AuditLogSubscriber();

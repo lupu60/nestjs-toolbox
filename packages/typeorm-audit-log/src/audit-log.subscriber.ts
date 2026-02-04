@@ -58,14 +58,6 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
   }
 
   /**
-   * Listen to all entities (returns undefined).
-   * Filtering is done in the event handlers based on @Auditable decorator.
-   */
-  listenTo(): undefined {
-    return undefined;
-  }
-
-  /**
    * Handle entity insertion events.
    */
   afterInsert(event: InsertEvent<unknown>): void {
