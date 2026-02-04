@@ -5,7 +5,9 @@ import { getAuditContext } from './audit-context';
 import { AuditLog } from './audit-log.entity';
 import type { IAuditLogService } from './audit-log.subscriber';
 import { AUDIT_LOG_OPTIONS } from './constants';
-import type { AuditDiff, AuditLogModuleOptions, FindAllOptions, FindByEntityOptions, FindByUserOptions, LogParams, PaginatedResult } from './types';
+import type { AuditLogModuleOptions, FindAllOptions, FindByEntityOptions, FindByUserOptions, LogParams, PaginatedResult } from './types';
+import { calculateDiff } from './utils/diff';
+import { applyMaskAndExclusions, getAllExcludedFields } from './utils/mask';
 
 /**
  * Service for logging and querying audit entries.
@@ -35,12 +37,23 @@ export class AuditLogService implements IAuditLogService {
   /**
    * Log an audit entry for an entity change.
    * Automatically captures user context from AsyncLocalStorage.
+   * Applies @AuditIgnore and @AuditMask decorators from the entity.
    */
   async log(params: LogParams): Promise<void> {
     const context = getAuditContext();
 
-    // Calculate diff between old and new values
-    const diff = this.calculateDiff(params.oldValues, params.entity);
+    // Get entity class for decorator metadata
+    const entityClass = params.entity?.constructor ?? null;
+
+    // Get all excluded fields (global + @AuditIgnore)
+    const excludeFields = getAllExcludedFields(entityClass, this.options.excludeFields ?? []);
+
+    // Calculate diff between old and new values using deep-diff
+    const diff = calculateDiff(params.oldValues, params.entity, excludeFields);
+
+    // Apply masking and exclusions to values
+    const oldValues = applyMaskAndExclusions(params.oldValues, entityClass, this.options.excludeFields ?? []);
+    const newValues = applyMaskAndExclusions(params.entity, entityClass, this.options.excludeFields ?? []);
 
     // Create audit log entry
     const entry = this.repo.create({
@@ -49,8 +62,8 @@ export class AuditLogService implements IAuditLogService {
       action: params.action,
       userId: context?.userId ?? null,
       userName: context?.userName ?? null,
-      oldValues: this.sanitizeValues(params.oldValues),
-      newValues: this.sanitizeValues(params.entity),
+      oldValues,
+      newValues,
       diff,
       ip: context?.ip ?? null,
       userAgent: context?.userAgent ?? null,
@@ -174,84 +187,5 @@ export class AuditLogService implements IAuditLogService {
       limit,
       totalPages: Math.ceil(total / limit),
     };
-  }
-
-  /**
-   * Calculate diff between old and new values.
-   */
-  // biome-ignore lint/suspicious/noExplicitAny: values can be any type
-  private calculateDiff(oldValues: any, newValues: any): AuditDiff[] | null {
-    if (!oldValues || !newValues) {
-      return null;
-    }
-
-    const diff: AuditDiff[] = [];
-    const allKeys = new Set([...Object.keys(oldValues), ...Object.keys(newValues)]);
-
-    for (const key of allKeys) {
-      // Skip internal TypeORM properties
-      if (key.startsWith('_')) {
-        continue;
-      }
-
-      const oldVal = oldValues[key];
-      const newVal = newValues[key];
-
-      // Skip if both are objects (nested entities) - would need deep-diff for those
-      if (typeof oldVal === 'object' && typeof newVal === 'object' && oldVal !== null && newVal !== null) {
-        continue;
-      }
-
-      // Check if values are different
-      if (oldVal !== newVal) {
-        diff.push({
-          field: key,
-          oldValue: oldVal,
-          newValue: newVal,
-        });
-      }
-    }
-
-    return diff.length > 0 ? diff : null;
-  }
-
-  /**
-   * Sanitize entity values for storage.
-   * Removes circular references and internal TypeORM properties.
-   */
-  // biome-ignore lint/suspicious/noExplicitAny: entity can be any type
-  private sanitizeValues(values: any): Record<string, unknown> | null {
-    if (!values) {
-      return null;
-    }
-
-    const result: Record<string, unknown> = {};
-    const excludeFields = this.options.excludeFields ?? [];
-
-    for (const [key, value] of Object.entries(values)) {
-      // Skip internal TypeORM properties
-      if (key.startsWith('_')) {
-        continue;
-      }
-
-      // Skip globally excluded fields
-      if (excludeFields.includes(key)) {
-        continue;
-      }
-
-      // Skip functions
-      if (typeof value === 'function') {
-        continue;
-      }
-
-      // Skip complex objects (relations) - just store primitives
-      if (typeof value === 'object' && value !== null && !(value instanceof Date)) {
-        continue;
-      }
-
-      result[key] = value;
-    }
-
-    return Object.keys(result).length > 0 ? result : null;
   }
 }
