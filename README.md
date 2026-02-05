@@ -57,6 +57,7 @@
 | Package | Description |
 |---------|-------------|
 | [access-control](./packages/access-control) | Flexible role-based access control using role-acl |
+| [response-envelope](./packages/response-envelope) | Standard API response envelope with interceptor and helpers |
 | [open-api-spec-to-ts](./packages/open-api-spec-to-ts) | Generate TypeScript interfaces from OpenAPI specs |
 | [version-generator](./packages/version-generator) | Generate version info from git metadata |
 | [progress-bar](./packages/progress-bar) | Simple CLI progress bar for long-running tasks |
