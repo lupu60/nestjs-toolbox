@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { EnvelopeExceptionFilter } from '../envelope-exception.filter';
 
 function createMockHost(url = '/api/test') {
@@ -130,9 +130,7 @@ describe('EnvelopeExceptionFilter', () => {
     filter.catch(exception, host);
 
     const body = jsonFn.mock.calls[0][0];
-    expect(body.errors).toEqual([
-      { field: 'age', message: 'must be a positive number' },
-    ]);
+    expect(body.errors).toEqual([{ field: 'age', message: 'must be a positive number' }]);
   });
 
   it('handles HttpException with string response', () => {

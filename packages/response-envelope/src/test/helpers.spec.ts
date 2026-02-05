@@ -1,5 +1,5 @@
-import { success, error, paginated } from '../helpers';
 import { DEFAULT_MESSAGE } from '../constants';
+import { error, paginated, success } from '../helpers';
 
 describe('helpers', () => {
   describe('success()', () => {
@@ -124,11 +124,15 @@ describe('helpers', () => {
     });
 
     it('respects optional message, path, statusCode', () => {
-      const result = paginated([1], { page: 1, limit: 5, total: 1 }, {
-        message: 'Found',
-        path: '/api/items',
-        statusCode: 200,
-      });
+      const result = paginated(
+        [1],
+        { page: 1, limit: 5, total: 1 },
+        {
+          message: 'Found',
+          path: '/api/items',
+          statusCode: 200,
+        },
+      );
 
       expect(result.message).toBe('Found');
       expect(result.meta.path).toBe('/api/items');

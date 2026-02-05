@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { SkipEnvelope, ApiMessage } from '../decorators';
-import { SKIP_ENVELOPE_KEY, API_MESSAGE_KEY } from '../constants';
+import { API_MESSAGE_KEY, SKIP_ENVELOPE_KEY } from '../constants';
+import { ApiMessage, SkipEnvelope } from '../decorators';
 
 describe('decorators', () => {
   describe('SkipEnvelope', () => {
