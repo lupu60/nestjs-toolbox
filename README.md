@@ -57,6 +57,7 @@
 | Package | Description |
 |---------|-------------|
 | [access-control](./packages/access-control) | Flexible role-based access control using role-acl |
+| [request-context](./packages/request-context) | Lightweight AsyncLocalStorage-based request context with auto-generated request IDs |
 | [response-envelope](./packages/response-envelope) | Standard API response envelope with interceptor and helpers |
 | [open-api-spec-to-ts](./packages/open-api-spec-to-ts) | Generate TypeScript interfaces from OpenAPI specs |
 | [version-generator](./packages/version-generator) | Generate version info from git metadata |

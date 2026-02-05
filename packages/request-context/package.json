@@ -1,0 +1,57 @@
+{
+  "name": "@nest-toolbox/request-context",
+  "description": "Lightweight AsyncLocalStorage-based request context for NestJS with auto-generated request IDs",
+  "version": "1.8.1",
+  "author": "bogdanlupu <lupu60@gmail.com>",
+  "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/request-context#readme",
+  "license": "MIT",
+  "keywords": [
+    "nestjs",
+    "request-context",
+    "async-local-storage",
+    "request-id",
+    "correlation-id",
+    "cls",
+    "middleware",
+    "toolbox"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lupu60/nestjs-toolbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lupu60/nestjs-toolbox/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=19 <=22",
+    "npm": "<=11"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf -rf ./dist",
+    "cleanup": "rimraf -rf dist coverage",
+    "compile": "tsc -p tsconfig.build.json",
+    "lint": "biome check src",
+    "test": "vitest run --config ../../vitest.config.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "24.0.3",
+    "rimraf": "6.0.1",
+    "typescript": "5.9.3"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0"
+  }
+}
