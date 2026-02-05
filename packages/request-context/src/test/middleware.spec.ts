@@ -1,5 +1,5 @@
-import { RequestContextMiddleware } from '../request-context.middleware';
 import { RequestContext } from '../request-context';
+import { RequestContextMiddleware } from '../request-context.middleware';
 
 describe('RequestContextMiddleware', () => {
   function createReq(headers: Record<string, string> = {}) {
@@ -25,9 +25,7 @@ describe('RequestContextMiddleware', () => {
 
       expect(next).toHaveBeenCalled();
       expect(capturedId).toBeDefined();
-      expect(capturedId).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
-      );
+      expect(capturedId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     });
 
     it('uses request ID from x-request-id header when present', () => {
@@ -95,9 +93,7 @@ describe('RequestContextMiddleware', () => {
 
       expect(capturedId).toBeDefined();
       expect(capturedId).not.toBe('');
-      expect(capturedId).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
-      );
+      expect(capturedId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     });
   });
 

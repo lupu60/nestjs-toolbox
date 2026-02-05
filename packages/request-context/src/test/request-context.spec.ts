@@ -1,4 +1,4 @@
-import { RequestContext, runWithContext, getStore } from '../request-context';
+import { getStore, RequestContext, runWithContext } from '../request-context';
 import type { ContextStore } from '../types';
 
 describe('RequestContext', () => {
