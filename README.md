@@ -19,7 +19,7 @@
      <img src="https://deepscan.io/api/teams/5310/projects/7118/branches/66230/badge/grade.svg" alt="DeepScan grade">
    </a>
    <a href="#contributors-">
-     <img src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square"  />
+     <img src="https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square"  />
    </a>
    <a href="https://nestjs.com" target="_blank">
      <img src="https://img.shields.io/badge/build%20for-NestJS-red.svg" alt="Built for NestJS" />
@@ -65,86 +65,6 @@
 
 ---
 
-## Quick Examples
-
-### Audit Log — Track every entity change automatically
-
-```typescript
-import { AuditLogModule, AuditContextMiddleware, Auditable } from '@nest-toolbox/typeorm-audit-log';
-
-// 1. Register the module
-@Module({
-  imports: [
-    AuditLogModule.forRoot({
-      retentionDays: 90,
-      excludeFields: ['password', 'refreshToken'],
-    }),
-  ],
-})
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuditContextMiddleware).forRoutes('*');
-  }
-}
-
-// 2. Decorate your entity
-@Entity()
-@Auditable()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  name: string;
-
-  @Column()
-  @AuditIgnore() // skip sensitive fields
-  password: string;
-}
-// That's it — all User changes are now logged with who, what, and when.
-```
-
-### Pagination — One-liner paginated queries
-
-```typescript
-import { paginate } from '@nest-toolbox/typeorm-paginate';
-
-const result = await paginate(userRepository, { page: 1, limit: 25 });
-// → { items: [...], meta: { totalItems, itemCount, itemsPerPage, totalPages, currentPage } }
-```
-
-### Soft Delete — Never lose data
-
-```typescript
-import { SoftDeleteEntity } from '@nest-toolbox/typeorm-soft-delete';
-
-@Entity()
-export class Post extends SoftDeleteEntity {
-  @Column()
-  title: string;
-}
-// Posts are soft-deleted by default — easily restore or permanently remove.
-```
-
-### Access Control — Role-based permissions
-
-```typescript
-import { UseRoles } from '@nest-toolbox/access-control';
-
-@Controller('documents')
-export class DocumentController {
-  @Get()
-  @UseRoles({
-    resource: 'document',
-    action: 'read',
-    possession: 'any',
-  })
-  findAll() { ... }
-}
-```
-
----
-
 ## Installation
 
 Each package is published independently on npm under the `@nest-toolbox` scope:
@@ -173,6 +93,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
+    <td align="center"><a href="https://github.com/lupu60"><img src="https://avatars.githubusercontent.com/u/5337610?v=4" width="100px;" alt=""/><br /><sub><b>lupu60</b></sub></a><br /><a href="https://github.com/lupu60/nestjs-toolbox/commits?author=lupu60" title="Code">💻</a> <a href="#maintenance-lupu60" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://getlarge.eu"><img src="https://avatars1.githubusercontent.com/u/15331923?v=4" width="100px;" alt=""/><br /><sub><b>getlarge</b></sub></a><br /><a href="https://github.com/lupu60/nestjs-toolbox/commits?author=getlarge" title="Code">💻</a></td>
   </tr>
 </table>
