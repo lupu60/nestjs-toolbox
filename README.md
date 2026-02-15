@@ -19,7 +19,7 @@
      <img src="https://deepscan.io/api/teams/5310/projects/7118/branches/66230/badge/grade.svg" alt="DeepScan grade">
    </a>
    <a href="#contributors-">
-     <img src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square"  />
+     <img src="https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square"  />
    </a>
    <a href="https://nestjs.com" target="_blank">
      <img src="https://img.shields.io/badge/build%20for-NestJS-red.svg" alt="Built for NestJS" />
@@ -93,6 +93,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
+    <td align="center"><a href="https://github.com/lupu60"><img src="https://avatars.githubusercontent.com/u/5337610?v=4" width="100px;" alt=""/><br /><sub><b>lupu60</b></sub></a><br /><a href="https://github.com/lupu60/nestjs-toolbox/commits?author=lupu60" title="Code">💻</a> <a href="#maintenance-lupu60" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://getlarge.eu"><img src="https://avatars1.githubusercontent.com/u/15331923?v=4" width="100px;" alt=""/><br /><sub><b>getlarge</b></sub></a><br /><a href="https://github.com/lupu60/nestjs-toolbox/commits?author=getlarge" title="Code">💻</a></td>
   </tr>
 </table>
