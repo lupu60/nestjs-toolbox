@@ -46,7 +46,7 @@
   "dependencies": {
     "deep-diff": "^1.0.2",
     "reflect-metadata": "0.2.2",
-    "typeorm": "0.3.26"
+    "typeorm": "^0.3.0"
   },
   "devDependencies": {
     "@types/deep-diff": "^1.0.5",
@@ -56,7 +56,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",
-    "@nestjs/core": "^10.0.0",
+    "@nestjs/core": "^10.4.22",
     "@nestjs/typeorm": "^10.0.0",
     "typeorm": "^0.3.0"
   }
