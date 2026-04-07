@@ -39,7 +39,7 @@
     "@nest-toolbox/winston-logger": "^1.8.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^3.3.0",
-    "@nestjs/core": "^11.0.1",
+    "@nestjs/core": "^11.1.18",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^8.0.5",
     "@nestjs/typeorm": "^11.0.0",
