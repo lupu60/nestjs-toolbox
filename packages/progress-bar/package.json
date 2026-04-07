@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@types/node": "25.3.3",
-    "rimraf": "~6.0.1",
+    "rimraf": "~6.1.3",
     "typescript": "5.9.3"
   },
   "gitHead": "5921e59df7f1d7d11a6ac467c7f6ef94667043bd"
