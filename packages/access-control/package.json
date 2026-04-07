@@ -42,7 +42,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "11.1.14",
+    "@nestjs/common": "11.1.18",
     "@nestjs/core": "11.1.18",
     "reflect-metadata": "^0.2.2",
     "role-acl": "^3.2.2"
