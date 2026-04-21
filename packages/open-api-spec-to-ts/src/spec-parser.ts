@@ -3,8 +3,7 @@ import * as path from 'node:path';
 import type { OpenAPIObject } from '@nestjs/swagger';
 import type { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import * as chalk from 'chalk';
-import { compile, type Options as JSONToTSOptions } from 'json-schema-to-typescript';
-import type { NormalizedJSONSchema } from 'json-schema-to-typescript/dist/src/types/JSONSchema';
+import { compile, type JSONSchema, type Options as JSONToTSOptions } from 'json-schema-to-typescript';
 import { flatten, snakeCase } from 'lodash';
 import { appendFile, readDir, readFile, removeFile, writeFile } from './files';
 
@@ -22,11 +21,15 @@ export interface Options extends JSONToTSOptions {
 
 let baseOptions: Options = {
   verbosity: LogLevel.NONE,
+  additionalProperties: true,
   bannerComment: '',
   cwd: process.cwd(),
   declareExternallyReferenced: false,
   enableConstEnums: false,
+  format: true,
   ignoreMinAndMaxItems: false,
+  inferStringEnumKeysFromValues: false,
+  maxItems: 20,
   unknownAny: false,
   unreachableDefinitions: false,
   strictIndexSignatures: false,
@@ -170,7 +173,7 @@ async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, 
   const schemaAndDefinitions = {
     ...schema,
     components,
-  } as NormalizedJSONSchema;
+  } as unknown as JSONSchema;
   let content = await compile(schemaAndDefinitions, name, baseOptions);
 
   // TODO: check future updates from json-schema-to-typescript, as next step should not be needed
