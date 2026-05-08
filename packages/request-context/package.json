@@ -1,7 +1,7 @@
 {
   "name": "@nest-toolbox/request-context",
   "description": "Lightweight AsyncLocalStorage-based request context for NestJS with auto-generated request IDs",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/request-context#readme",
   "license": "MIT",
