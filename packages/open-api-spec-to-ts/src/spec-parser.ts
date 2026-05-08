@@ -116,7 +116,7 @@ function preprocessProperties(inputProperties: { [key: string]: SchemaObject | R
 
 async function createImport(name: string, schema: SchemaObject | ReferenceObject, filePath: string) {
   const references: string | string[] | undefined = extractRefsFromSchema(schema);
-  if (!references || !references.length) {
+  if (!references?.length) {
     return [];
   }
   const refsArray: string[] = typeof references === 'string' ? [references] : references.flat();
@@ -163,7 +163,7 @@ function checkSelfReference(name: string, content: string): string {
 
 async function createInterfaceContent(name: string, openApiSpec: OpenAPIObject, filePath: string): Promise<string> {
   const components = openApiSpec.components;
-  if (!components || !components.schemas) {
+  if (!components?.schemas) {
     throw new Error('OpenAPI spec must have components.schemas');
   }
   const schema = components.schemas[name];
@@ -197,7 +197,7 @@ async function createInterface(name: string, openApiSpec: OpenAPIObject, interfa
 
 async function parseSchema(name: string, openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<TsInterface | null> {
   const components = openApiSpec?.components;
-  if (!components || !components.schemas || !Object.hasOwn(components.schemas, name)) {
+  if (!components?.schemas || !Object.hasOwn(components.schemas, name)) {
     return null;
   }
   const schema = components.schemas[name];
@@ -217,7 +217,7 @@ function delayedParsing(schemaKey: string, openApiSpec: OpenAPIObject, interface
 }
 
 async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<void> {
-  if (!openApiSpec.components || !openApiSpec.components.schemas) {
+  if (!openApiSpec.components?.schemas) {
     return;
   }
   const schemasNames = Object.keys(openApiSpec.components.schemas).sort();
@@ -254,7 +254,7 @@ async function removeExistingInterfaces(interfacesPath: string): Promise<void> {
 }
 
 function appendTitles(openApiSpec: OpenAPIObject): void {
-  if (!openApiSpec.components || !openApiSpec.components.schemas) {
+  if (!openApiSpec.components?.schemas) {
     return;
   }
   Object.entries(openApiSpec.components.schemas).forEach(([name, schema]) => {

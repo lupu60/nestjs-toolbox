@@ -94,24 +94,24 @@ describe('helpers', () => {
       const result = paginated([1, 2, 3], { page: 1, limit: 10, total: 25 });
 
       expect(result.meta.pagination).toBeDefined();
-      expect(result.meta.pagination!.totalPages).toBe(3); // ceil(25/10)
-      expect(result.meta.pagination!.page).toBe(1);
-      expect(result.meta.pagination!.limit).toBe(10);
-      expect(result.meta.pagination!.total).toBe(25);
+      expect(result.meta.pagination?.totalPages).toBe(3); // ceil(25/10)
+      expect(result.meta.pagination?.page).toBe(1);
+      expect(result.meta.pagination?.limit).toBe(10);
+      expect(result.meta.pagination?.total).toBe(25);
     });
 
     it('handles zero total', () => {
       const result = paginated([], { page: 1, limit: 10, total: 0 });
 
-      expect(result.meta.pagination!.totalPages).toBe(0);
-      expect(result.meta.pagination!.total).toBe(0);
+      expect(result.meta.pagination?.totalPages).toBe(0);
+      expect(result.meta.pagination?.total).toBe(0);
       expect(result.data).toEqual([]);
     });
 
     it('handles limit of 0 (edge case)', () => {
       const result = paginated([], { page: 1, limit: 0, total: 50 });
 
-      expect(result.meta.pagination!.totalPages).toBe(0);
+      expect(result.meta.pagination?.totalPages).toBe(0);
     });
 
     it('wraps data in success envelope', () => {
