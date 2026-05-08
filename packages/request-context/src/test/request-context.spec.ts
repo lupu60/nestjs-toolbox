@@ -165,8 +165,8 @@ describe('runWithContext() and getStore()', () => {
     runWithContext(store, () => {
       const retrieved = getStore();
       expect(retrieved).toBeDefined();
-      expect(retrieved!.requestId).toBe('ctx-123');
-      expect(retrieved!.values.get('key')).toBe('val');
+      expect(retrieved?.requestId).toBe('ctx-123');
+      expect(retrieved?.values.get('key')).toBe('val');
     });
   });
 
