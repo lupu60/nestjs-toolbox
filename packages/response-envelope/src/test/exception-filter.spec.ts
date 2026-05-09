@@ -1,7 +1,6 @@
+import type { ArgumentsHost } from '@nestjs/common';
 import { BadRequestException, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { EnvelopeExceptionFilter } from '../envelope-exception.filter';
-
-import type { ArgumentsHost } from '@nestjs/common';
 
 function createMockHost(url = '/api/test') {
   const jsonFn = vi.fn();

@@ -58,7 +58,7 @@
     "hard-reset": "npm run cleanup && rimraf -rf node_modules && find packages -name \"package-lock.json\" -type f -delete &&  find packages -name \"node_modules\" -type d -delete"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.13",
+    "@biomejs/biome": "^2.4.15",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/ui": "^4.0.18",
     "lerna": "^9.0.3",
@@ -77,10 +77,15 @@
   "overrides": {
     "lodash": "4.18.1",
     "js-yaml": "4.1.1",
-    "tar": "7.5.7",
+    "tar": "^7.5.11",
     "glob": "11.1.0",
     "diff": "4.0.4",
-    "sha.js": "2.4.12"
+    "sha.js": "2.4.12",
+    "@nestjs/core": "^11.1.19",
+    "axios": "^1.15.2",
+    "follow-redirects": "^1.15.12",
+    "yaml": "^2.8.3",
+    "brace-expansion": "^5.0.5"
   },
   "volta": {
     "node": "21.7.3"
