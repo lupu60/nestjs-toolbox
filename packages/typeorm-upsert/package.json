@@ -36,7 +36,7 @@
     "test": "vitest run --config ../../vitest.config.ts",
     "prepublishOnly": "npm run build"
   },
-  "gitHead": "5921e59df7f1d7d11a6ac467c7f6ef94667043bd",
+  "gitHead": "737971da7af87f7b32335ce5cfe8679704ac219d",
   "dependencies": {
     "rimraf": "6.1.3",
     "typeorm": "^0.3.28"

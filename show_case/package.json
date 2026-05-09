@@ -31,17 +31,17 @@
     "@nest-toolbox/http-logger-middleware": "^1.8.1",
     "@nest-toolbox/open-api-spec-to-ts": "^1.8.1",
     "@nest-toolbox/progress-bar": "^1.8.1",
+    "@nest-toolbox/typeorm-audit-log": "^1.0.0",
     "@nest-toolbox/typeorm-paginate": "^1.8.1",
     "@nest-toolbox/typeorm-soft-delete": "^1.8.1",
-    "@nest-toolbox/typeorm-audit-log": "^1.0.0",
     "@nest-toolbox/typeorm-upsert": "^1.8.1",
     "@nest-toolbox/version-generator": "^1.8.1",
     "@nest-toolbox/winston-logger": "^1.8.1",
     "@nestjs/common": "^11.0.1",
-    "@nestjs/config": "^3.3.0",
+    "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.18",
     "@nestjs/platform-express": "^11.0.1",
-    "@nestjs/swagger": "^8.0.5",
+    "@nestjs/swagger": "^11.4.2",
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -75,6 +75,9 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
+  },
+  "overrides": {
+    "jsonpath-plus": "^10.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
