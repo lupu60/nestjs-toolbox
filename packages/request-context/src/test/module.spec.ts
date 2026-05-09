@@ -23,7 +23,7 @@ describe('RequestContextModule', () => {
       const options = { requestIdHeader: 'x-custom', setResponseHeader: false };
       const result = RequestContextModule.forRoot(options);
 
-      const optionsProvider = result.providers?.find((p: any) => p.provide === REQUEST_CONTEXT_OPTIONS) as any;
+      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<string, unknown>;
 
       expect(optionsProvider).toBeDefined();
       expect(optionsProvider.useValue).toEqual(options);
@@ -38,7 +38,7 @@ describe('RequestContextModule', () => {
     it('with no args uses empty options', () => {
       const result = RequestContextModule.forRoot();
 
-      const optionsProvider = result.providers?.find((p: any) => p.provide === REQUEST_CONTEXT_OPTIONS) as any;
+      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<string, unknown>;
 
       expect(optionsProvider).toBeDefined();
       expect(optionsProvider.useValue).toEqual({});
@@ -77,7 +77,7 @@ describe('RequestContextModule', () => {
         inject: [InjectToken],
       });
 
-      const optionsProvider = result.providers?.find((p: any) => p.provide === REQUEST_CONTEXT_OPTIONS) as any;
+      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<string, unknown>;
 
       expect(optionsProvider).toBeDefined();
       expect(optionsProvider.useFactory).toBe(factory);
@@ -89,7 +89,7 @@ describe('RequestContextModule', () => {
 
       expect(result.imports).toEqual([]);
 
-      const optionsProvider = result.providers?.find((p: any) => p.provide === REQUEST_CONTEXT_OPTIONS) as any;
+      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<string, unknown>;
 
       expect(optionsProvider.inject).toEqual([]);
     });
@@ -97,7 +97,7 @@ describe('RequestContextModule', () => {
     it('defaults to a no-op factory when useFactory is not provided', () => {
       const result = RequestContextModule.forRootAsync({});
 
-      const optionsProvider = result.providers?.find((p: any) => p.provide === REQUEST_CONTEXT_OPTIONS) as any;
+      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<string, unknown>;
 
       expect(optionsProvider.useFactory).toBeDefined();
       expect(optionsProvider.useFactory()).toEqual({});

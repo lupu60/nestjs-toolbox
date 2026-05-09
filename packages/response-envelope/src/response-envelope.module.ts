@@ -13,6 +13,7 @@ import { ResponseEnvelopeInterceptor } from './response-envelope.interceptor';
 import type { ResponseEnvelopeAsyncOptions, ResponseEnvelopeOptions } from './types';
 
 @Module({})
+// biome-ignore lint/complexity/noStaticOnlyClass: NestJS modules require a class with @Module() decorator
 export class ResponseEnvelopeModule {
   /**
    * Register the module with static options.

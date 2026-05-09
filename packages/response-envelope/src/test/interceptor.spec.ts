@@ -1,14 +1,17 @@
+import type { CallHandler, ExecutionContext } from '@nestjs/common';
+import type { Reflector } from '@nestjs/core';
 import { lastValueFrom, of } from 'rxjs';
 import { API_MESSAGE_KEY, DEFAULT_MESSAGE, SKIP_ENVELOPE_KEY } from '../constants';
 import { ResponseEnvelopeInterceptor } from '../response-envelope.interceptor';
+import type { ApiResponse } from '../types';
 
-function createMockReflector(overrides: Record<string, unknown> = {}) {
+function createMockReflector(overrides: Record<string, unknown> = {}): Reflector {
   return {
     getAllAndOverride: vi.fn((key: string) => overrides[key] ?? undefined),
-  } as any;
+  } as unknown as Reflector;
 }
 
-function createMockContext(options: { url?: string; statusCode?: number } = {}) {
+function createMockContext(options: { url?: string; statusCode?: number } = {}): ExecutionContext {
   const request = { url: options.url ?? '/api/test' };
   const response = { statusCode: options.statusCode ?? 200 };
 
@@ -19,13 +22,13 @@ function createMockContext(options: { url?: string; statusCode?: number } = {}) 
       getRequest: vi.fn(() => request),
       getResponse: vi.fn(() => response),
     })),
-  } as any;
+  } as unknown as ExecutionContext;
 }
 
-function createMockCallHandler(data: unknown) {
+function createMockCallHandler(data: unknown): CallHandler {
   return {
     handle: vi.fn(() => of(data)),
-  } as any;
+  } as unknown as CallHandler;
 }
 
 describe('ResponseEnvelopeInterceptor', () => {
@@ -47,7 +50,7 @@ describe('ResponseEnvelopeInterceptor', () => {
         statusCode: 200,
       },
     });
-    expect((result as any).meta.timestamp).toBeTruthy();
+    expect((result as ApiResponse<unknown>).meta.timestamp).toBeTruthy();
   });
 
   it('respects @SkipEnvelope() — passes data through unwrapped', async () => {
@@ -72,7 +75,7 @@ describe('ResponseEnvelopeInterceptor', () => {
     const result$ = interceptor.intercept(context, callHandler);
     const result = await lastValueFrom(result$);
 
-    expect((result as any).message).toBe('User created');
+    expect((result as ApiResponse<unknown>).message).toBe('User created');
   });
 
   it('uses default message from options when no @ApiMessage', async () => {
@@ -86,7 +89,7 @@ describe('ResponseEnvelopeInterceptor', () => {
     const result$ = interceptor.intercept(context, callHandler);
     const result = await lastValueFrom(result$);
 
-    expect((result as any).message).toBe('Success!');
+    expect((result as ApiResponse<unknown>).message).toBe('Success!');
   });
 
   it('passes through already-wrapped responses', async () => {
@@ -135,8 +138,8 @@ describe('ResponseEnvelopeInterceptor', () => {
     const result$ = interceptor.intercept(context, callHandler);
     const result = await lastValueFrom(result$);
 
-    expect((result as any).success).toBe(true);
-    expect((result as any).data).toBeNull();
+    expect((result as ApiResponse<unknown>).success).toBe(true);
+    expect((result as ApiResponse<unknown>).data).toBeNull();
   });
 
   it('handles undefined data by wrapping it as data: null', async () => {
@@ -148,8 +151,8 @@ describe('ResponseEnvelopeInterceptor', () => {
     const result$ = interceptor.intercept(context, callHandler);
     const result = await lastValueFrom(result$);
 
-    expect((result as any).success).toBe(true);
-    expect((result as any).data).toBeNull();
+    expect((result as ApiResponse<unknown>).success).toBe(true);
+    expect((result as ApiResponse<unknown>).data).toBeNull();
   });
 
   it('includes path and statusCode from request/response', async () => {
@@ -161,8 +164,8 @@ describe('ResponseEnvelopeInterceptor', () => {
     const result$ = interceptor.intercept(context, callHandler);
     const result = await lastValueFrom(result$);
 
-    expect((result as any).meta.path).toBe('/api/items/42');
-    expect((result as any).meta.statusCode).toBe(201);
+    expect((result as ApiResponse<unknown>).meta.path).toBe('/api/items/42');
+    expect((result as ApiResponse<unknown>).meta.statusCode).toBe(201);
   });
 
   it('respects includePath: false option', async () => {
@@ -176,7 +179,7 @@ describe('ResponseEnvelopeInterceptor', () => {
     const result$ = interceptor.intercept(context, callHandler);
     const result = await lastValueFrom(result$);
 
-    expect((result as any).meta.path).toBe('');
+    expect((result as ApiResponse<unknown>).meta.path).toBe('');
   });
 
   it('respects includeTimestamp: false option', async () => {
@@ -190,6 +193,6 @@ describe('ResponseEnvelopeInterceptor', () => {
     const result$ = interceptor.intercept(context, callHandler);
     const result = await lastValueFrom(result$);
 
-    expect((result as any).meta.timestamp).toBe('');
+    expect((result as ApiResponse<unknown>).meta.timestamp).toBe('');
   });
 });
