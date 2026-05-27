@@ -41,12 +41,12 @@ export async function TypeOrmUpsert<T extends ObjectLiteral>(
   const sampleObject = Array.isArray(object) ? object[0] : object;
   const keys: string[] = _keys({ sampleObject: sampleObject as Record<string, unknown>, doNotUpsert });
   const setterString = _generateSetterString({ keys, keyNamingTransform });
-  const onConflict = `("${conflictKey}") DO UPDATE SET ${setterString}`;
+  const onConflictSql = `("${conflictKey}") DO UPDATE SET ${setterString}`;
   // Ensure object is always an array for chunking
   const valuesArray = Array.isArray(object) ? object : [object];
   const chunkedValues = _chunkValues({ values: valuesArray, chunk });
 
-  const results = (await _chunkPromises({ repository, chunkedValues, onConflict, returnStatus, conflictKey })).flatMap(
+  const results = (await _chunkPromises({ repository, chunkedValues, onConflictSql, returnStatus, conflictKey })).flatMap(
     (current) => current?.raw || [],
   );
 
@@ -78,13 +78,13 @@ interface ChunkPromiseResult {
 export async function _chunkPromises<T extends ObjectLiteral>({
   repository,
   chunkedValues,
-  onConflict,
+  onConflictSql,
   returnStatus,
   conflictKey,
 }: {
   repository: Repository<T>;
   chunkedValues: T[][];
-  onConflict: string;
+  onConflictSql: string;
   returnStatus: boolean;
   conflictKey: string;
 }): Promise<ChunkPromiseResult[]> {
@@ -105,7 +105,30 @@ export async function _chunkPromises<T extends ObjectLiteral>({
       }
     }
 
-    const saveQuery = repository.createQueryBuilder().insert().values(chunkedValues[i]).onConflict(onConflict).returning('*').execute();
+    const queryBuilder = repository.createQueryBuilder().insert().values(chunkedValues[i]);
+    // TypeORM 1.0 removed .onConflict(). We use .orUpdate() to trigger
+    // ON CONFLICT generation, then patch getQuery to replace the generated
+    // ON CONFLICT clause with our custom one that supports keyNamingTransform
+    // and updatedAt=CURRENT_TIMESTAMP.
+    queryBuilder.orUpdate([conflictKey], [conflictKey]);
+    queryBuilder.returning('*');
+
+    const originalGetQuery = queryBuilder.getQuery.bind(queryBuilder);
+    queryBuilder.getQuery = () => {
+      const sql = originalGetQuery();
+      // Replace the orUpdate-generated ON CONFLICT clause with our custom one
+      const onConflictIdx = sql.indexOf(' ON CONFLICT');
+      if (onConflictIdx === -1) {
+        return sql;
+      }
+      // Find where ON CONFLICT clause ends (before RETURNING or end of string)
+      const returningIdx = sql.indexOf(' RETURNING', onConflictIdx);
+      const beforeConflict = sql.substring(0, onConflictIdx);
+      const afterConflict = returningIdx !== -1 ? sql.substring(returningIdx) : '';
+      return `${beforeConflict} ON CONFLICT ${onConflictSql}${afterConflict}`;
+    };
+
+    const saveQuery = queryBuilder.execute();
 
     promises.push(
       saveQuery

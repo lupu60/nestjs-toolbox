@@ -14,14 +14,27 @@ describe('Dummy Test', () => {
     { id: 3, name: 'foo' },
     { id: 4, name: 'bar' },
   ];
+  const createMockQueryBuilder = (executeResult = { raw: [] }) => {
+    const qb: Record<string, unknown> = {
+      insert: vi.fn().mockReturnThis(),
+      values: vi.fn().mockReturnThis(),
+      orUpdate: vi.fn().mockReturnThis(),
+      returning: vi.fn().mockReturnThis(),
+      getQuery: vi.fn().mockReturnValue(''),
+      execute: vi.fn().mockResolvedValue(executeResult),
+      select: vi.fn().mockReturnThis(),
+      where: vi.fn().mockReturnThis(),
+      getRawMany: vi.fn().mockResolvedValue([]),
+    };
+    // orUpdate, returning, etc. all return the same builder
+    for (const method of ['insert', 'values', 'orUpdate', 'returning', 'select', 'where']) {
+      (qb[method] as ReturnType<typeof vi.fn>).mockReturnValue(qb);
+    }
+    return qb;
+  };
+
   const repository = {
-    createQueryBuilder: vi.fn().mockReturnValue({
-      insert: vi.fn().mockReturnValue({
-        values: vi.fn().mockReturnValue({
-          onConflict: vi.fn().mockReturnValue({ returning: vi.fn().mockReturnValue({ execute: vi.fn().mockResolvedValue({ raw: [] }) }) }),
-        }),
-      }),
-    }),
+    createQueryBuilder: vi.fn().mockReturnValue(createMockQueryBuilder()),
   } as unknown as Repository<TestEntity>;
 
   it('should be defined', () => {
@@ -76,26 +89,15 @@ describe('Dummy Test', () => {
 
   describe('returnStatus option', () => {
     it('should return status when returnStatus is true', async () => {
+      const qb = createMockQueryBuilder({
+        raw: [
+          { id: 1, name: 'foo' },
+          { id: 2, name: 'bar' },
+        ],
+      });
+      (qb.getRawMany as ReturnType<typeof vi.fn>).mockResolvedValue([{ id: 1 }]); // id: 1 exists, id: 2 doesn't
       const mockRepository = {
-        createQueryBuilder: vi.fn().mockReturnValue({
-          insert: vi.fn().mockReturnValue({
-            values: vi.fn().mockReturnValue({
-              onConflict: vi.fn().mockReturnValue({
-                returning: vi.fn().mockReturnValue({
-                  execute: vi.fn().mockResolvedValue({
-                    raw: [
-                      { id: 1, name: 'foo' },
-                      { id: 2, name: 'bar' },
-                    ],
-                  }),
-                }),
-              }),
-            }),
-          }),
-          select: vi.fn().mockReturnThis(),
-          where: vi.fn().mockReturnThis(),
-          getRawMany: vi.fn().mockResolvedValue([{ id: 1 }]), // id: 1 exists, id: 2 doesn't
-        }),
+        createQueryBuilder: vi.fn().mockReturnValue(qb),
       } as unknown as Repository<TestEntity>;
 
       const data = [
@@ -115,23 +117,12 @@ describe('Dummy Test', () => {
     });
 
     it('should return single result with status when object is not an array', async () => {
+      const qb = createMockQueryBuilder({
+        raw: [{ id: 1, name: 'foo' }],
+      });
+      (qb.getRawMany as ReturnType<typeof vi.fn>).mockResolvedValue([]); // doesn't exist, so it will be inserted
       const mockRepository = {
-        createQueryBuilder: vi.fn().mockReturnValue({
-          insert: vi.fn().mockReturnValue({
-            values: vi.fn().mockReturnValue({
-              onConflict: vi.fn().mockReturnValue({
-                returning: vi.fn().mockReturnValue({
-                  execute: vi.fn().mockResolvedValue({
-                    raw: [{ id: 1, name: 'foo' }],
-                  }),
-                }),
-              }),
-            }),
-          }),
-          select: vi.fn().mockReturnThis(),
-          where: vi.fn().mockReturnThis(),
-          getRawMany: vi.fn().mockResolvedValue([]), // doesn't exist, so it will be inserted
-        }),
+        createQueryBuilder: vi.fn().mockReturnValue(qb),
       } as unknown as Repository<TestEntity>;
 
       const data = { id: 1, name: 'foo' };
@@ -145,19 +136,11 @@ describe('Dummy Test', () => {
 
     it('should not return status when returnStatus is false (backward compatibility)', async () => {
       const mockRepository = {
-        createQueryBuilder: vi.fn().mockReturnValue({
-          insert: vi.fn().mockReturnValue({
-            values: vi.fn().mockReturnValue({
-              onConflict: vi.fn().mockReturnValue({
-                returning: vi.fn().mockReturnValue({
-                  execute: vi.fn().mockResolvedValue({
-                    raw: [{ id: 1, name: 'foo' }],
-                  }),
-                }),
-              }),
-            }),
+        createQueryBuilder: vi.fn().mockReturnValue(
+          createMockQueryBuilder({
+            raw: [{ id: 1, name: 'foo' }],
           }),
-        }),
+        ),
       } as unknown as Repository<TestEntity>;
 
       const data = [{ id: 1, name: 'foo' }];
@@ -173,19 +156,11 @@ describe('Dummy Test', () => {
 
     it('should not return status when returnStatus is not specified (backward compatibility)', async () => {
       const mockRepository = {
-        createQueryBuilder: vi.fn().mockReturnValue({
-          insert: vi.fn().mockReturnValue({
-            values: vi.fn().mockReturnValue({
-              onConflict: vi.fn().mockReturnValue({
-                returning: vi.fn().mockReturnValue({
-                  execute: vi.fn().mockResolvedValue({
-                    raw: [{ id: 1, name: 'foo' }],
-                  }),
-                }),
-              }),
-            }),
+        createQueryBuilder: vi.fn().mockReturnValue(
+          createMockQueryBuilder({
+            raw: [{ id: 1, name: 'foo' }],
           }),
-        }),
+        ),
       } as unknown as Repository<TestEntity>;
 
       const data = [{ id: 1, name: 'foo' }];
