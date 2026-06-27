@@ -1,3 +1,1 @@
-import { AccessControl } from 'role-acl';
-
-export class RulesBuilder extends AccessControl {}
+export { AccessControl as RulesBuilder } from 'role-acl';

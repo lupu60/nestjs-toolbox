@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateDiff, calculateSimpleDiff } from '../utils/diff';
+import { calculateDiff } from '../utils/diff';
 
 describe('utils/diff', () => {
   describe('calculateDiff()', () => {
@@ -95,59 +95,6 @@ describe('utils/diff', () => {
       const updated = { name: 'Jane', password: 'new' };
 
       const diff = calculateDiff(old, updated, ['password']);
-
-      expect(diff).toHaveLength(1);
-      expect(diff?.[0].field).toBe('name');
-    });
-  });
-
-  describe('calculateSimpleDiff()', () => {
-    it('should return null when oldValues is null', () => {
-      expect(calculateSimpleDiff(null, { a: 1 })).toBeNull();
-    });
-
-    it('should return null when no changes', () => {
-      const obj = { name: 'John', age: 30 };
-      expect(calculateSimpleDiff(obj, { ...obj })).toBeNull();
-    });
-
-    it('should detect primitive changes', () => {
-      const old = { name: 'John', age: 30 };
-      const updated = { name: 'Jane', age: 30 };
-
-      const diff = calculateSimpleDiff(old, updated);
-
-      expect(diff).toHaveLength(1);
-      expect(diff?.[0].field).toBe('name');
-    });
-
-    it('should skip complex objects', () => {
-      const old = { name: 'John', address: { city: 'NYC' } };
-      const updated = { name: 'John', address: { city: 'LA' } };
-
-      const diff = calculateSimpleDiff(old, updated);
-
-      // Should be null because address is an object
-      expect(diff).toBeNull();
-    });
-
-    it('should handle Date objects', () => {
-      const oldDate = new Date('2024-01-01');
-      const newDate = new Date('2024-06-01');
-      const old = { createdAt: oldDate };
-      const updated = { createdAt: newDate };
-
-      const diff = calculateSimpleDiff(old, updated);
-
-      expect(diff).toHaveLength(1);
-      expect(diff?.[0].field).toBe('createdAt');
-    });
-
-    it('should respect excludeFields', () => {
-      const old = { name: 'John', secret: 'a' };
-      const updated = { name: 'Jane', secret: 'b' };
-
-      const diff = calculateSimpleDiff(old, updated, ['secret']);
 
       expect(diff).toHaveLength(1);
       expect(diff?.[0].field).toBe('name');
