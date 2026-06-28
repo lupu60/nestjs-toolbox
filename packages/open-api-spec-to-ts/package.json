@@ -49,7 +49,6 @@
     "json-schema-to-typescript": "^15.0.4",
     "lodash": "4.18.1",
     "rimraf": "~6.1.1",
-    "role-acl": "3.2.2",
     "ts-node": "10.9.1"
   },
   "devDependencies": {

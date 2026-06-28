@@ -204,35 +204,19 @@ async function parseSchema(name: string, openApiSpec: OpenAPIObject, interfacesD
   return schema ? createInterface(name, openApiSpec, interfacesDirPath) : null;
 }
 
-function delayedParsing(schemaKey: string, openApiSpec: OpenAPIObject, interfacesDirPath: string, ms: number): Promise<TsInterface | null> {
-  return new Promise((resolve, reject) =>
-    setTimeout(
-      () =>
-        parseSchema(schemaKey, openApiSpec, interfacesDirPath)
-          .then((res) => resolve(res))
-          .catch((e) => reject(e)),
-      ms,
-    ),
-  );
-}
-
 async function openApiToInterfaces(openApiSpec: OpenAPIObject, interfacesDirPath: string): Promise<void> {
   if (!openApiSpec.components?.schemas) {
     return;
   }
   const schemasNames = Object.keys(openApiSpec.components.schemas).sort();
-  let prevPromise: Promise<TsInterface | null> = Promise.resolve(null);
   for (const schemaKey of schemasNames) {
     try {
-      await prevPromise;
-      prevPromise = delayedParsing(schemaKey, openApiSpec, interfacesDirPath, 0);
+      await parseSchema(schemaKey, openApiSpec, interfacesDirPath);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       logError(errorMessage);
-      prevPromise = Promise.resolve(null);
     }
   }
-  await prevPromise;
 }
 
 function ensureDirectoryExists(dirPath: string): void {

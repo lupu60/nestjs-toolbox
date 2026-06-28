@@ -2,12 +2,7 @@ import { Injectable, Logger, type NestMiddleware } from '@nestjs/common';
 import * as chalk from 'chalk';
 import type { NextFunction, Request, Response } from 'express';
 
-const isEmpty = (obj: unknown): boolean => {
-  if (!obj || typeof obj !== 'object') {
-    return false;
-  }
-  return JSON.stringify(obj) === '{}';
-};
+const isEmpty = (obj: unknown): boolean => !!obj && typeof obj === 'object' && Object.keys(obj).length === 0;
 
 @Injectable()
 export class HttpLoggerMiddleware implements NestMiddleware {
