@@ -46,7 +46,7 @@
   "dependencies": {
     "deep-diff": "^1.0.2",
     "reflect-metadata": "0.2.2",
-    "typeorm": "^0.3.29"
+    "typeorm": "^1.0.0"
   },
   "devDependencies": {
     "@types/deep-diff": "^1.0.5",
