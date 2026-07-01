@@ -50,7 +50,7 @@
     "typescript": "5.9.3"
   },
   "peerDependencies": {
-    "@nestjs/common": "^11.1.24",
+    "@nestjs/common": "^11.1.27",
     "@nestjs/core": "^10.4.22 || ^11.0.0"
   },
   "gitHead": "737971da7af87f7b32335ce5cfe8679704ac219d"
