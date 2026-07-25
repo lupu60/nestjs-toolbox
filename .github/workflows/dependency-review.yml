@@ -20,3 +20,7 @@ jobs:
         with:
           fail-on-severity: moderate
           deny-licenses: GPL-2.0, GPL-3.0
+          # brace-expansion DoS: only 5.0.8 is patched; no fixed release exists
+          # for the 1.x/2.x lines that minimatch <10 pins. Every dependency that
+          # can use 5.0.8 already does. Remove once upstream backports a fix.
+          allow-ghsas: GHSA-mh99-v99m-4gvg
