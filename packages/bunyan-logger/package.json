@@ -55,6 +55,6 @@
     "@types/bunyan-format": "^0.2.4",
     "@types/node": "25.9.1",
     "rimraf": "~6.1.3",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   }
 }
