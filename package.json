@@ -68,7 +68,7 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.54.0",
+    "typescript-eslint": "^8.68.0",
     "vitest": "^4.1.10"
   },
   "dependencies": {
@@ -81,7 +81,7 @@
     "glob": "11.1.0",
     "diff": "4.0.4",
     "sha.js": "2.4.12",
-    "@nestjs/core": "~11.1.19",
+    "@nestjs/core": "^11.1.19",
     "axios": "^1.15.2",
     "follow-redirects": "^1.15.12",
     "yaml": "^2.8.3",
