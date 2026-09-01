@@ -81,7 +81,7 @@
     "glob": "11.1.0",
     "diff": "4.0.4",
     "sha.js": "2.4.12",
-    "@nestjs/core": "^11.1.19",
+    "@nestjs/core": "~11.1.19",
     "axios": "^1.15.2",
     "follow-redirects": "^1.15.12",
     "yaml": "^2.8.3",
