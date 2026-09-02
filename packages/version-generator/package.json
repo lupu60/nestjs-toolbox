@@ -44,7 +44,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "commander": "14.0.0",
+    "commander": "15.0.0",
     "reflect-metadata": "0.2.2",
     "ts-node": "10.9.2"
   },
