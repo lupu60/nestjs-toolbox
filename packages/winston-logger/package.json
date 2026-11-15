@@ -43,7 +43,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "^11.2.3",
+    "@nestjs/common": "^12.5.0",
     "ts-node": "10.9.2",
     "winston": "^3.19.0"
   },
