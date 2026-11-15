@@ -1,6 +1,7 @@
-import { existsSync } from 'node:fs';
+import { existsSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { readDir, removeFile } from '../files';
+import * as ts from 'typescript';
+import { readDir, readFile, removeFile } from '../files';
 import { generate } from '../spec-parser';
 
 describe('OpenAPISpecParser', () => {
@@ -536,6 +537,59 @@ describe('OpenAPISpecParser', () => {
       if (files) {
         await Promise.all(files.map((file) => removeFile(join(arrayRefInterfacePath, file))));
       }
+    }
+  });
+
+  it('should import refs whose names contain the schema name, from additionalProperties and from typeless schemas', async () => {
+    const refImportsPath = `${basePath}/ref-imports.json`;
+    const refImportsSpec = JSON.stringify({
+      openapi: '3.0.0',
+      info: { title: 'Ref Imports API', version: '1.0.0' },
+      paths: {},
+      components: {
+        schemas: {
+          User: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              role: { $ref: '#/components/schemas/UserRole' },
+              profile: { $ref: '#/components/schemas/UserProfile' },
+            },
+          },
+          UserRole: { type: 'string', enum: ['admin', 'member'] },
+          UserProfile: { type: 'object', properties: { bio: { type: 'string' } } },
+          Order: {
+            type: 'object',
+            properties: {
+              tags: { type: 'object', additionalProperties: { $ref: '#/components/schemas/Tag' } },
+            },
+          },
+          Box: {
+            properties: { item: { $ref: '#/components/schemas/Tag' } },
+          },
+          Tag: { type: 'object', properties: { name: { type: 'string' } } },
+        },
+      },
+    });
+
+    const { writeFile } = await import('../files');
+    await writeFile(refImportsPath, refImportsSpec);
+
+    const refImportsInterfacePath = join(basePath, 'ref-imports-interfaces');
+    try {
+      await generate(refImportsPath, refImportsInterfacePath);
+
+      expect(await readFile(join(refImportsInterfacePath, 'User.ts'))).toContain("import { UserRole, UserProfile } from './';");
+      expect(await readFile(join(refImportsInterfacePath, 'Order.ts'))).toContain("import { Tag } from './';");
+      expect(await readFile(join(refImportsInterfacePath, 'Box.ts'))).toContain("import { Tag } from './';");
+      expect(await readFile(join(refImportsInterfacePath, 'Tag.ts'))).not.toContain('import');
+
+      const program = ts.createProgram([join(refImportsInterfacePath, 'index.ts')], { noEmit: true, strict: true });
+      const diagnostics = ts.getPreEmitDiagnostics(program).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
+      expect(diagnostics).toEqual([]);
+    } finally {
+      await removeFile(refImportsPath);
+      rmSync(refImportsInterfacePath, { recursive: true, force: true });
     }
   });
 });
