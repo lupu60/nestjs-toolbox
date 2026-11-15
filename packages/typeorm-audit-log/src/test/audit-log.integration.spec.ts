@@ -1,6 +1,7 @@
 import 'reflect-metadata';
-import { Column, DataSource, Entity, PrimaryGeneratedColumn, type Repository } from 'typeorm';
+import { Column, type DataSource, Entity, PrimaryGeneratedColumn, type Repository } from 'typeorm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { testDatabases } from '../../../../test/databases';
 import { auditContextRun } from '../audit-context';
 import { AuditLog } from '../audit-log.entity';
 import { AuditLogService } from '../audit-log.service';
@@ -8,7 +9,7 @@ import { AuditLogSubscriber } from '../audit-log.subscriber';
 import { Auditable, AuditIgnore, AuditMask } from '../decorators';
 import { AuditAction } from '../types';
 
-// Integration tests against a real in-memory SQLite database (sql.js)
+// Integration tests against real databases: sql.js always, PostgreSQL when TEST_PG_URL is set
 
 @Entity('accounts')
 @Auditable()
@@ -37,15 +38,14 @@ class Note {
   text!: string;
 }
 
-describe('typeorm-audit-log (sql.js integration)', () => {
+describe.each(testDatabases('typeorm_audit_log'))('typeorm-audit-log ($name integration)', (database) => {
   let dataSource: DataSource;
   let auditRepository: Repository<AuditLog>;
   let accounts: Repository<Account>;
   let service: AuditLogService;
 
   beforeEach(async () => {
-    dataSource = new DataSource({ type: 'sqljs', synchronize: true, entities: [AuditLog, Account, Note] });
-    await dataSource.initialize();
+    dataSource = await database.initialize([AuditLog, Account, Note]);
     auditRepository = dataSource.getRepository(AuditLog);
     accounts = dataSource.getRepository(Account);
     service = new AuditLogService(auditRepository, { excludeFields: [], async: false });

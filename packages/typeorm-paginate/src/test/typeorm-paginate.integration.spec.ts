@@ -1,8 +1,9 @@
-import { DataSource, EntitySchema, type Repository } from 'typeorm';
+import { type DataSource, EntitySchema, type Repository } from 'typeorm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { testDatabases } from '../../../../test/databases';
 import { rows, set } from '../typeorm-paginate';
 
-// Integration tests against a real in-memory SQLite database (sql.js)
+// Integration tests against real databases: sql.js always, PostgreSQL when TEST_PG_URL is set
 
 interface Item {
   id: number;
@@ -17,13 +18,12 @@ const ItemSchema = new EntitySchema<Item>({
   },
 });
 
-describe('typeorm-paginate (sql.js integration)', () => {
+describe.each(testDatabases('typeorm_paginate'))('typeorm-paginate ($name integration)', (database) => {
   let dataSource: DataSource;
   let repository: Repository<Item>;
 
   beforeEach(async () => {
-    dataSource = new DataSource({ type: 'sqljs', synchronize: true, entities: [ItemSchema] });
-    await dataSource.initialize();
+    dataSource = await database.initialize([ItemSchema]);
     repository = dataSource.getRepository(ItemSchema);
     await repository.save([{ kind: 'a' }, { kind: 'a' }, { kind: 'a' }, { kind: 'b' }, { kind: 'b' }, { kind: 'c' }, { kind: 'c' }]);
   });

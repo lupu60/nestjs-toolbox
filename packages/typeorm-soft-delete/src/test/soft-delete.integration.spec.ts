@@ -1,5 +1,6 @@
-import { DataSource, EntitySchema, type Repository } from 'typeorm';
+import { type DataSource, EntitySchema, type Repository } from 'typeorm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { testDatabases } from '../../../../test/databases';
 import {
   count,
   findOnlyDeleted,
@@ -14,7 +15,7 @@ import {
   withSoftDelete,
 } from '../index';
 
-// Integration tests against a real in-memory SQLite database (sql.js)
+// Integration tests against real databases: sql.js always, PostgreSQL when TEST_PG_URL is set
 
 interface Person {
   id: number;
@@ -34,7 +35,7 @@ const PersonSchema = new EntitySchema<Person>({
     id: { type: Number, primary: true, generated: true },
     name: { type: String },
     team: { type: String },
-    deletedAt: { type: 'datetime', deleteDate: true, nullable: true },
+    deletedAt: { type: Date, deleteDate: true, nullable: true },
   },
 });
 
@@ -46,7 +47,7 @@ const PlainSchema = new EntitySchema<Plain>({
   },
 });
 
-describe('typeorm-soft-delete (sql.js integration)', () => {
+describe.each(testDatabases('typeorm_soft_delete'))('typeorm-soft-delete ($name integration)', (database) => {
   let dataSource: DataSource;
   let repository: Repository<Person>;
   let ids: Record<string, number>;
@@ -54,8 +55,7 @@ describe('typeorm-soft-delete (sql.js integration)', () => {
   const names = (people: Person[]) => people.map((person) => person.name).sort();
 
   beforeEach(async () => {
-    dataSource = new DataSource({ type: 'sqljs', synchronize: true, entities: [PersonSchema, PlainSchema] });
-    await dataSource.initialize();
+    dataSource = await database.initialize([PersonSchema, PlainSchema]);
     repository = dataSource.getRepository(PersonSchema);
     const saved = await repository.save([
       { name: 'alice', team: 'red' },
