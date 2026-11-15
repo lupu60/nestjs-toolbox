@@ -31,7 +31,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=18 <=22",
+    "node": ">=20.19",
     "npm": "<=11"
   },
   "scripts": {
