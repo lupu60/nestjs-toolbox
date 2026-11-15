@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@nestjs/common": "11.2.3",
-    "@nestjs/core": "11.2.3",
+    "@nestjs/core": "12.1.0",
     "reflect-metadata": "^0.2.2",
     "role-acl": "^3.2.2"
   },
