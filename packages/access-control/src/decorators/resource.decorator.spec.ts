@@ -56,7 +56,10 @@ describe('Resource Decorator', () => {
     }
 
     @Resource('entities')
-    class TestController {}
+    class TestController implements TestEntity {
+      id!: number;
+      name!: string;
+    }
 
     const resource = getResource<TestEntity>(TestController);
     expect(resource).toBe('entities');

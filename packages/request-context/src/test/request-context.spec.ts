@@ -142,7 +142,7 @@ describe('RequestContext', () => {
       await RequestContext.run('async-id', async () => {
         RequestContext.set('step', 1);
 
-        await new Promise((resolve) => setTimeout(resolve, 10));
+        await new Promise((resolve) => setImmediate(resolve));
 
         expect(RequestContext.requestId).toBe('async-id');
         expect(RequestContext.get('step')).toBe(1);

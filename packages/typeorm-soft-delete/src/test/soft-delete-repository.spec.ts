@@ -6,7 +6,7 @@ import { SoftDeleteRepository, withSoftDelete } from '../soft-delete-repository'
 interface TestEntity {
   id: number;
   name: string;
-  deletedAt?: Date;
+  deletedAt?: Date | null;
 }
 
 const createMockRepository = (): Repository<TestEntity> => {

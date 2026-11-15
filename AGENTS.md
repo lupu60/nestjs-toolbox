@@ -58,7 +58,9 @@ nestjs-toolbox/
 │       └── tsconfig.build.json
 ├── package.json                 # Root workspace config
 ├── tsconfig.json                # Shared TS config
-├── jest.config.json             # Shared Jest config
+├── vitest.config.ts             # Shared Vitest config
+├── biome.json                   # Biome lint + format config
+├── test/                        # Shared integration test helpers
 └── lerna.json                   # Lerna config
 ```
 
@@ -72,16 +74,21 @@ nestjs-toolbox/
 - Export everything from `src/index.ts`
 
 ### Style
-- **Formatting:** Prettier (runs via `npm run format`)
-- **Linting:** ESLint with NestJS config
+- **Formatting:** Biome (runs via `npm run format`)
+- **Linting:** Biome (`npm run lint` per package, `npm run check` for the whole repo)
 - **Naming:** camelCase for functions/variables, PascalCase for classes/types
 - **Files:** kebab-case for filenames
 
 ### Testing
 - Test files: `src/test/*.spec.ts`
-- Framework: Jest with ts-jest
+- Integration tests (need PostgreSQL): `src/test/*.integration.spec.ts`, run via `npm run test:e2e`
+- HTTP-level tests: `src/test/*http.spec.ts` boot a real Nest app and call it with `supertest`
+- Framework: Vitest (globals enabled, shared `vitest.config.ts`)
+- Coverage thresholds are enforced per package (see `vitest.config.ts`)
+- Test files are type-checked separately: `npm run typecheck:test`
+- Injected constructor parameters need an explicit `@Inject(...)` token: Vitest emits no decorator type metadata, and a type-only import breaks it in the compiled output too
 - **Every package must have tests**
-- Run single test: `npx jest packages/<pkg>/src/test/<file>.spec.ts`
+- Run single test: `npx vitest run --coverage.enabled=false packages/<pkg>/src/test/<file>.spec.ts`
 
 ### Dependencies
 - Minimize external dependencies
@@ -97,14 +104,21 @@ nestjs-toolbox/
    {
      "name": "@nest-toolbox/<package-name>",
      "version": "0.0.1",
-     "main": "dist/index.js",
-     "types": "dist/index.d.ts",
+     "main": "dist/index",
+     "types": "dist/index",
+     "files": ["dist"],
+     "publishConfig": {
+       "registry": "https://registry.npmjs.org/",
+       "access": "public"
+     },
      "scripts": {
        "build": "npm run clean && npm run compile",
-       "clean": "rimraf dist",
+       "clean": "rimraf -rf ./dist",
+       "cleanup": "rimraf -rf dist coverage",
        "compile": "tsc -p tsconfig.build.json",
-       "lint": "eslint src --ext .ts",
-       "test": "jest"
+       "lint": "biome check src",
+       "test": "vitest run --config ../../vitest.config.ts",
+       "prepublishOnly": "npm run build"
      }
    }
    ```
@@ -130,7 +144,11 @@ nestjs-toolbox/
 |---------|-------------|
 | `npm run build` | Build all packages |
 | `npm test` | Run all tests |
+| `npm run test:e2e` | Run PostgreSQL integration tests |
+| `npm run test:smoke` | Pack every package, install the tarballs in a temp project, boot a Nest app (needs `npm run build` first) |
+| `npm run typecheck:test` | Type-check spec files |
 | `npm run lint` | Lint all packages |
+| `npm run check` | Biome lint + format check for the whole repo |
 | `npm run format` | Format all files |
 | `npm run cleanup` | Remove dist/ and coverage/ |
 | `npm run reset` | Remove node_modules + build artifacts |

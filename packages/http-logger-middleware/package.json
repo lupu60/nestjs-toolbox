@@ -5,7 +5,6 @@
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme",
   "license": "MIT",
-  "type": "module",
   "keywords": [
     "nestjs",
     "http-logger-middleware"
@@ -18,9 +17,7 @@
     "url": "https://github.com/lupu60/nestjs-toolbox/issues"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "main": "dist/index",

@@ -14,7 +14,7 @@ describe('Dummy Test', () => {
     { id: 3, name: 'foo' },
     { id: 4, name: 'bar' },
   ];
-  const createMockQueryBuilder = (executeResult = { raw: [] }) => {
+  const createMockQueryBuilder = (executeResult: { raw: unknown[] } = { raw: [] }) => {
     const qb: Record<string, unknown> = {
       insert: vi.fn().mockReturnThis(),
       values: vi.fn().mockReturnThis(),

@@ -89,7 +89,7 @@ describe('softDelete', () => {
     const mockRepo = createMockRepository();
     await softDelete(mockRepo, 1);
 
-    const qb = mockRepo.createQueryBuilder();
+    const qb = mockRepo.createQueryBuilder().update();
     expect(qb.set).toHaveBeenCalledWith({ deletedAt: expect.any(Function) });
     expect(qb.andWhere).toHaveBeenCalledWith('deletedAt IS NULL');
   });
@@ -126,7 +126,7 @@ describe('restore', () => {
     const mockRepo = createMockRepository();
     await restore(mockRepo, 1);
 
-    const qb = mockRepo.createQueryBuilder();
+    const qb = mockRepo.createQueryBuilder().update();
     expect(qb.set).toHaveBeenCalledWith({ deletedAt: null });
     expect(qb.andWhere).toHaveBeenCalledWith('deletedAt IS NOT NULL');
   });

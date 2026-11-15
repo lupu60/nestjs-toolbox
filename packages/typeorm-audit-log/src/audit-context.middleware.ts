@@ -1,6 +1,7 @@
-import { Injectable, type NestMiddleware } from '@nestjs/common';
+import { Inject, Injectable, type NestMiddleware, Optional } from '@nestjs/common';
 import type { NextFunction, Request, Response } from 'express';
 import { auditContextRun } from './audit-context';
+import { AUDIT_CONTEXT_EXTRACTOR } from './constants';
 import type { AuditContextData } from './types';
 
 /**
@@ -72,7 +73,12 @@ export const defaultContextExtractor: AuditContextExtractor = (req: RequestWithU
 export class AuditContextMiddleware implements NestMiddleware {
   private extractor: AuditContextExtractor;
 
-  constructor(extractor?: AuditContextExtractor) {
+  constructor(
+    // Optional token: without it Nest cannot resolve the function-typed parameter and fails at boot
+    @Optional()
+    @Inject(AUDIT_CONTEXT_EXTRACTOR)
+    extractor?: AuditContextExtractor,
+  ) {
     this.extractor = extractor ?? defaultContextExtractor;
   }
 

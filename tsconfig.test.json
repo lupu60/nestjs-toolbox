@@ -1,7 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["vitest/globals"]
+    "noEmit": true,
+    "incremental": false,
+    "typeRoots": ["node_modules/@types", "node_modules"],
+    "types": ["node", "vitest/globals"]
   },
   "include": ["packages/**/src/**/*.spec.ts", "packages/**/src/**/*.test.ts", "packages/**/src/test/**/*.ts", "test/**/*.ts"]
 }

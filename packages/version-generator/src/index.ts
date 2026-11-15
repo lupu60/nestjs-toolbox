@@ -27,7 +27,12 @@ function getCurrentBranchName(p = process.cwd()): string {
     if (fs.existsSync(gitHeadPath)) {
       return fs.readFileSync(gitHeadPath, 'utf-8').trim().split('/')[2] || '';
     }
-    return getCurrentBranchName(path.resolve(p, '..'));
+    const parent = path.resolve(p, '..');
+    // Reached the filesystem root without finding a git checkout
+    if (parent === p) {
+      return '';
+    }
+    return getCurrentBranchName(parent);
   }
   return '';
 }

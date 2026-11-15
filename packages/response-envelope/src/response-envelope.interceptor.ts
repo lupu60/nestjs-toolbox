@@ -6,7 +6,7 @@
  */
 
 import { type CallHandler, type ExecutionContext, Inject, Injectable, type NestInterceptor, Optional } from '@nestjs/common';
-import type { Reflector } from '@nestjs/core';
+import { Reflector } from '@nestjs/core';
 import { map, type Observable } from 'rxjs';
 import { API_MESSAGE_KEY, DEFAULT_MESSAGE, RESPONSE_ENVELOPE_OPTIONS, SKIP_ENVELOPE_KEY } from './constants';
 import type { ResponseEnvelopeOptions, ResponseMeta } from './types';
@@ -14,6 +14,8 @@ import type { ResponseEnvelopeOptions, ResponseMeta } from './types';
 @Injectable()
 export class ResponseEnvelopeInterceptor implements NestInterceptor {
   constructor(
+    // Explicit token: a type-only import would erase the class from the emitted DI metadata
+    @Inject(Reflector)
     private readonly reflector: Reflector,
     @Optional()
     @Inject(RESPONSE_ENVELOPE_OPTIONS)
