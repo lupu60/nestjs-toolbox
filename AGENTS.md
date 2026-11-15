@@ -153,5 +153,5 @@ nestjs-toolbox/
 
 ## Node Requirements
 
-- **Node:** >=18 <=22 (Volta pinned to 22.16.0)
+- **Node:** >=20.19 (CI tests 22.x, 24.x, 26.x; Volta pinned to 24.11.0)
 - **npm:** <=11
