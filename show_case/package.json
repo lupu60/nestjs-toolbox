@@ -77,7 +77,8 @@
     "typescript-eslint": "^8.20.0"
   },
   "overrides": {
-    "jsonpath-plus": "^10.3.0"
+    "jsonpath-plus": "^10.3.0",
+    "multer": "2.5.0"
   },
   "jest": {
     "moduleFileExtensions": [
