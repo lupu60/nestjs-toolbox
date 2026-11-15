@@ -34,10 +34,9 @@ export async function softDelete<T extends ObjectLiteral>(
     .createQueryBuilder()
     .update()
     // biome-ignore lint/suspicious/noExplicitAny: TypeORM QueryBuilder set requires any for dynamic keys
-    .set({ [deleteColumn]: () => 'CURRENT_TIMESTAMP' } as any)
-    .andWhere(`${deleteColumn} IS NULL`); // Only delete non-deleted records
+    .set({ [deleteColumn]: () => 'CURRENT_TIMESTAMP' } as any);
 
-  // Handle different criteria types
+  // Handle different criteria types (where() resets conditions, so it must run before the guard below)
   if (typeof criteria === 'string' || typeof criteria === 'number') {
     const primaryColumns = getPrimaryColumns(repository);
     qb.where(`${primaryColumns[0]} = :id`, { id: criteria });
@@ -48,6 +47,7 @@ export async function softDelete<T extends ObjectLiteral>(
     // biome-ignore lint/suspicious/noExplicitAny: TypeORM QueryBuilder where clause requires any for dynamic types
     qb.where(criteria as any);
   }
+  qb.andWhere(`${deleteColumn} IS NULL`); // Only delete non-deleted records
 
   const result = await qb.execute();
 
@@ -83,10 +83,9 @@ export async function restore<T extends ObjectLiteral>(
     .createQueryBuilder()
     .update()
     // biome-ignore lint/suspicious/noExplicitAny: TypeORM QueryBuilder set requires any for dynamic keys
-    .set({ [deleteColumn]: null } as any)
-    .andWhere(`${deleteColumn} IS NOT NULL`); // Only restore deleted records
+    .set({ [deleteColumn]: null } as any);
 
-  // Handle different criteria types
+  // Handle different criteria types (where() resets conditions, so it must run before the guard below)
   if (typeof criteria === 'string' || typeof criteria === 'number') {
     const primaryColumns = getPrimaryColumns(repository);
     qb.where(`${primaryColumns[0]} = :id`, { id: criteria });
@@ -97,6 +96,7 @@ export async function restore<T extends ObjectLiteral>(
     // biome-ignore lint/suspicious/noExplicitAny: TypeORM QueryBuilder where clause requires any for dynamic types
     qb.where(criteria as any);
   }
+  qb.andWhere(`${deleteColumn} IS NOT NULL`); // Only restore deleted records
 
   const result = await qb.execute();
 
@@ -124,9 +124,9 @@ export async function forceDelete<T extends ObjectLiteral>(repository: Repositor
   validateSoftDeleteSupport(repository);
 
   const deleteColumn = getDeleteDateColumnName(repository);
-  const qb = repository.createQueryBuilder().delete().andWhere(`${deleteColumn} IS NOT NULL`); // Only hard delete already soft-deleted records
+  const qb = repository.createQueryBuilder().delete();
 
-  // Handle criteria
+  // Handle criteria (where() resets conditions, so it must run before the guard below)
   if (typeof criteria === 'string' || typeof criteria === 'number') {
     const primaryColumns = getPrimaryColumns(repository);
     qb.where(`${primaryColumns[0]} = :id`, { id: criteria });
@@ -137,6 +137,7 @@ export async function forceDelete<T extends ObjectLiteral>(repository: Repositor
     // biome-ignore lint/suspicious/noExplicitAny: TypeORM QueryBuilder where clause requires any for dynamic types
     qb.where(criteria as any);
   }
+  qb.andWhere(`${deleteColumn} IS NOT NULL`); // Only hard delete already soft-deleted records
 
   const result = await qb.execute();
   return { affected: result.affected ?? 0 };
