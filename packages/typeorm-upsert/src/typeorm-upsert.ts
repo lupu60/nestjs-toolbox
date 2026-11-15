@@ -98,8 +98,8 @@ export async function _chunkPromises<T extends ObjectLiteral>({
       if (conflictValues.length > 0) {
         const existingRecords = await repository
           .createQueryBuilder()
-          .select(conflictKey)
-          .where(`${conflictKey} IN (:...ids)`, { ids: conflictValues })
+          .select(`"${conflictKey}"`)
+          .where(`"${conflictKey}" IN (:...ids)`, { ids: conflictValues })
           .getRawMany();
         existingKeys = new Set(existingRecords.map((record: Record<string, unknown>) => record[conflictKey] as string | number));
       }
