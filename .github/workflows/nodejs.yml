@@ -124,3 +124,44 @@ jobs:
           path: |
             **/junit.xml
           retention-days: 30
+
+  e2e:
+    name: E2E (PostgreSQL ${{ matrix.postgres-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        postgres-version: ['16']
+
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres-version }}-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: nestjs_toolbox_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run integration tests (sql.js + PostgreSQL)
+        run: npm run test:e2e
+        env:
+          CI: true
+          TEST_PG_URL: postgres://postgres:postgres@localhost:5432/nestjs_toolbox_test
