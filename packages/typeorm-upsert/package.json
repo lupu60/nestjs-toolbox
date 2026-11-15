@@ -17,9 +17,7 @@
     "url": "https://github.com/lupu60/nestjs-toolbox/issues"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "publicConfig": {
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "main": "dist/index",

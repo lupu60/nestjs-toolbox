@@ -1,6 +1,6 @@
 {
   "name": "nestjs-toolbox",
-  "version": "1.7.0",
+  "version": "1.8.3",
   "description": "nestjs toolbox",
   "author": "bogdanlupu <lupu60@gmail.com>",
   "maintainers": [
@@ -9,14 +9,7 @@
       "email": "lupu60@gmail.com"
     }
   ],
-  "publicConfig": {
-    "access": "public"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "private": false,
+  "private": true,
   "homepage": "https://github.com/lupu60/nestjs-toolbox#readme",
   "repository": {
     "type": "git",
@@ -63,15 +56,12 @@
     "@vitest/coverage-v8": "^4.1.10",
     "@vitest/ui": "^4.0.18",
     "lerna": "^9.0.3",
-    "npm-run-all": "^4.1.5",
     "pg": "8.23.1",
     "rimraf": "^6.0.1",
     "sql.js": "1.15.2",
-    "standard-version": "9.5.0",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.68.0",
     "vitest": "^4.1.10"
   },
   "dependencies": {
