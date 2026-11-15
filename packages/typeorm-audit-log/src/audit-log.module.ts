@@ -1,5 +1,5 @@
-import { type DynamicModule, Module, type OnModuleInit } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { type DynamicModule, Inject, Module, type OnModuleInit } from '@nestjs/common';
+import { InjectDataSource, TypeOrmModule } from '@nestjs/typeorm';
 import type { DataSource } from 'typeorm';
 import { AuditLog } from './audit-log.entity';
 import { AuditLogService } from './audit-log.service';
@@ -55,8 +55,12 @@ const DEFAULT_OPTIONS: AuditLogModuleOptions = {
 @Module({})
 export class AuditLogModule implements OnModuleInit {
   constructor(
+    // Explicit tokens: DataSource is a type-only import, so emitted DI metadata cannot identify it
+    @InjectDataSource()
     private readonly dataSource: DataSource,
+    @Inject(AuditLogSubscriber)
     private readonly subscriber: AuditLogSubscriber,
+    @Inject(AuditLogService)
     private readonly auditLogService: AuditLogService,
   ) {}
 

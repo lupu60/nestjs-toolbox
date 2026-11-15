@@ -28,6 +28,11 @@ export const AUDITABLE_OPTIONS_KEY = 'audit:auditable:options';
 export const AUDIT_LOG_OPTIONS = 'AUDIT_LOG_OPTIONS';
 
 /**
+ * Optional injection token for a custom AuditContextMiddleware extractor
+ */
+export const AUDIT_CONTEXT_EXTRACTOR = 'AUDIT_CONTEXT_EXTRACTOR';
+
+/**
  * Default table name for audit logs
  */
 export const DEFAULT_TABLE_NAME = 'audit_logs';

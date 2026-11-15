@@ -5,7 +5,6 @@
   "author": "bogdanlupu <lupu60@gmail.com>",
   "homepage": "https://github.com/lupu60/nestjs-toolbox/tree/master/packages/http-logger-middleware#readme",
   "license": "MIT",
-  "type": "module",
   "keywords": [
     "nestjs",
     "http-logger-middleware"
