@@ -40,7 +40,7 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.18",
-    "@nestjs/platform-express": "^11.1.28",
+    "@nestjs/platform-express": "^11.2.6",
     "@nestjs/swagger": "^11.4.2",
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
@@ -77,7 +77,8 @@
     "typescript-eslint": "^8.20.0"
   },
   "overrides": {
-    "jsonpath-plus": "^10.3.0"
+    "jsonpath-plus": "^10.3.0",
+    "multer": "2.5.0"
   },
   "jest": {
     "moduleFileExtensions": [
