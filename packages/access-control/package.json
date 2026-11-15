@@ -42,13 +42,13 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@nestjs/common": "11.2.3",
-    "@nestjs/core": "11.2.3",
+    "@nestjs/common": "12.5.0",
+    "@nestjs/core": "12.5.0",
     "reflect-metadata": "^0.2.2",
     "role-acl": "^3.2.2"
   },
   "devDependencies": {
-    "@nestjs/testing": "11.2.3",
+    "@nestjs/testing": "12.5.0",
     "@types/node": "25.9.1",
     "matcher": "^7.0.0",
     "notation": "^3.0.1",
