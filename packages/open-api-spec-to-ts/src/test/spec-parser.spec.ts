@@ -584,7 +584,7 @@ describe('OpenAPISpecParser', () => {
       expect(await readFile(join(refImportsInterfacePath, 'Box.ts'))).toContain("import { Tag } from './';");
       expect(await readFile(join(refImportsInterfacePath, 'Tag.ts'))).not.toContain('import');
 
-      const program = ts.createProgram([join(refImportsInterfacePath, 'index.ts')], { noEmit: true, strict: true });
+      const program = ts.createProgram([join(refImportsInterfacePath, 'index.ts')], { noEmit: true, strict: true, skipLibCheck: true, types: [] });
       const diagnostics = ts.getPreEmitDiagnostics(program).map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n'));
       expect(diagnostics).toEqual([]);
     } finally {
