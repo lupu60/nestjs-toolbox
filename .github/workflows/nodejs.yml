@@ -55,6 +55,9 @@ jobs:
             cd ../..
           done
 
+      - name: Type check test files
+        run: npm run typecheck:test
+
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -124,6 +127,38 @@ jobs:
           path: |
             **/junit.xml
           retention-days: 30
+
+  smoke:
+    name: Pack smoke test (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: workspace Nest
+            args: ''
+          # Lowest Nest version the peerDependencies ranges claim to support
+          - name: Nest 11.2.3
+            args: --nest 11.2.3 request-context response-envelope typeorm-audit-log
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Pack, install and boot the packages
+        run: npm run test:smoke -- ${{ matrix.args }}
 
   e2e:
     name: E2E (PostgreSQL ${{ matrix.postgres-version }})

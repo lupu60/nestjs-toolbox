@@ -1,6 +1,17 @@
+import type { DynamicModule } from '@nestjs/common';
 import { REQUEST_CONTEXT_OPTIONS } from '../constants';
 import { RequestContextMiddleware } from '../request-context.middleware';
 import { RequestContextModule } from '../request-context.module';
+
+type OptionsProvider = {
+  provide: unknown;
+  useValue?: unknown;
+  useFactory?: (...args: unknown[]) => unknown;
+  inject?: unknown[];
+};
+
+const findOptionsProvider = (module: DynamicModule) =>
+  (module.providers as OptionsProvider[] | undefined)?.find((p) => p.provide === REQUEST_CONTEXT_OPTIONS) as OptionsProvider;
 
 describe('RequestContextModule', () => {
   describe('forRoot()', () => {
@@ -23,10 +34,7 @@ describe('RequestContextModule', () => {
       const options = { requestIdHeader: 'x-custom', setResponseHeader: false };
       const result = RequestContextModule.forRoot(options);
 
-      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<
-        string,
-        unknown
-      >;
+      const optionsProvider = findOptionsProvider(result);
 
       expect(optionsProvider).toBeDefined();
       expect(optionsProvider.useValue).toEqual(options);
@@ -41,10 +49,7 @@ describe('RequestContextModule', () => {
     it('with no args uses empty options', () => {
       const result = RequestContextModule.forRoot();
 
-      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<
-        string,
-        unknown
-      >;
+      const optionsProvider = findOptionsProvider(result);
 
       expect(optionsProvider).toBeDefined();
       expect(optionsProvider.useValue).toEqual({});
@@ -83,10 +88,7 @@ describe('RequestContextModule', () => {
         inject: [InjectToken],
       });
 
-      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<
-        string,
-        unknown
-      >;
+      const optionsProvider = findOptionsProvider(result);
 
       expect(optionsProvider).toBeDefined();
       expect(optionsProvider.useFactory).toBe(factory);
@@ -98,10 +100,7 @@ describe('RequestContextModule', () => {
 
       expect(result.imports).toEqual([]);
 
-      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<
-        string,
-        unknown
-      >;
+      const optionsProvider = findOptionsProvider(result);
 
       expect(optionsProvider.inject).toEqual([]);
     });
@@ -109,13 +108,10 @@ describe('RequestContextModule', () => {
     it('defaults to a no-op factory when useFactory is not provided', () => {
       const result = RequestContextModule.forRootAsync({});
 
-      const optionsProvider = result.providers?.find((p: Record<string, unknown>) => p.provide === REQUEST_CONTEXT_OPTIONS) as Record<
-        string,
-        unknown
-      >;
+      const optionsProvider = findOptionsProvider(result);
 
       expect(optionsProvider.useFactory).toBeDefined();
-      expect(optionsProvider.useFactory()).toEqual({});
+      expect(optionsProvider.useFactory?.()).toEqual({});
     });
   });
 });

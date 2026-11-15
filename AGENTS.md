@@ -82,9 +82,13 @@ nestjs-toolbox/
 ### Testing
 - Test files: `src/test/*.spec.ts`
 - Integration tests (need PostgreSQL): `src/test/*.integration.spec.ts`, run via `npm run test:e2e`
+- HTTP-level tests: `src/test/*http.spec.ts` boot a real Nest app and call it with `supertest`
 - Framework: Vitest (globals enabled, shared `vitest.config.ts`)
+- Coverage thresholds are enforced per package (see `vitest.config.ts`)
+- Test files are type-checked separately: `npm run typecheck:test`
+- Injected constructor parameters need an explicit `@Inject(...)` token: Vitest emits no decorator type metadata, and a type-only import breaks it in the compiled output too
 - **Every package must have tests**
-- Run single test: `npx vitest run packages/<pkg>/src/test/<file>.spec.ts`
+- Run single test: `npx vitest run --coverage.enabled=false packages/<pkg>/src/test/<file>.spec.ts`
 
 ### Dependencies
 - Minimize external dependencies
@@ -141,6 +145,8 @@ nestjs-toolbox/
 | `npm run build` | Build all packages |
 | `npm test` | Run all tests |
 | `npm run test:e2e` | Run PostgreSQL integration tests |
+| `npm run test:smoke` | Pack every package, install the tarballs in a temp project, boot a Nest app (needs `npm run build` first) |
+| `npm run typecheck:test` | Type-check spec files |
 | `npm run lint` | Lint all packages |
 | `npm run check` | Biome lint + format check for the whole repo |
 | `npm run format` | Format all files |

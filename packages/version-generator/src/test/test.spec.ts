@@ -80,4 +80,17 @@ describe('version-generator', () => {
     expect(generate_version(options, 'develop')).toEqual('1.0.0-beta.ebffb63');
     expect(generate_version(options, 'feature/cool-feature')).toEqual('1.0.0-alpha.ebffb63');
   });
+
+  it('requires a commit sha for every version flavour', () => {
+    const withoutSha = { ...options, commitSha: undefined };
+
+    expect(() => generate_master_version(withoutSha)).toThrow('commitSha is required');
+    expect(() => generate_develop_version(withoutSha)).toThrow('commitSha is required');
+    expect(() => generate_feature_version(withoutSha)).toThrow('commitSha is required');
+  });
+
+  it('generate_version falls back to latest', () => {
+    expect(generate_version(options, 'hotfix/unknown-branch')).toEqual('latest');
+    expect(generate_version({ ...options, commitSha: undefined }, 'master')).toEqual('latest');
+  });
 });

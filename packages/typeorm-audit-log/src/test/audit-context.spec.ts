@@ -87,7 +87,7 @@ describe('AuditContext', () => {
     it('should propagate context through async operations', async () => {
       await auditContextRun({ userId: 'async-user' }, async () => {
         // Simulate async operation
-        await new Promise((resolve) => setTimeout(resolve, 10));
+        await new Promise((resolve) => setImmediate(resolve));
 
         expect(getAuditContext()?.userId).toBe('async-user');
       });
