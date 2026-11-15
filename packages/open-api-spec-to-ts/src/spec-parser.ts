@@ -62,67 +62,35 @@ function logError(message: string) {
   }
 }
 
-function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject): string | string[] | undefined {
-  const objectSchema = inputSchema as SchemaObject;
+// Collect $refs by schema structure rather than `type`, since `type` is optional in OpenAPI
+function extractRefsFromSchema(inputSchema: SchemaObject | ReferenceObject | undefined): string[] {
+  if (!inputSchema) {
+    return [];
+  }
   const refSchema = inputSchema as ReferenceObject;
-  switch (objectSchema.type) {
-    case 'object': {
-      if (!objectSchema.properties) {
-        return undefined;
-      }
-      const refs = flatten(Object.values(preprocessProperties(objectSchema.properties)));
-      return refs.filter((ref): ref is string => ref !== undefined);
-    }
-    case 'array':
-      if (!objectSchema.items) {
-        return undefined;
-      }
-      return extractRefsFromSchema(objectSchema.items);
-    default:
-      if (objectSchema.oneOf) {
-        const refs = Object.values(objectSchema.oneOf)
-          .map((item) => extractRefsFromSchema(item))
-          .filter((ref): ref is string | string[] => ref !== undefined);
-        return flatten(refs);
-      }
-      if (objectSchema.anyOf) {
-        const refs = Object.values(objectSchema.anyOf)
-          .map((item) => extractRefsFromSchema(item))
-          .filter((ref): ref is string | string[] => ref !== undefined);
-        return flatten(refs);
-      }
-      if (objectSchema.allOf) {
-        const refs = Object.values(objectSchema.allOf)
-          .map((item) => extractRefsFromSchema(item))
-          .filter((ref): ref is string | string[] => ref !== undefined);
-        return flatten(refs);
-      }
-      return refSchema.$ref;
+  if (refSchema.$ref) {
+    return [refSchema.$ref];
   }
-}
-
-function preprocessProperties(inputProperties: { [key: string]: SchemaObject | ReferenceObject }) {
-  if (inputProperties) {
-    return Object.entries(inputProperties).reduce(
-      (acc, [name, value]) => {
-        acc[name] = extractRefsFromSchema(value);
-        return acc;
-      },
-      {} as Record<string, string | string[] | undefined>,
-    );
-  }
-  return {};
+  const objectSchema = inputSchema as SchemaObject;
+  const children: (SchemaObject | ReferenceObject | undefined)[] = [
+    ...Object.values(objectSchema.properties ?? {}),
+    typeof objectSchema.additionalProperties === 'object' ? objectSchema.additionalProperties : undefined,
+    objectSchema.items,
+    ...(objectSchema.oneOf ?? []),
+    ...(objectSchema.anyOf ?? []),
+    ...(objectSchema.allOf ?? []),
+  ];
+  return flatten(children.map((child) => extractRefsFromSchema(child)));
 }
 
 async function createImport(name: string, schema: SchemaObject | ReferenceObject, filePath: string) {
-  const references: string | string[] | undefined = extractRefsFromSchema(schema);
-  if (!references?.length) {
+  const references = extractRefsFromSchema(schema);
+  if (!references.length) {
     return [];
   }
-  const refsArray: string[] = typeof references === 'string' ? [references] : references.flat();
-  const $refs = refsArray.filter((val, index) => val !== undefined && refsArray.indexOf(val) === index).map((val) => val.split('/')[3]);
+  const $refs = references.filter((val, index) => references.indexOf(val) === index).map((val) => val.split('/')[3]);
 
-  const imports = $refs.filter((val) => !val.includes(name));
+  const imports = $refs.filter((val) => val !== name);
   if ($refs.length && imports.length) {
     await appendFile(filePath, `import { ${imports.join(', ')} } from './'; \n\n`);
   }

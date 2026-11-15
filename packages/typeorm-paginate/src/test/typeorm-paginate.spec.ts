@@ -125,6 +125,35 @@ describe('typeorm-paginate', () => {
       expect(mockRepository.find).toHaveBeenCalledTimes(3);
       expect(results).toHaveLength(5);
     });
+
+    it('should round progress to integers without floating point noise', async () => {
+      const where: FindOptionsWhere<TestEntity> = {};
+      const sevenRows = Array.from({ length: 7 }, (_, i) => ({ id: i + 1, name: `Entity ${i + 1}` }));
+      vi.spyOn(mockRepository, 'count').mockResolvedValue(7);
+      vi.spyOn(mockRepository, 'find').mockResolvedValue(sevenRows);
+
+      const progress = [];
+      for await (const row of rows({ repository: mockRepository, where, limit: 10 })) {
+        progress.push(row.progress);
+      }
+
+      expect(progress).toEqual([14, 29, 43, 57, 71, 86, 100]);
+    });
+
+    it('should pass array of where conditions through unchanged', async () => {
+      const where: FindOptionsWhere<TestEntity>[] = [{ id: 1 }, { id: 2 }];
+      vi.spyOn(mockRepository, 'count').mockResolvedValue(2);
+      vi.spyOn(mockRepository, 'find').mockResolvedValue([mockData[0], mockData[1]]);
+
+      const results = [];
+      for await (const row of rows({ repository: mockRepository, where, limit: 10 })) {
+        results.push(row);
+      }
+
+      expect(mockRepository.count).toHaveBeenCalledWith({ where });
+      expect(mockRepository.find).toHaveBeenCalledWith({ where: [{ id: 1 }, { id: 2 }], skip: 0, take: 10 });
+      expect(results).toHaveLength(2);
+    });
   });
 
   describe('set', () => {
@@ -220,6 +249,7 @@ describe('typeorm-paginate', () => {
         results.push(rowSet);
       }
 
+      expect(mockRepository.find).toHaveBeenCalledWith({ where: [{ id: 1 }, { id: 2 }], skip: 0, take: 100 });
       expect(results).toHaveLength(1);
       expect(results[0]).toHaveLength(2);
     });
