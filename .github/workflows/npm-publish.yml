@@ -47,7 +47,8 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'false')
-    # npm trusted publishing (OIDC): no NPM_TOKEN, each package trusts this workflow on npmjs.com
+    # Auth: NPM_TOKEN secret (granular token with bypass 2FA), or npm trusted publishing (OIDC)
+    # once each package trusts this workflow on npmjs.com
     permissions:
       contents: read
       id-token: write
@@ -62,6 +63,7 @@ jobs:
         with:
           node-version: '24.x'
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
 
       # Trusted publishing needs npm >= 11.5.1
       - name: Update npm
@@ -75,6 +77,8 @@ jobs:
 
       - name: Publish to npm
         run: npm run publish -- --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   dry-run:
     name: Dry Run Validation
