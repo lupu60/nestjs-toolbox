@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "rimraf": "6.1.3",
+    "rimraf": "6.1.4",
     "typescript": "5.9.3"
   },
   "gitHead": "737971da7af87f7b32335ce5cfe8679704ac219d"
